@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Card — Segurança Operacional</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Source+Sans+3:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #EDF2F7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'Source Sans 3', sans-serif;
+  }
+
+  .card {
+    width: 340px;
+    background: #FFFFFF;
+    border-radius: 14px;
+    box-shadow:
+      0 1px 3px rgba(0,58,112,0.06),
+      0 8px 28px rgba(0,58,112,0.12),
+      0 0 0 1px rgba(0,58,112,0.06);
+    overflow: hidden;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow:
+      0 2px 8px rgba(0,58,112,0.08),
+      0 20px 48px rgba(0,58,112,0.16),
+      0 0 0 1px rgba(0,58,112,0.08);
+  }
+
+  /* ── HEADER ── */
+  .card-header {
+    padding: 20px 22px 18px;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    position: relative;
+    border-bottom: 1.5px solid #F0F4F8;
+  }
+
+  .card-header::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: #005EB8;
+    border-radius: 0 2px 2px 0;
+  }
+
+  .icon-wrap {
+    width: 42px;
+    height: 42px;
+    border-radius: 11px;
+    background: #D9E8F5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .icon-wrap svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .card-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 15.5px;
+    color: #003A70;
+    letter-spacing: -0.2px;
+    line-height: 1.2;
+  }
+
+  /* ── BODY ── */
+  .card-body {
+    padding: 14px 22px 20px;
+  }
+
+  .item {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    padding: 9px 0;
+    border-bottom: 1px solid #F5F7FA;
+  }
+
+  .item:last-child {
+    border-bottom: none;
+  }
+
+  .item-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #005EB8;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+
+  .item-text {
+    font-size: 13.5px;
+    color: #374151;
+    line-height: 1.55;
+    font-weight: 400;
+  }
+
+  /* ── FOOTER ── */
+  .card-footer {
+    padding: 4px 0 0;
+  }
+</style>
+</head>
+<body>
+
+  <div class="card">
+
+    <div class="card-header">
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#005EB8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.25C17.25 22.15 21 17.25 21 12V7L12 2z"/>
+        </svg>
+      </div>
+      <span class="card-title">Segurança Operacional</span>
+    </div>
+
+    <div class="card-body">
+      <div class="item">
+        <div class="item-dot"></div>
+        <span class="item-text">Rotas de fuga e acessos de emergência</span>
+      </div>
+      <div class="item">
+        <div class="item-dot"></div>
+        <span class="item-text">Sinalizações obrigatórias (presença e integridade)</span>
+      </div>
+      <div class="item">
+        <div class="item-dot"></div>
+        <span class="item-text">Conformidade com requisitos físicos e operacionais</span>
+      </div>
+      <div class="item">
+        <div class="item-dot"></div>
+        <span class="item-text">Registro digital com evidência rastreável</span>
+      </div>
+    </div>
+
+
+
+  </div>
+
+</body>
+</html>
