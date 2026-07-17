@@ -1,0 +1,958 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+Screens:
+  TelaNCUsuario:
+    Properties:
+      Fill: =RGBA(238, 238, 238, 1)
+      LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+      OnVisible: |-
+        =Set(varBusy, false);
+        Refresh(NaoConformidadesPorSala);
+        Refresh(Checklist_OrganizacaoPellet2025)
+    Children:
+      - lblSemResultados:
+          Control: Label@2.5.1
+          Properties:
+            Align: =Align.Center
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =Color.Gray
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            Fill: =RGBA(240, 240, 240, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Bold
+            Height: =112
+            PaddingBottom: =10
+            PaddingLeft: =10
+            PaddingRight: =10
+            PaddingTop: =10
+            Size: =18
+            Text: |-
+              =If(
+                  IsBlank(cbmSalaFiltro.Selected.Value),
+                  "Nenhuma pendência de NC aberta ou em tratamento.",
+                  "Nenhuma pendência de NC para esta sala."
+              )
+            Visible: =IsEmpty(galNcsUsuario.AllItems)
+            Width: =1097
+            X: =136
+            Y: =238
+      - Icon9:
+          Control: Classic/Icon@2.5.0
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: =Color.Gray
+            DisabledBorderColor: =RGBA(245, 245, 245, 1)
+            DisabledColor: =RGBA(225, 223, 221, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =38
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(16, 110, 190, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.Search
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =RGBA(16, 110, 190, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Visible: =IsEmpty(galNcsUsuario.AllItems)
+            Width: =44
+            X: =377
+            Y: =275
+      - Container8:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            Height: =519
+            RadiusBottomLeft: =10
+            RadiusBottomRight: =10
+            RadiusTopLeft: =10
+            RadiusTopRight: =10
+            Width: =1271
+            X: =48
+            Y: =220
+          Children:
+            - galNcsUsuario:
+                Control: Gallery@2.15.0
+                Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+                Properties:
+                  BorderColor: =RGBA(0, 56, 168, 1)
+                  Height: =519
+                  Items: |-
+                    =SortByColumns(
+                        If(
+                            IsBlank(cbmSalaFiltro.Selected.Value),
+
+                            Filter(
+                                NaoConformidadesPorSala,
+                                StatusNC.Value = "Aberta" ||
+                                StatusNC.Value = "Em Tratamento"
+                            ),
+
+                            Filter(
+                                NaoConformidadesPorSala,
+                                (
+                                    StatusNC.Value = "Aberta" ||
+                                    StatusNC.Value = "Em Tratamento"
+                                ) &&
+                                SalaNC.Value = cbmSalaFiltro.Selected.Value
+                            )
+                        ),
+                        "DataLimiteCorrecao",
+                        SortOrder.Ascending
+                    )
+                  TemplateFill: =RGBA(255, 255, 255, 1)
+                  TemplatePadding: =20
+                  TemplateSize: =221
+                  Width: =1271
+                Children:
+                  - Subtitle2:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0, 0, 0, 1)
+                        Color: =RGBA(96, 94, 92, 1)
+                        DisabledColor: =RGBA(161, 159, 157, 1)
+                        Font: =Font.'Segoe UI'
+                        FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+                        Height: =Self.Size * 1.8
+                        OnSelect: =Select(Parent)
+                        PaddingBottom: =0
+                        PaddingLeft: =12
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Size: =12
+                        Text: =ThisItem.DescricaoNC
+                        VerticalAlign: =VerticalAlign.Top
+                        Visible: =false
+                        Width: =0
+                  - lblDataInspecao:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =2
+                        Color: =RGBA(90, 98, 110, 1)
+                        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                        DisabledColor: =RGBA(161, 159, 157, 1)
+                        FocusedBorderThickness: =4
+                        Font: =Font.'Open Sans'
+                        Height: =35
+                        PaddingTop: =10
+                        Text: |-
+                          =If(
+                              IsBlank(ThisItem.'DataCriacao '),
+                              "Não informada",
+                              Text(
+                                  DateAdd(
+                                      ThisItem.'DataCriacao ',
+                                      -TimeZoneOffset(ThisItem.'DataCriacao '),
+                                      TimeUnit.Minutes
+                                  ),
+                                  "[$-pt-BR]dd/mm/yyyy"
+                              )
+                          )
+                        Width: =700
+                        X: =92
+                        Y: =118
+                  - lblResponsavelSala:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =2
+                        Color: =RGBA(90, 98, 110, 1)
+                        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                        DisabledColor: =RGBA(161, 159, 157, 1)
+                        FocusedBorderThickness: =4
+                        Font: =Font.'Open Sans'
+                        Height: =35
+                        OnSelect: =
+                        PaddingTop: =8
+                        Text: |
+                          =Concat(ThisItem.ResponsavelSala, DisplayName, "; ")
+                        Width: =1000
+                        X: =171
+                        Y: =79
+                  - lblDescricaoNC:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =2
+                        Color: =RGBA(35, 35, 35, 1)
+                        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                        DisabledColor: =RGBA(161, 159, 157, 1)
+                        FocusedBorderThickness: =4
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =35
+                        Size: =15
+                        Text: |
+                          =ThisItem.DescricaoNC
+                        Width: =850
+                        X: =135
+                        Y: =43
+                  - lblSala:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =2
+                        Color: =RGBA(2, 52, 162, 1)
+                        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                        DisabledColor: =RGBA(161, 159, 157, 1)
+                        FocusedBorderThickness: =4
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =35
+                        Size: =20
+                        Text: =ThisItem.SalaNC.Value
+                        Width: =570
+                        X: =39
+                        Y: =1
+                  - btnEnviarTratativa:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Align: =Align.Left
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        BorderStyle: =BorderStyle.None
+                        Color: =RGBA(255, 255, 255, 1)
+                        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                        DisabledColor: =RGBA(161, 159, 157, 1)
+                        DisabledFill: =RGBA(242, 242, 241, 0)
+                        DisplayMode: |-
+                          =If(
+                              varBusy ||
+                              IsBlank(ThisItem.ID) ||
+                              IsBlank(ThisItem.ChecklistID) ||
+                              IsBlank(Trim(txtAcaoCorretivaResponsavel.Text)) ||
+                              !(
+                                  Coalesce(ThisItem.StatusClassificacaoNC.Value, "") = "Classificada" ||
+                                  Coalesce(ThisItem.StatusClassificacaoNC.Value, "") = "Regularizada" ||
+                                  Coalesce(ThisItem.StatusClassificacaoNC.Value, "") = "Contingência de matriz"
+                              ),
+                              DisplayMode.Disabled,
+                              DisplayMode.Edit
+                          )
+                        Fill: =RGBA(0, 56, 168, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =56
+                        HoverBorderColor: =RGBA(0, 0, 0, 0)
+                        HoverColor: =RGBA(255, 255, 255, 1)
+                        HoverFill: =RGBA(16, 110, 190, 1)
+                        OnSelect: |-
+                          =If(
+                              varBusy,
+
+                              Notify(
+                                  "⏳ Aguarde, a tratativa da NC já está em processamento.",
+                                  NotificationType.Information
+                              ),
+
+                              Set(varBusy, true);
+                              Set(varPodeConcluirNC, true);
+                              Set(varErroConcluirNC, false);
+                              Set(varChecklistIdAtual, 0);
+                              Set(
+                                  varNcAtualizada,
+                                  Defaults(NaoConformidadesPorSala)
+                              );
+                              Set(varExistePendente, false);
+                              Set(varQtdPendenciasChecklist, 0);
+                              Set(varStatusGeralChecklistAtual, "");
+                              Set(varPossuiStatusNCInvalidoTratativa, false);
+                              Set(
+                                  varChecklistAtualizadoAposTratativa,
+                                  Defaults(Checklist_OrganizacaoPellet2025)
+                              );
+
+                              Clear(colNcPendentesMesmoChecklist);
+                              Clear(colNcMesmoChecklistTratativa);
+
+                              If(
+                                  IsBlank(ThisItem.ID) ||
+                                  IsBlank(ThisItem.ChecklistID),
+
+                                  Notify(
+                                      "❌ Item inválido. A NC está sem ID ou sem ChecklistID.",
+                                      NotificationType.Error
+                                  );
+                                  Set(varPodeConcluirNC, false)
+                              );
+
+                              If(
+                                  varPodeConcluirNC &&
+                                  IsBlank(
+                                      Trim(txtAcaoCorretivaResponsavel.Text)
+                                  ),
+
+                                  Notify(
+                                      "❌ Preencha a ação corretiva antes de concluir.",
+                                      NotificationType.Error
+                                  );
+                                  Set(varPodeConcluirNC, false)
+                              );
+
+                              If(
+                                  varPodeConcluirNC &&
+                                  !(
+                                      Coalesce(
+                                          ThisItem.StatusClassificacaoNC.Value,
+                                          ""
+                                      ) = "Classificada" ||
+                                      Coalesce(
+                                          ThisItem.StatusClassificacaoNC.Value,
+                                          ""
+                                      ) = "Regularizada" ||
+                                      Coalesce(
+                                          ThisItem.StatusClassificacaoNC.Value,
+                                          ""
+                                      ) = "Contingência de matriz"
+                                  ),
+
+                                  Notify(
+                                      "❌ Esta NC ainda não possui uma classificação operacional válida para encerramento.",
+                                      NotificationType.Error
+                                  );
+                                  Set(varPodeConcluirNC, false)
+                              );
+
+                              If(
+                                  varPodeConcluirNC,
+
+                                  Set(
+                                      varChecklistIdAtual,
+                                      Value(ThisItem.ChecklistID)
+                                  )
+                              );
+
+                              If(
+                                  varPodeConcluirNC &&
+                                  (
+                                      IsBlank(varChecklistIdAtual) ||
+                                      varChecklistIdAtual = 0
+                                  ),
+
+                                  Notify(
+                                      "❌ ChecklistID inválido: " &
+                                      Text(ThisItem.ChecklistID),
+                                      NotificationType.Error
+                                  );
+                                  Set(varPodeConcluirNC, false)
+                              );
+
+                              If(
+                                  varPodeConcluirNC,
+
+                                  Set(
+                                      varNcAtualizada,
+                                      IfError(
+                                          Patch(
+                                              NaoConformidadesPorSala,
+                                              LookUp(
+                                                  NaoConformidadesPorSala,
+                                                  ID = ThisItem.ID
+                                              ),
+                                              {
+                                                  AcaoCorretivaResponsavel: Trim(
+                                                      txtAcaoCorretivaResponsavel.Text
+                                                  ),
+                                                  StatusNC: {
+                                                      Value: "Encerrada"
+                                                  },
+                                                  DataFinalCorretiva: Now(),
+                                                  ResponsavelFinalCorretiva: {
+                                                      '@odata.type': "#Microsoft.Azure.Connectors.SharePoint.SPListExpandedUser",
+                                                      Claims: "i:0#.f|membership|" &
+                                                          Lower(
+                                                              Coalesce(
+                                                                  varUserEmail,
+                                                                  User().Email
+                                                              )
+                                                          ),
+                                                      DisplayName: Coalesce(
+                                                          varUserNome,
+                                                          User().FullName
+                                                      ),
+                                                      Email: Lower(
+                                                          Coalesce(
+                                                              varUserEmail,
+                                                              User().Email
+                                                          )
+                                                      ),
+                                                      Department: "",
+                                                      JobTitle: "",
+                                                      Picture: ""
+                                                  },
+                                                  ConclusaoComAtraso: If(
+                                                      IsBlank(ThisItem.DataLimiteCorrecao),
+                                                      false,
+                                                      Now() > ThisItem.DataLimiteCorrecao
+                                                  )
+                                              }
+                                          ),
+                                          Defaults(NaoConformidadesPorSala)
+                                      )
+                                  );
+
+                                  If(
+                                      IsBlank(varNcAtualizada.ID),
+
+                                      Set(varErroConcluirNC, true);
+                                      Notify(
+                                          "❌ Erro ao concluir a NC. Verifique permissões, conexão ou colunas da lista.",
+                                          NotificationType.Error
+                                      )
+                                  )
+                              );
+
+                              If(
+                                  varPodeConcluirNC &&
+                                  !varErroConcluirNC,
+
+                                  Refresh(NaoConformidadesPorSala);
+
+                                  ClearCollect(
+                                      colNcMesmoChecklistTratativa,
+                                      Filter(
+                                          NaoConformidadesPorSala,
+                                          ChecklistID = varChecklistIdAtual
+                                      )
+                                  );
+
+                          Set(
+                              varPossuiStatusNCInvalidoTratativa,
+                              !IsBlank(
+                                  LookUp(
+                                      colNcMesmoChecklistTratativa,
+                                      IsBlank(StatusNC.Value) ||
+                                      !(
+                                          StatusNC.Value = "Aberta" ||
+                                          StatusNC.Value = "Em Tratamento" ||
+                                          StatusNC.Value = "Encerrada" ||
+                                          StatusNC.Value = "Cancelada"
+                                      ),
+                                      ID
+                                  )
+                              )
+                          );
+
+                          ClearCollect(
+                              colNcPendentesMesmoChecklist,
+                              Filter(
+                                  colNcMesmoChecklistTratativa,
+                                  StatusNC.Value <> "Encerrada"
+                              )
+                          );
+
+                          Set(
+                              varQtdPendenciasChecklist,
+                              CountRows(colNcPendentesMesmoChecklist)
+                          );
+
+                          Set(
+                              varExistePendente,
+                              varQtdPendenciasChecklist > 0 ||
+                              varPossuiStatusNCInvalidoTratativa
+                          );
+
+                          Set(
+                              varStatusGeralChecklistAtual,
+                              If(
+                                  !varExistePendente,
+                                  "Conforme",
+                                  If(
+                                      CountIf(
+                                          colNcPendentesMesmoChecklist,
+                                          ClassificacaoNC.Value = "Crítica / Segurança"
+                                      ) > 0,
+                                      "Crítico",
+                                      "Atenção"
+                                  )
+                              )
+                          );
+
+                                  If(
+                                      varPossuiStatusNCInvalidoTratativa,
+
+                                      Notify(
+                                          "⚠️ Existe NC vinculada a este checklist com status vazio ou inesperado. O checklist principal permanecerá pendente até regularização.",
+                                          NotificationType.Warning
+                                      )
+                                  );
+
+                                  Set(
+                                      varChecklistAtualizadoAposTratativa,
+                                      IfError(
+                                          Patch(
+                                              Checklist_OrganizacaoPellet2025,
+                                              LookUp(
+                                                  Checklist_OrganizacaoPellet2025,
+                                                  ID = varChecklistIdAtual
+                                              ),
+                                              {
+                                                  StatusNC: If(
+                                                      varExistePendente,
+                                                      {
+                                                          Value: "Pendente"
+                                                      },
+                                                      {
+                                                          Value: "Concluído"
+                                                      }
+                                                  ),
+                                                  StatusGeral: {
+                                                      Value: varStatusGeralChecklistAtual
+                                                  }
+                                              }
+                                          ),
+                                          Defaults(Checklist_OrganizacaoPellet2025)
+                                      )
+                                  );
+
+                                  If(
+                                      IsBlank(
+                                          varChecklistAtualizadoAposTratativa.ID
+                                      ),
+
+                                      Notify(
+                                          "⚠️ NC concluída, mas houve falha ao atualizar o checklist principal.",
+                                          NotificationType.Warning
+                                      ),
+
+                                      If(
+                                          !IsBlank(varRegistroChecklist) &&
+                                          varRegistroChecklist.ID =
+                                              varChecklistIdAtual,
+
+                                          Set(
+                                              varRegistroChecklist,
+                                              varChecklistAtualizadoAposTratativa
+                                          )
+                                      )
+                                  );
+
+                                  Refresh(Checklist_OrganizacaoPellet2025);
+                                  Refresh(NaoConformidadesPorSala);
+                                  Reset(txtAcaoCorretivaResponsavel);
+
+                                  If(
+                                      varPossuiStatusNCInvalidoTratativa,
+
+                                      Notify(
+                                          "✅ NC concluída. O checklist permanece pendente porque existe NC com status que precisa ser regularizado.",
+                                          NotificationType.Success
+                                      ),
+
+                                      If(
+                                          varExistePendente,
+
+                                          Notify(
+                                              "✅ NC concluída. Ainda existem " &
+                                              varQtdPendenciasChecklist &
+                                              " NC(s) aberta(s) ou em tratamento neste checklist.",
+                                              NotificationType.Success
+                                          ),
+
+                                          Notify(
+                                              "✅ NC concluída. Checklist sem pendências de NC.",
+                                              NotificationType.Success
+                                          )
+                                      )
+                                  );
+
+                                  Clear(colNcPendentesMesmoChecklist);
+                                  Clear(colNcMesmoChecklistTratativa)
+                              );
+
+                              Set(varBusy, false)
+                          )
+                        PaddingLeft: =30
+                        PressedBorderColor: =RGBA(0, 69, 120, 1)
+                        PressedColor: =RGBA(255, 255, 255, 1)
+                        PressedFill: =RGBA(16, 110, 190, 1)
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Text: |-
+                          =If(
+                              varBusy,
+                              "PROCESSANDO...",
+                              "ENVIAR TRATATIVA"
+                          )
+                        Width: =234
+                        X: =937
+                        Y: =162
+                  - txtAcaoCorretivaResponsavel:
+                      Control: Classic/TextInput@2.3.2
+                      Properties:
+                        BorderColor: =Color.Gray
+                        Color: =RGBA(50, 49, 48, 1)
+                        Default: =""
+                        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                        DisabledColor: =RGBA(161, 159, 157, 1)
+                        DisabledFill: =RGBA(242, 242, 241, 0)
+                        Fill: =Color.White
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Semibold
+                        Height: |+
+                          =56
+                        HintText: ="Descreva a ação corretiva..."
+                        HoverBorderColor: =RGBA(16, 110, 190, 1)
+                        HoverColor: =RGBA(50, 49, 48, 1)
+                        HoverFill: =RGBA(255, 255, 255, 1)
+                        PaddingBottom: =10
+                        PaddingLeft: =10
+                        PaddingRight: =10
+                        PaddingTop: =10
+                        PressedBorderColor: =RGBA(0, 120, 212, 1)
+                        PressedColor: =RGBA(50, 49, 48, 1)
+                        PressedFill: =RGBA(255, 255, 255, 1)
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Size: =16
+                        Width: =920
+                        X: =7
+                        Y: =162
+                  - Icon8:
+                      Control: Classic/Icon@2.5.0
+                      Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        Color: =RGBA(2, 52, 162, 1)
+                        DisabledBorderColor: =RGBA(245, 245, 245, 1)
+                        DisabledColor: =RGBA(225, 223, 221, 1)
+                        DisabledFill: =RGBA(0, 0, 0, 0)
+                        FocusedBorderThickness: =4
+                        Height: =30
+                        HoverBorderColor: =RGBA(0, 0, 0, 0)
+                        HoverColor: =RGBA(16, 110, 190, 1)
+                        HoverFill: =RGBA(0, 0, 0, 0)
+                        Icon: =Icon.People
+                        PressedBorderColor: =RGBA(0, 0, 0, 0)
+                        PressedColor: =RGBA(16, 110, 190, 1)
+                        PressedFill: =RGBA(0, 0, 0, 0)
+                        Width: =25
+                        X: =7
+                        Y: =81
+                  - Icon11:
+                      Control: Classic/Icon@2.5.0
+                      Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        Color: =RGBA(2, 52, 162, 1)
+                        DisabledBorderColor: =RGBA(245, 245, 245, 1)
+                        DisabledColor: =RGBA(225, 223, 221, 1)
+                        DisabledFill: =RGBA(0, 0, 0, 0)
+                        FocusedBorderThickness: =4
+                        Height: =30
+                        HoverBorderColor: =RGBA(0, 0, 0, 0)
+                        HoverColor: =RGBA(16, 110, 190, 1)
+                        HoverFill: =RGBA(0, 0, 0, 0)
+                        Icon: =Icon.CalendarBlank
+                        PressedBorderColor: =RGBA(0, 0, 0, 0)
+                        PressedColor: =RGBA(16, 110, 190, 1)
+                        PressedFill: =RGBA(0, 0, 0, 0)
+                        Width: =25
+                        X: =7
+                        Y: =121
+                  - lbl_Descricao:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =2
+                        Color: =RGBA(2, 52, 162, 1)
+                        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                        DisabledColor: =RGBA(161, 159, 157, 1)
+                        FocusedBorderThickness: =4
+                        Font: =Font.'Segoe UI'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =35
+                        OnSelect: =Select(Parent)
+                        PaddingBottom: =10
+                        Size: =15
+                        Text: ="Descrição:"
+                        X: =39
+                        Y: =43
+                  - lbl_tituloNome:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =2
+                        Color: =RGBA(2, 52, 162, 1)
+                        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                        DisabledColor: =RGBA(161, 159, 157, 1)
+                        FocusedBorderThickness: =4
+                        Font: =Font.'Segoe UI'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =30
+                        OnSelect: =Select(Parent)
+                        Size: =15
+                        Text: ="Responsáveis:"
+                        X: =39
+                        Y: =81
+                  - lbl_data:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =2
+                        Color: =RGBA(2, 52, 162, 1)
+                        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                        DisabledColor: =RGBA(161, 159, 157, 1)
+                        FocusedBorderThickness: =4
+                        Font: =Font.'Segoe UI'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =30
+                        OnSelect: =Select(Parent)
+                        Size: =15
+                        Text: ="Data:"
+                        Width: =60
+                        X: =39
+                        Y: =121
+                  - Container9:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        Fill: =RGBA(255, 200, 0, 1)
+                        Height: =40
+                        PaddingBottom: =4
+                        PaddingLeft: =12
+                        PaddingRight: =12
+                        PaddingTop: =4
+                        RadiusBottomLeft: =10
+                        RadiusBottomRight: =10
+                        RadiusTopLeft: =10
+                        RadiusTopRight: =10
+                        Width: =160
+                        X: =994
+                        Y: =21
+                      Children:
+                        - lblStatus:
+                            Control: Label@2.5.1
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =Color.White
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Size: =15
+                              Text: =ThisItem.StatusNC.Value
+                              Width: =160
+                  - Icon1:
+                      Control: Classic/Icon@2.5.0
+                      Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        Color: =RGBA(2, 52, 162, 1)
+                        DisabledBorderColor: =RGBA(245, 245, 245, 1)
+                        DisabledColor: =RGBA(225, 223, 221, 1)
+                        DisabledFill: =RGBA(0, 0, 0, 0)
+                        FocusedBorderThickness: =4
+                        Height: =30
+                        HoverBorderColor: =RGBA(0, 0, 0, 0)
+                        HoverColor: =RGBA(16, 110, 190, 1)
+                        HoverFill: =RGBA(0, 0, 0, 0)
+                        Icon: =Icon.Error
+                        OnSelect: =Select(Parent)
+                        PressedBorderColor: =RGBA(0, 0, 0, 0)
+                        PressedColor: =RGBA(16, 110, 190, 1)
+                        PressedFill: =RGBA(0, 0, 0, 0)
+                        Width: =25
+                        X: =7
+                        Y: =45
+      - containerTurnoVisual_3:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Group: Group5
+          Properties:
+            BorderColor: =Color.White
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =55
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Horizontal
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            PaddingLeft: =10
+            PaddingRight: =10
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Width: =815
+            X: =46
+            Y: =160
+      - cbmSalaFiltro:
+          Control: Classic/ComboBox@2.4.0
+          Group: Group5
+          Properties:
+            BorderColor: =RGBA(210, 216, 224, 1)
+            BorderThickness: =0
+            ChevronBackground: =RGBA(255, 255, 255, 1)
+            ChevronDisabledBackground: =Color.White
+            ChevronDisabledFill: =RGBA(255, 255, 255, 1)
+            ChevronFill: =RGBA(2, 52, 162, 1)
+            ChevronHoverBackground: =RGBA(255, 255, 255, 1)
+            ChevronHoverFill: =RGBA(255, 255, 255, 1)
+            Color: =RGBA(2, 52, 162, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(140, 140, 140, 1)
+            DisabledFill: =Color.White
+            DisplayFields: =["Value"]
+            FocusedBorderColor: =RGBA(2, 52, 162, 1)
+            FocusedBorderThickness: =2
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Bold
+            Height: =50
+            HoverBorderColor: =RGBA(16, 110, 190, 1)
+            HoverColor: =RGBA(2, 52, 162, 1)
+            HoverFill: =RGBA(245, 248, 252, 1)
+            InputTextPlaceholder: ="  SELECIONE A SALA"
+            Items: '=Choices(NaoConformidadesPorSala.SalaNC) '
+            PressedBorderColor: =RGBA(16, 110, 190, 1)
+            PressedColor: =RGBA(2, 52, 162, 1)
+            PressedFill: =RGBA(245, 248, 252, 1)
+            SearchFields: =["Value"]
+            SelectMultiple: =false
+            SelectionColor: =RGBA(255, 255, 255, 1)
+            SelectionFill: =RGBA(2, 52, 162, 1)
+            SelectionTagColor: =RGBA(2, 52, 162, 1)
+            SelectionTagFill: =RGBA(255, 255, 255, 1)
+            Size: =20
+            Width: =812
+            X: =47
+            Y: =163
+      - Container14_24:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Group: Group10_7
+          Properties:
+            Fill: =RGBA(3, 52, 162, 1)
+            Height: =95
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            PaddingBottom: =8
+            PaddingLeft: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Width: =1271
+            X: =48
+            Y: =20
+      - Icone_home_12:
+          Control: Classic/Icon@2.5.0
+          Group: Group10_7
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: =Color.White
+            DisabledBorderColor: =RGBA(245, 245, 245, 1)
+            DisabledColor: =RGBA(225, 223, 221, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =65
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(16, 110, 190, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.Home
+            OnSelect: =Navigate(TelaInicio, ScreenTransition.Fade)
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =RGBA(16, 110, 190, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =45
+            X: =1253
+            Y: =35
+      - Label1_19:
+          Control: Label@2.5.1
+          Group: Group10_7
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =Color.White
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =52
+            Size: =24
+            Text: ="Ação Corretiva da Não Conformidade"
+            Width: =700
+            X: =61
+            Y: =49
+      - Icon10_13:
+          Control: Classic/Icon@2.5.0
+          Group: Group10_7
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: =RGBA(255, 200, 0, 1)
+            DisabledBorderColor: =RGBA(245, 245, 245, 1)
+            DisabledColor: =RGBA(225, 223, 221, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =21
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(16, 110, 190, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.HorizontalLine
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =RGBA(16, 110, 190, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =100
+            X: =72
+            Y: =28
+      - Container14_25:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Group: Group10_7
+          Properties:
+            Fill: =RGBA(3, 52, 162, 1)
+            Height: =29
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            PaddingBottom: =8
+            PaddingLeft: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Width: =1271
+            X: =48
+            Y: =739
+      - lbl_selecionar:
+          Control: Label@2.5.1
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(0, 56, 168, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Bold
+            Height: =25
+            Size: |+
+              =13
+            Text: ="Selecione a Sala:"
+            Width: =570
+            X: =46
+            Y: =132

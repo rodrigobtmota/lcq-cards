@@ -1,0 +1,972 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+Screens:
+  TelaNCDeposito:
+    Properties:
+      Fill: =RGBA(238, 238, 238, 1)
+      LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+      OnVisible: |-
+        =Set(varBusy, false);
+
+        If(
+            IsEmpty(colNCtemporarias),
+            Notify(
+                "⚠️ Não há NCs para tratar. Volte e revise o checklist.",
+                NotificationType.Warning
+            )
+        );
+
+        If(
+            !varMatrizClassificacaoNCValida,
+            Notify(
+                "⚠️ A MatrizClassificacaoNC não foi carregada corretamente. As NCs serão registradas em contingência para preservar a rastreabilidade.",
+                NotificationType.Warning
+            )
+        );
+
+        If(
+            CountIf(
+                colNCtemporarias,
+                IsBlank(ItemChecklistOrigem)
+            ) > 0,
+            Notify(
+                "❌ Existe NC sem ItemChecklistOrigem. Volte ao checklist e reinicie esta etapa.",
+                NotificationType.Error
+            )
+        )
+    Children:
+      - btnEnviarNCDeposito:
+          Control: Classic/Button@2.2.0
+          Group: GroupbtnEnviar_5
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            Color: =RGBA(255, 255, 255, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            DisabledFill: =RGBA(242, 242, 241, 0)
+            DisplayMode: |-
+              =If(
+                  varBusy ||
+                  IsEmpty(colNCtemporarias) ||
+                  CountIf(
+                      colNCtemporarias,
+                      IsBlank(ItemChecklistOrigem)
+                  ) > 0 ||
+                  CountIf(
+                      galNCDeposito.AllItems,
+                      IsBlank(
+                          Trim(txtDescricaoDeposito.Text)
+                      )
+                  ) > 0,
+                  DisplayMode.Disabled,
+                  DisplayMode.Edit
+              )
+            Fill: =RGBA(0, 56, 168, 1)
+            Font: =Font.'Open Sans'
+            Height: =90
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =RGBA(16, 110, 190, 1)
+            OnSelect: |-
+              =If(
+                  varBusy,
+
+                  Notify(
+                      "⏳ Aguarde, o registro das não conformidades já está em processamento.",
+                      NotificationType.Information
+                  ),
+
+                  Set(varBusy, true);
+                  Set(varErroTelaNCDeposito, Blank());
+                  Set(varSincronizacaoDescricoesDepositoOk, false);
+                  Set(varPreparacaoRegrasDepositoOk, false);
+                  Set(
+                      varRegistroChecklistAtualizadoNCDeposito,
+                      Defaults(Checklist_OrganizacaoPellet2025)
+                  );
+
+                  Clear(colNCcriadas);
+                  Clear(colErrosNC);
+                  Clear(colNCDuplicadas);
+                  Clear(colNCChecklistAtualLocal);
+                  Clear(colNCAbertasChecklistAtualLocal);
+                  Clear(colErrosMatrizNCDeposito);
+                  Clear(colNCtemporariasEnriquecidas);
+
+                  Set(
+                      varPessoaLogadaSP,
+                      {
+                          '@odata.type': "#Microsoft.Azure.Connectors.SharePoint.SPListExpandedUser",
+                          Claims: "i:0#.f|membership|" & Lower(Coalesce(varUserEmail, User().Email)),
+                          DisplayName: Coalesce(varUserNome, User().FullName),
+                          Email: Lower(Coalesce(varUserEmail, User().Email)),
+                          Department: "",
+                          JobTitle: "",
+                          Picture: ""
+                      }
+                  );
+
+                  If(
+                      IsEmpty(colNCtemporarias),
+                      Set(
+                          varErroTelaNCDeposito,
+                          "❌ Não há NCs para salvar. A coleção está vazia."
+                      )
+                  );
+
+                  If(
+                      IsBlank(varErroTelaNCDeposito) &&
+                      (
+                          IsBlank(varRegistroChecklist) ||
+                          IsBlank(varRegistroChecklist.ID)
+                      ),
+                      Set(
+                          varErroTelaNCDeposito,
+                          "❌ Não existe checklist ativo vinculado a estas NCs. Volte ao início e reinicie o checklist."
+                      )
+                  );
+
+                  If(
+                      IsBlank(varErroTelaNCDeposito) &&
+                      CountIf(
+                          colNCtemporarias,
+                          IsBlank(ItemChecklistOrigem)
+                      ) > 0,
+                      Set(
+                          varErroTelaNCDeposito,
+                          "❌ Existe NC sem ItemChecklistOrigem. Volte ao checklist e reinicie esta etapa."
+                      )
+                  );
+
+                  If(
+                      IsBlank(varErroTelaNCDeposito),
+                      IfError(
+                          ForAll(
+                              galNCDeposito.AllItems As g,
+                              Patch(
+                                  colNCtemporarias,
+                                  LookUp(
+                                      colNCtemporarias,
+                                      ItemChecklistOrigem = g.ItemChecklistOrigem
+                                  ),
+                                  {
+                                      DescricaoNC: Coalesce(
+                                          Trim(g.txtDescricaoDeposito.Text),
+                                          ""
+                                      )
+                                  }
+                              )
+                          );
+                          Set(varSincronizacaoDescricoesDepositoOk, true),
+                          Set(varSincronizacaoDescricoesDepositoOk, false)
+                      )
+                  );
+
+                  If(
+                      IsBlank(varErroTelaNCDeposito) &&
+                      !varSincronizacaoDescricoesDepositoOk,
+                      Set(
+                          varErroTelaNCDeposito,
+                          "❌ Erro ao sincronizar as descrições das NCs."
+                      )
+                  );
+
+                  If(
+                      IsBlank(varErroTelaNCDeposito) &&
+                      CountIf(
+                          colNCtemporarias,
+                          IsBlank(Trim(DescricaoNC))
+                      ) > 0,
+                      Set(
+                          varErroTelaNCDeposito,
+                          "❌ Preencha a descrição de todas as não conformidades."
+                      )
+                  );
+
+                  If(
+                      IsBlank(varErroTelaNCDeposito),
+                      IfError(
+                          ClearCollect(
+                              colNCtemporariasEnriquecidas,
+                              ForAll(
+                                  colNCtemporarias As n,
+                                  With(
+                                      {
+                                          qtdRegrasAtivas: CountRows(
+                                              Filter(
+                                                  colMatrizClassificacaoNCAtiva As m,
+                                                  m.Campo = n.ItemChecklistOrigem
+                                              )
+                                          ),
+                                          regraNC: LookUp(
+                                              colMatrizClassificacaoNCAtiva As m,
+                                              m.Campo = n.ItemChecklistOrigem
+                                          ),
+                                          pilarFallback: Coalesce(
+                                              LookUp(
+                                                  colMapaItens As mapa,
+                                                  mapa.Campo = n.ItemChecklistOrigem,
+                                                  mapa.Pilar
+                                              ),
+                                              n.Pilar
+                                          ),
+                                          dataAberturaNC: Coalesce(
+                                              n.DataCriacao,
+                                              Now()
+                                          )
+                                      },
+                                      With(
+                                          {
+                                              regraValida:
+                                                  varMatrizClassificacaoNCValida &&
+                                                  qtdRegrasAtivas = 1 &&
+                                                  !IsBlank(regraNC.ID) &&
+                                                  !IsBlank(regraNC.Pilar.Value) &&
+                                                  !IsBlank(regraNC.ClassificacaoPadrao.Value) &&
+                                                  !IsBlank(regraNC.PrazoDias) &&
+                                                  !IsBlank(
+                                                      Trim(
+                                                          Coalesce(
+                                                              regraNC.PrazoOperacional,
+                                                              ""
+                                                          )
+                                                      )
+                                                  ) &&
+                                                  (
+                                                      (
+                                                          regraNC.ClassificacaoPadrao.Value = "Baixa" &&
+                                                          regraNC.PrazoDias = 15 &&
+                                                          Trim(
+                                                              Coalesce(
+                                                                  regraNC.PrazoOperacional,
+                                                                  ""
+                                                              )
+                                                          ) = "15 dias corridos"
+                                                      ) ||
+                                                      (
+                                                          regraNC.ClassificacaoPadrao.Value = "Média" &&
+                                                          regraNC.PrazoDias = 10 &&
+                                                          Trim(
+                                                              Coalesce(
+                                                                  regraNC.PrazoOperacional,
+                                                                  ""
+                                                              )
+                                                          ) = "10 dias corridos"
+                                                      ) ||
+                                                      (
+                                                          regraNC.ClassificacaoPadrao.Value = "Alta" &&
+                                                          regraNC.PrazoDias = 7 &&
+                                                          Trim(
+                                                              Coalesce(
+                                                                  regraNC.PrazoOperacional,
+                                                                  ""
+                                                              )
+                                                          ) = "7 dias corridos"
+                                                      ) ||
+                                                      (
+                                                          regraNC.ClassificacaoPadrao.Value = "Crítica / Segurança" &&
+                                                          regraNC.PrazoDias = 0 &&
+                                                          Trim(
+                                                              Coalesce(
+                                                                  regraNC.PrazoOperacional,
+                                                                  ""
+                                                              )
+                                                          ) = "Ação imediata"
+                                                      )
+                                                  )
+                                          },
+                                          {
+                                              ItemChecklistOrigem: n.ItemChecklistOrigem,
+                                              ItemNC: n.ItemNC,
+                                              Pilar: If(
+                                                  regraValida,
+                                                  regraNC.Pilar.Value,
+                                                  pilarFallback
+                                              ),
+                                              ClassificacaoNC: If(
+                                                  regraValida,
+                                                  regraNC.ClassificacaoPadrao.Value,
+                                                  "Média"
+                                              ),
+                                              PrazoDias: If(
+                                                  regraValida,
+                                                  regraNC.PrazoDias,
+                                                  10
+                                              ),
+                                              PrazoOperacional: If(
+                                                  regraValida,
+                                                  regraNC.PrazoOperacional,
+                                                  "10 dias corridos"
+                                              ),
+                                              ExigeEvidencia: If(
+                                                  regraValida,
+                                                  Coalesce(
+                                                      regraNC.ExigeEvidencia.Value,
+                                                      "Não"
+                                                  ),
+                                                  "Não"
+                                              ),
+                                              MatrizClassificacaoIDLocal: If(
+                                                  regraValida,
+                                                  regraNC.ID,
+                                                  Blank()
+                                              ),
+                                              RegraValidaLocal: regraValida,
+                                              MotivoFalhaClassificacaoLocal: If(
+                                                  regraValida,
+                                                  Blank(),
+                                                  If(
+                                                      !varMatrizClassificacaoNCValida,
+                                                      "Falha de carregamento da MatrizClassificacaoNC",
+                                                      qtdRegrasAtivas = 0,
+                                                      "Item sem correspondência ativa na MatrizClassificacaoNC",
+                                                      qtdRegrasAtivas > 1,
+                                                      "Mais de uma regra ativa encontrada para o item",
+                                                      "Regra ativa incompleta ou incompatível com a classificação oficial"
+                                                  )
+                                              ),
+                                              OrigemNC: Coalesce(
+                                                  n.OrigemNC,
+                                                  "Checklist"
+                                              ),
+                                              SalaNC: n.SalaNC,
+                                              ChecklistID: n.ChecklistID,
+                                              Ciclo: Coalesce(
+                                                  n.Ciclo,
+                                                  varRegistroChecklist.Ciclo,
+                                                  varCicloAtual
+                                              ),
+                                              DataCriacao: dataAberturaNC,
+                                              DataLimiteCorrecao: DateAdd(
+                                                  dataAberturaNC,
+                                                  If(
+                                                      regraValida,
+                                                      regraNC.PrazoDias,
+                                                      10
+                                                  ),
+                                                  TimeUnit.Days
+                                              ),
+                                              ResponsavelSala: If(
+                                                  IsEmpty(n.ResponsavelSala),
+                                                  Table(varPessoaLogadaSP),
+                                                  n.ResponsavelSala
+                                              ),
+                                              DescricaoNC: n.DescricaoNC
+                                          }
+                                      )
+                                  )
+                              )
+                          );
+                          ClearCollect(
+                              colNCtemporarias,
+                              colNCtemporariasEnriquecidas
+                          );
+                          Clear(colNCtemporariasEnriquecidas);
+                          Set(varPreparacaoRegrasDepositoOk, true),
+                          Set(varPreparacaoRegrasDepositoOk, false)
+                      )
+                  );
+
+                  If(
+                      IsBlank(varErroTelaNCDeposito) &&
+                      !varPreparacaoRegrasDepositoOk,
+                      Set(
+                          varErroTelaNCDeposito,
+                          "❌ Erro ao preparar as regras das NCs."
+                      )
+                  );
+
+                  If(
+                      IsBlank(varErroTelaNCDeposito),
+                      ClearCollect(
+                          colErrosMatrizNCDeposito,
+                          ForAll(
+                              Filter(
+                                  colNCtemporarias,
+                                  !RegraValidaLocal
+                              ) As e,
+                              {
+                                  ItemChecklistOrigem: e.ItemChecklistOrigem,
+                                  ItemNC: e.ItemNC,
+                                  Motivo: e.MotivoFalhaClassificacaoLocal
+                              }
+                          )
+                      );
+
+                      Switch(
+                          true,
+                          CountIf(
+                              colNCtemporarias,
+                              IsEmpty(ResponsavelSala)
+                          ) > 0,
+                          Set(
+                              varErroTelaNCDeposito,
+                              "❌ Há NC sem responsável da sala."
+                          ),
+                          CountIf(
+                              colNCtemporarias,
+                              IsBlank(ChecklistID)
+                          ) > 0,
+                          Set(
+                              varErroTelaNCDeposito,
+                              "❌ Há NC sem ChecklistID."
+                          ),
+                          CountIf(
+                              colNCtemporarias,
+                              IsBlank(ItemChecklistOrigem)
+                          ) > 0,
+                          Set(
+                              varErroTelaNCDeposito,
+                              "❌ Há NC sem ItemChecklistOrigem."
+                          ),
+                          CountIf(
+                              colNCtemporarias,
+                              IsBlank(SalaNC)
+                          ) > 0,
+                          Set(
+                              varErroTelaNCDeposito,
+                              "❌ Há NC sem sala vinculada."
+                          ),
+                          CountIf(
+                              colNCtemporarias,
+                              IsBlank(Ciclo)
+                          ) > 0,
+                          Set(
+                              varErroTelaNCDeposito,
+                              "❌ Há NC sem ciclo vinculado."
+                          ),
+                          CountIf(
+                              colNCtemporarias,
+                              IsBlank(Pilar)
+                          ) > 0,
+                          Set(
+                              varErroTelaNCDeposito,
+                              "❌ Há NC sem pilar definido em colMapaItens."
+                          ),
+                          CountIf(
+                              colNCtemporarias,
+                              IsBlank(ClassificacaoNC)
+                          ) > 0,
+                          Set(
+                              varErroTelaNCDeposito,
+                              "❌ Há NC sem classificação definida."
+                          ),
+                          CountIf(
+                              colNCtemporarias,
+                              IsBlank(PrazoDias)
+                          ) > 0,
+                          Set(
+                              varErroTelaNCDeposito,
+                              "❌ Há NC sem prazo numérico definido."
+                          ),
+                          CountIf(
+                              colNCtemporarias,
+                              IsBlank(
+                                  Trim(PrazoOperacional)
+                              )
+                          ) > 0,
+                          Set(
+                              varErroTelaNCDeposito,
+                              "❌ Há NC sem prazo operacional definido."
+                          ),
+                          CountIf(
+                              colNCtemporarias,
+                              IsBlank(DataLimiteCorrecao)
+                          ) > 0,
+                          Set(
+                              varErroTelaNCDeposito,
+                              "❌ Há NC sem data limite calculada."
+                          ),
+                          CountIf(
+                              colNCtemporarias,
+                              IsBlank(OrigemNC)
+                          ) > 0,
+                          Set(
+                              varErroTelaNCDeposito,
+                              "❌ Há NC sem origem definida."
+                          )
+                      )
+                  );
+
+                  If(
+                      !IsBlank(varErroTelaNCDeposito),
+
+                      Notify(
+                          varErroTelaNCDeposito,
+                          NotificationType.Error
+                      );
+                      Set(varBusy, false),
+
+                      If(
+                          !IsEmpty(colErrosMatrizNCDeposito),
+                          Notify(
+                              "⚠️ Existem itens que serão registrados em contingência com classificação Média e prazo de 10 dias: " &
+                              Concat(
+                                  colErrosMatrizNCDeposito,
+                                  ItemChecklistOrigem & " — " & Motivo,
+                                  " | "
+                              ),
+                              NotificationType.Warning
+                          )
+                      );
+
+                      Refresh(NaoConformidadesPorSala);
+
+                      ForAll(
+                          colNCtemporarias As r,
+                          If(
+                              !IsBlank(
+                                  LookUp(
+                                      NaoConformidadesPorSala,
+                                      ChecklistID = r.ChecklistID &&
+                                      ItemChecklistOrigem = r.ItemChecklistOrigem
+                                  )
+                              ),
+                              Collect(
+                                  colNCDuplicadas,
+                                  {
+                                      ItemChecklistOrigem: r.ItemChecklistOrigem,
+                                      ItemNC: r.ItemNC,
+                                      Motivo: "NC já existente para este checklist e item."
+                                  }
+                              ),
+                              IfError(
+                                  Collect(
+                                      colNCcriadas,
+                                      Patch(
+                                          NaoConformidadesPorSala,
+                                          Defaults(NaoConformidadesPorSala),
+                                          {
+                                              Título: r.ItemNC,
+                                              ItemChecklistOrigem: r.ItemChecklistOrigem,
+                                              SalaNC: {
+                                                  Value: r.SalaNC
+                                              },
+                                              StatusNC: {
+                                                  Value: "Aberta"
+                                              },
+                                              StatusAtribuicaoNC: {
+                                                  Value: "Pendente"
+                                              },
+                                              ResponsavelOriginal: r.ResponsavelSala,
+                                              ResponsavelSala: r.ResponsavelSala,
+                                              DescricaoNC: r.DescricaoNC,
+                                              ChecklistID: r.ChecklistID,
+                                              Ciclo: Coalesce(
+                                                  r.Ciclo,
+                                                  varRegistroChecklist.Ciclo,
+                                                  varCicloAtual
+                                              ),
+                                              'DataCriacao ': Coalesce(
+                                                  r.DataCriacao,
+                                                  Now()
+                                              ),
+                                              DataLimiteCorrecao: r.DataLimiteCorrecao,
+                                              OrigemNC: {
+                                                  Value: r.OrigemNC
+                                              },
+                                              Pilar: {
+                                                  Value: r.Pilar
+                                              },
+                                              ClassificacaoNC: {
+                                                  Value: r.ClassificacaoNC
+                                              },
+                                              PrazoDiasAplicado: r.PrazoDias,
+                                              PrazoOperacionalAplicado: r.PrazoOperacional,
+                                              ExigeEvidenciaAplicada: r.ExigeEvidencia = "Sim",
+                                              MatrizClassificacaoID: r.MatrizClassificacaoIDLocal,
+                                              StatusClassificacaoNC: {
+                                                  Value: If(
+                                                      r.RegraValidaLocal,
+                                                      "Classificada",
+                                                      "Contingência de matriz"
+                                                  )
+                                              },
+                                              DetalheFalhaClassificacaoNC: If(
+                                                  r.RegraValidaLocal,
+                                                  Blank(),
+                                                  r.MotivoFalhaClassificacaoLocal
+                                              ),
+                                              StatusValidacaoCritica: {
+                                                  Value: If(
+                                                      r.RegraValidaLocal &&
+                                                      r.ClassificacaoNC = "Crítica / Segurança",
+                                                      "Pendente",
+                                                      "Não aplicável"
+                                                  )
+                                              },
+                                              EvidenciaRegistrada: false,
+                                              AvisoInicialAcaoEnviado: false,
+                                              AvisoPreVencimentoEnviado: false,
+                                              AvisoVencidoEnviado: false,
+                                              ReenviosAvisoPreVencimento: 0,
+                                              ReenviosAvisoVencido: 0,
+                                              ConclusaoComAtraso: false
+                                          }
+                                      )
+                                  ),
+                                  Collect(
+                                      colErrosNC,
+                                      {
+                                          ItemChecklistOrigem: r.ItemChecklistOrigem,
+                                          ItemNC: r.ItemNC,
+                                          Erro: Coalesce(
+                                              FirstError.Message,
+                                              "Erro desconhecido ao criar a NC."
+                                          )
+                                      }
+                                  )
+                              )
+                          )
+                      );
+
+                      If(
+                          !IsEmpty(colErrosNC),
+                          Notify(
+                              "❌ Não foi possível registrar todas as NCs. Exemplo: " &
+                              First(colErrosNC).ItemNC &
+                              " — " &
+                              First(colErrosNC).Erro &
+                              ". Os itens já criados serão reconhecidos como duplicados em uma nova tentativa.",
+                              NotificationType.Error
+                          );
+                          Set(varBusy, false),
+
+                          If(
+                              IsEmpty(colNCcriadas) &&
+                              IsEmpty(colNCDuplicadas),
+                              Notify(
+                                  "❌ Nenhuma NC foi criada. Verifique os dados antes de continuar.",
+                                  NotificationType.Error
+                              );
+                              Set(varBusy, false),
+
+                              Refresh(NaoConformidadesPorSala);
+
+                              ClearCollect(
+                                  colNCChecklistAtualLocal,
+                                  Filter(
+                                      NaoConformidadesPorSala,
+                                      ChecklistID = varRegistroChecklist.ID
+                                  )
+                              );
+
+                              ClearCollect(
+                                  colNCAbertasChecklistAtualLocal,
+                                  Filter(
+                                      colNCChecklistAtualLocal,
+                                      StatusNC.Value <> "Encerrada"
+                                  )
+                              );
+
+                              Set(
+                                  varQtdNCChecklistAtual,
+                                  CountRows(colNCAbertasChecklistAtualLocal)
+                              );
+
+                              Set(
+                                  varStatusGeralChecklistAtual,
+                                  If(
+                                      varQtdNCChecklistAtual = 0,
+                                      "Conforme",
+                                      If(
+                                          CountIf(
+                                              colNCAbertasChecklistAtualLocal,
+                                              ClassificacaoNC.Value = "Crítica / Segurança"
+                                          ) > 0,
+                                          "Crítico",
+                                          "Atenção"
+                                      )
+                                  )
+                              );
+
+                              Set(
+                                  varRegistroChecklistAtualizadoNCDeposito,
+                                  IfError(
+                                      Patch(
+                                          Checklist_OrganizacaoPellet2025,
+                                          LookUp(
+                                              Checklist_OrganizacaoPellet2025,
+                                              ID = varRegistroChecklist.ID
+                                          ),
+                                          {
+                                              StatusNC: If(
+                                                  varQtdNCChecklistAtual = 0,
+                                                  {
+                                                      Value: "Concluído"
+                                                  },
+                                                  {
+                                                      Value: "Pendente"
+                                                  }
+                                              ),
+                                              StatusGeral: {
+                                                  Value: varStatusGeralChecklistAtual
+                                              }
+                                          }
+                                      ),
+                                      Blank()
+                                  )
+                              );
+
+                              If(
+                                  IsBlank(varRegistroChecklistAtualizadoNCDeposito.ID),
+                                  Notify(
+                                      "⚠️ As NCs foram registradas, mas houve falha ao atualizar o status do checklist principal.",
+                                      NotificationType.Warning
+                                  ),
+                                  Set(
+                                      varRegistroChecklist,
+                                      varRegistroChecklistAtualizadoNCDeposito
+                                  )
+                              );
+
+                              Notify(
+                                  "✅ NC(s) registradas com sucesso! Criadas: " &
+                                  CountRows(colNCcriadas) &
+                                  If(
+                                      CountRows(colNCDuplicadas) > 0,
+                                      " | Duplicadas ignoradas: " &
+                                      CountRows(colNCDuplicadas),
+                                      ""
+                                  ),
+                                  NotificationType.Success
+                              );
+
+                              Clear(colNCtemporarias);
+                              Set(varBusy, false);
+                              Navigate(
+                                  TelaFinal,
+                                  ScreenTransition.Fade
+                              )
+                          )
+                      )
+                  )
+              )
+            PaddingLeft: =30
+            PressedBorderColor: =RGBA(0, 69, 120, 1)
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =RGBA(16, 110, 190, 1)
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Size: =20
+            Text: |-
+              =If(
+                  varBusy,
+                  "PROCESSANDO...",
+                  "ENVIAR"
+              )
+            Width: =277
+            X: =1042
+            Y: =631
+      - IconIniciar_7:
+          Control: Classic/Icon@2.5.0
+          Group: GroupbtnEnviar_5
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: =Color.White
+            DisabledBorderColor: =RGBA(245, 245, 245, 1)
+            DisabledColor: =RGBA(225, 223, 221, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =50
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(16, 110, 190, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.CheckBadge
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =RGBA(16, 110, 190, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =60
+            X: =1063
+            Y: =651
+      - galNCDeposito:
+          Control: Gallery@2.15.0
+          Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+          Properties:
+            BorderColor: =RGBA(245, 245, 245, 1)
+            Height: =499
+            Items: |+
+              =colNCtemporarias
+
+            TemplateSize: =136
+            Width: =1271
+            X: =54
+            Y: =115
+          Children:
+            - Separator1_7:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  Fill: =RGBA(255, 255, 255, 1)
+                  Height: =8
+                  OnSelect: =Select(Parent)
+                  Width: |+
+                    =1237.7
+                  Y: =Parent.TemplateHeight - Self.Height
+            - txtDescricaoDeposito:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =RGBA(245, 245, 245, 1)
+                  Color: =RGBA(50, 49, 48, 1)
+                  Default: |
+                    =ThisItem.DescricaoNC
+                  DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                  DisabledColor: =RGBA(161, 159, 157, 1)
+                  DisabledFill: =RGBA(242, 242, 241, 0)
+                  Font: =Font.'Segoe UI'
+                  Format: =TextMode.MultiLine
+                  Height: =60
+                  HintText: ="Descreva a não conformidade..."
+                  HoverBorderColor: =RGBA(16, 110, 190, 1)
+                  HoverColor: =RGBA(50, 49, 48, 1)
+                  HoverFill: =RGBA(255, 255, 255, 1)
+                  OnChange: |-
+                    =Patch(
+                        colNCtemporarias,
+                        ThisItem,
+                        {
+                            DescricaoNC: Trim(Self.Text)
+                        }
+                    );
+                  PressedBorderColor: =RGBA(0, 120, 212, 1)
+                  PressedColor: =RGBA(50, 49, 48, 1)
+                  PressedFill: =RGBA(255, 255, 255, 1)
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Size: =16
+                  Width: =1237.7
+                  Y: =57
+            - lblPerguntaDeposito:
+                Control: Label@2.5.1
+                Properties:
+                  AutoHeight: =true
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  BorderStyle: =BorderStyle.None
+                  BorderThickness: =2
+                  Color: =Color.Black
+                  DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                  DisabledColor: =RGBA(161, 159, 157, 1)
+                  FocusedBorderThickness: =4
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Bold
+                  Height: =34
+                  PaddingLeft: =0
+                  Size: =18
+                  Text: |
+                    =ThisItem.ItemNC
+                  Width: =Parent.Width - 60
+                  Wrap: =false
+                  Y: =4
+      - Container14_38:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Group: Group10_LayoutNC_7
+          Properties:
+            Fill: =RGBA(3, 52, 162, 1)
+            Height: =95
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            PaddingBottom: =8
+            PaddingLeft: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Width: =1271
+            X: =48
+            Y: =20
+      - Icone_home_19:
+          Control: Classic/Icon@2.5.0
+          Group: Group10_LayoutNC_7
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: =Color.White
+            DisabledBorderColor: =RGBA(245, 245, 245, 1)
+            DisabledColor: =RGBA(225, 223, 221, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =65
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(16, 110, 190, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.Home
+            OnSelect: =Navigate(TelaInicio, ScreenTransition.Fade)
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =RGBA(16, 110, 190, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =45
+            X: =1253
+            Y: =35
+      - Label1_17:
+          Control: Label@2.5.1
+          Group: Group10_LayoutNC_7
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =Color.White
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =52
+            Size: =24
+            Text: ="Não Conformidades Identificadas"
+            Width: =520
+            X: =61
+            Y: =49
+      - Icon10_20:
+          Control: Classic/Icon@2.5.0
+          Group: Group10_LayoutNC_7
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: =RGBA(255, 200, 0, 1)
+            DisabledBorderColor: =RGBA(245, 245, 245, 1)
+            DisabledColor: =RGBA(225, 223, 221, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =21
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(16, 110, 190, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.HorizontalLine
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =RGBA(16, 110, 190, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =100
+            X: =72
+            Y: =28
+      - Container14_39:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Group: Group10_LayoutNC_7
+          Properties:
+            Fill: =RGBA(3, 52, 162, 1)
+            Height: =29
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            PaddingBottom: =8
+            PaddingLeft: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Width: =1271
+            X: =48
+            Y: =739
