@@ -1,0 +1,1640 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+Screens:
+  TelaOficinaAOL:
+    Properties:
+      Fill: =RGBA(238, 238, 238, 1)
+      LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+      OnVisible: |-
+        =Set(varBusy, false);
+        EditForm(Form_Oficina);
+    Children:
+      - Container3:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =RGBA(245, 245, 245, 1)
+            DropShadow: =DropShadow.None
+            Fill: =RGBA(238,238,238,1)
+            Height: =624
+            PaddingBottom: =10
+            PaddingLeft: =10
+            PaddingRight: =12
+            PaddingTop: =10
+            Width: |+
+              =1271
+            X: |+
+              =54
+            Y: =115
+          Children:
+            - Form_Oficina:
+                Control: Form@2.4.4
+                Variant: Classic
+                Layout: Vertical
+                Properties:
+                  BorderColor: =RGBA(245, 245, 245, 1)
+                  BorderThickness: =1
+                  DataSource: =Checklist_OrganizacaoPellet2025
+                  Fill: =RGBA(238,238,238,1)
+                  FocusedBorderThickness: =2
+                  Height: =675
+                  Item: =varRegistroChecklist
+                  NumberOfColumns: =1
+                  OnSuccess: |
+                    =
+                  Width: =Parent.Width
+                  X: =(Parent.Width - Self.Width) / 2
+                Children:
+                  - BancadaLimpaAOL_DataCard1:
+                      Control: TypedDataCard@1.0.7
+                      Variant: ClassicComboBoxEdit
+                      Properties:
+                        BorderColor: =RGBA(244, 244, 244, 1)
+                        DataField: ="BancadaLimpaAOL"
+                        Default: =ThisItem.BancadaLimpaAOL
+                        DisplayName: =DataSourceInfo([@Checklist_OrganizacaoPellet2025],DataSourceInfo.DisplayName,BancadaLimpaAOL)
+                        Fill: =RGBA(238,238,238,1)
+                        Height: =150
+                        Required: =false
+                        Update: =DataCardValue71.Selected
+                        Width: =1296
+                        X: =0
+                        Y: =0
+                      Children:
+                        - DataCardKey71:
+                            Control: Label@2.5.1
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =Color.Black
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =34
+                              PaddingLeft: =0
+                              Size: =20
+                              Text: ="Bancadas estão limpas, organizadas e sem obstruções?"
+                              Width: =Parent.Width - 60
+                              Wrap: =false
+                              X: =40
+                              Y: =40
+                        - DataCardValue71:
+                            Control: Classic/ComboBox@2.4.0
+                            Properties:
+                              BorderColor: =RGBA(200, 200, 200, 1)
+                              ChevronBackground: =RGBA(245, 245, 245, 1)
+                              ChevronDisabledBackground: =RGBA(242, 242, 241, 0)
+                              ChevronDisabledFill: =RGBA(161, 159, 157, 1)
+                              ChevronFill: =RGBA(50, 49, 48, 1)
+                              ChevronHoverBackground: =RGBA(245, 245, 245, 1)
+                              ChevronHoverFill: =RGBA(50, 49, 48, 1)
+                              Color: =RGBA(51, 51, 51, 1)
+                              DefaultSelectedItems: =Parent.Default
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              DisabledFill: =RGBA(242, 242, 241, 0)
+                              DisplayFields: =["Value"]
+                              DisplayMode: =Parent.DisplayMode
+                              Fill: =Color.White
+                              FocusedBorderColor: =RGBA(0, 122, 255, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =80
+                              HoverBorderColor: =RGBA(0, 122, 255, 1)
+                              HoverColor: =RGBA(51, 51, 51, 1)
+                              HoverFill: =Color.White
+                              Items: =Choices([@Checklist_OrganizacaoPellet2025].BancadaLimpaAOL)
+                              PaddingBottom: =10
+                              PaddingLeft: =10
+                              PaddingRight: =12
+                              PaddingTop: =10
+                              PressedBorderColor: =RGBA(16, 110, 190, 1)
+                              PressedColor: =RGBA(255, 255, 255, 1)
+                              PressedFill: =RGBA(0, 120, 212, 1)
+                              SearchFields: =["Value"]
+                              SelectMultiple: =false
+                              SelectionColor: =RGBA(255, 255, 255, 1)
+                              SelectionFill: =RGBA(0, 120, 212, 1)
+                              Size: =20
+                              Tooltip: =Parent.DisplayName
+                              Width: =Parent.Width - 60
+                              X: =40
+                              Y: =DataCardKey71.Y + DataCardKey71.Height + 5
+                        - ErrorMessage71:
+                            Control: Label@2.5.1
+                            MetadataKey: ErrorMessage
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =RGBA(168, 0, 0, 1)
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(168, 0, 0, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =10
+                              Live: =Live.Assertive
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Text: =Parent.Error
+                              Visible: =Parent.DisplayMode=DisplayMode.Edit
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =DataCardValue71.Y + DataCardValue71.Height
+                        - StarVisible71:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldRequired
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =RGBA(50, 49, 48, 1)
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =DataCardKey71.Height
+                              PaddingLeft: =0
+                              Text: ="*"
+                              Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =30
+                              Wrap: =false
+                              Y: =DataCardKey71.Y
+                  - FerramentasOkAOL_DataCard1:
+                      Control: TypedDataCard@1.0.7
+                      Variant: ClassicComboBoxEdit
+                      Properties:
+                        BorderColor: =RGBA(244, 244, 244, 1)
+                        DataField: ="FerramentasOkAOL"
+                        Default: =ThisItem.FerramentasOkAOL
+                        DisplayName: =DataSourceInfo([@Checklist_OrganizacaoPellet2025],DataSourceInfo.DisplayName,FerramentasOkAOL)
+                        Fill: =RGBA(238,238,238,1)
+                        Height: =150
+                        Required: =false
+                        Update: =DataCardValue72.Selected
+                        Width: =1296
+                        X: =0
+                        Y: =1
+                      Children:
+                        - DataCardKey72:
+                            Control: Label@2.5.1
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =Color.Black
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =34
+                              PaddingLeft: =0
+                              Size: =20
+                              Text: ="Ferramentas estão guardadas em local adequado e identificado?"
+                              Width: =Parent.Width - 60
+                              Wrap: =false
+                              X: =40
+                              Y: =40
+                        - DataCardValue72:
+                            Control: Classic/ComboBox@2.4.0
+                            Properties:
+                              BorderColor: =RGBA(200, 200, 200, 1)
+                              ChevronBackground: =RGBA(245, 245, 245, 1)
+                              ChevronDisabledBackground: =RGBA(242, 242, 241, 0)
+                              ChevronDisabledFill: =RGBA(161, 159, 157, 1)
+                              ChevronFill: =RGBA(50, 49, 48, 1)
+                              ChevronHoverBackground: =RGBA(245, 245, 245, 1)
+                              ChevronHoverFill: =RGBA(50, 49, 48, 1)
+                              Color: =RGBA(51, 51, 51, 1)
+                              DefaultSelectedItems: =Parent.Default
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              DisabledFill: =RGBA(242, 242, 241, 0)
+                              DisplayFields: =["Value"]
+                              DisplayMode: =Parent.DisplayMode
+                              Fill: =Color.White
+                              FocusedBorderColor: =RGBA(0, 122, 255, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =80
+                              HoverBorderColor: =RGBA(0, 122, 255, 1)
+                              HoverColor: =RGBA(51, 51, 51, 1)
+                              HoverFill: =Color.White
+                              Items: =Choices([@Checklist_OrganizacaoPellet2025].FerramentasOkAOL)
+                              PaddingBottom: =10
+                              PaddingLeft: =10
+                              PaddingRight: =12
+                              PaddingTop: =10
+                              PressedBorderColor: =RGBA(16, 110, 190, 1)
+                              PressedColor: =RGBA(255, 255, 255, 1)
+                              PressedFill: =RGBA(0, 120, 212, 1)
+                              SearchFields: =["Value"]
+                              SelectMultiple: =false
+                              SelectionColor: =RGBA(255, 255, 255, 1)
+                              SelectionFill: =RGBA(0, 120, 212, 1)
+                              Size: =20
+                              Tooltip: =Parent.DisplayName
+                              Width: =Parent.Width - 60
+                              X: =40
+                              Y: =DataCardKey72.Y + DataCardKey72.Height + 5
+                        - ErrorMessage72:
+                            Control: Label@2.5.1
+                            MetadataKey: ErrorMessage
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =RGBA(168, 0, 0, 1)
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(168, 0, 0, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =10
+                              Live: =Live.Assertive
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Text: =Parent.Error
+                              Visible: =Parent.DisplayMode=DisplayMode.Edit
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =DataCardValue72.Y + DataCardValue72.Height
+                        - StarVisible72:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldRequired
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =RGBA(50, 49, 48, 1)
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =DataCardKey72.Height
+                              PaddingLeft: =0
+                              Text: ="*"
+                              Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =30
+                              Wrap: =false
+                              Y: =DataCardKey72.Y
+                  - FiosOk_DataCard1:
+                      Control: TypedDataCard@1.0.7
+                      Variant: ClassicComboBoxEdit
+                      Properties:
+                        BorderColor: =RGBA(244, 244, 244, 1)
+                        DataField: ="FiosOk"
+                        Default: =ThisItem.FiosOk
+                        DisplayName: =DataSourceInfo([@Checklist_OrganizacaoPellet2025],DataSourceInfo.DisplayName,FiosOk)
+                        Fill: =RGBA(238,238,238,1)
+                        Height: =150
+                        Required: =false
+                        Update: =DataCardValue73.Selected
+                        Width: =1296
+                        X: =0
+                        Y: =2
+                      Children:
+                        - DataCardKey73:
+                            Control: Label@2.5.1
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =Color.Black
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =34
+                              PaddingLeft: =0
+                              Size: =20
+                              Text: ="Cabos e fios estão organizados e não obstruem áreas de passagem?"
+                              Width: =Parent.Width - 60
+                              Wrap: =false
+                              X: =40
+                              Y: =40
+                        - DataCardValue73:
+                            Control: Classic/ComboBox@2.4.0
+                            Properties:
+                              BorderColor: =RGBA(200, 200, 200, 1)
+                              ChevronBackground: =RGBA(245, 245, 245, 1)
+                              ChevronDisabledBackground: =RGBA(242, 242, 241, 0)
+                              ChevronDisabledFill: =RGBA(161, 159, 157, 1)
+                              ChevronFill: =RGBA(50, 49, 48, 1)
+                              ChevronHoverBackground: =RGBA(245, 245, 245, 1)
+                              ChevronHoverFill: =RGBA(50, 49, 48, 1)
+                              Color: =RGBA(51, 51, 51, 1)
+                              DefaultSelectedItems: =Parent.Default
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              DisabledFill: =RGBA(242, 242, 241, 0)
+                              DisplayFields: =["Value"]
+                              DisplayMode: =Parent.DisplayMode
+                              Fill: =Color.White
+                              FocusedBorderColor: =RGBA(0, 122, 255, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =80
+                              HoverBorderColor: =RGBA(0, 122, 255, 1)
+                              HoverColor: =RGBA(51, 51, 51, 1)
+                              HoverFill: =Color.White
+                              Items: =Choices([@Checklist_OrganizacaoPellet2025].FiosOk)
+                              PaddingBottom: =10
+                              PaddingLeft: =10
+                              PaddingRight: =12
+                              PaddingTop: =10
+                              PressedBorderColor: =RGBA(16, 110, 190, 1)
+                              PressedColor: =RGBA(255, 255, 255, 1)
+                              PressedFill: =RGBA(0, 120, 212, 1)
+                              SearchFields: =["Value"]
+                              SelectMultiple: =false
+                              SelectionColor: =RGBA(255, 255, 255, 1)
+                              SelectionFill: =RGBA(0, 120, 212, 1)
+                              Size: =20
+                              Tooltip: =Parent.DisplayName
+                              Width: =Parent.Width - 60
+                              X: =40
+                              Y: =DataCardKey73.Y + DataCardKey73.Height + 5
+                        - ErrorMessage73:
+                            Control: Label@2.5.1
+                            MetadataKey: ErrorMessage
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =RGBA(168, 0, 0, 1)
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(168, 0, 0, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =10
+                              Live: =Live.Assertive
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Text: =Parent.Error
+                              Visible: =Parent.DisplayMode=DisplayMode.Edit
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =DataCardValue73.Y + DataCardValue73.Height
+                        - StarVisible73:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldRequired
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =RGBA(50, 49, 48, 1)
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =DataCardKey73.Height
+                              PaddingLeft: =0
+                              Text: ="*"
+                              Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =30
+                              Wrap: =false
+                              Y: =DataCardKey73.Y
+                  - ChaoOk_DataCard1:
+                      Control: TypedDataCard@1.0.7
+                      Variant: ClassicComboBoxEdit
+                      Properties:
+                        BorderColor: =RGBA(244, 244, 244, 1)
+                        DataField: ="ChaoOk"
+                        Default: =ThisItem.ChaoOk
+                        DisplayName: =DataSourceInfo([@Checklist_OrganizacaoPellet2025],DataSourceInfo.DisplayName,ChaoOk)
+                        Fill: =RGBA(238,238,238,1)
+                        Height: =150
+                        Required: =false
+                        Update: =DataCardValue74.Selected
+                        Width: =1296
+                        X: =0
+                        Y: =3
+                      Children:
+                        - DataCardKey74:
+                            Control: Label@2.5.1
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =Color.Black
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =34
+                              PaddingLeft: =0
+                              Size: =20
+                              Text: ="Área de circulação está livre de materiais no chão?"
+                              Width: =Parent.Width - 60
+                              Wrap: =false
+                              X: =40
+                              Y: =40
+                        - DataCardValue74:
+                            Control: Classic/ComboBox@2.4.0
+                            Properties:
+                              BorderColor: =RGBA(200, 200, 200, 1)
+                              ChevronBackground: =RGBA(245, 245, 245, 1)
+                              ChevronDisabledBackground: =RGBA(242, 242, 241, 0)
+                              ChevronDisabledFill: =RGBA(161, 159, 157, 1)
+                              ChevronFill: =RGBA(50, 49, 48, 1)
+                              ChevronHoverBackground: =RGBA(245, 245, 245, 1)
+                              ChevronHoverFill: =RGBA(50, 49, 48, 1)
+                              Color: =RGBA(51, 51, 51, 1)
+                              DefaultSelectedItems: =Parent.Default
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              DisabledFill: =RGBA(242, 242, 241, 0)
+                              DisplayFields: =["Value"]
+                              DisplayMode: =Parent.DisplayMode
+                              Fill: =Color.White
+                              FocusedBorderColor: =RGBA(0, 122, 255, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =80
+                              HoverBorderColor: =RGBA(0, 122, 255, 1)
+                              HoverColor: =RGBA(51, 51, 51, 1)
+                              HoverFill: =Color.White
+                              Items: =Choices([@Checklist_OrganizacaoPellet2025].ChaoOk)
+                              PaddingBottom: =10
+                              PaddingLeft: =10
+                              PaddingRight: =12
+                              PaddingTop: =10
+                              PressedBorderColor: =RGBA(16, 110, 190, 1)
+                              PressedColor: =RGBA(255, 255, 255, 1)
+                              PressedFill: =RGBA(0, 120, 212, 1)
+                              SearchFields: =["Value"]
+                              SelectMultiple: =false
+                              SelectionColor: =RGBA(255, 255, 255, 1)
+                              SelectionFill: =RGBA(0, 120, 212, 1)
+                              Size: =20
+                              Tooltip: =Parent.DisplayName
+                              Width: =Parent.Width - 60
+                              X: =40
+                              Y: =DataCardKey74.Y + DataCardKey74.Height + 5
+                        - ErrorMessage74:
+                            Control: Label@2.5.1
+                            MetadataKey: ErrorMessage
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =RGBA(168, 0, 0, 1)
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(168, 0, 0, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =10
+                              Live: =Live.Assertive
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Text: =Parent.Error
+                              Visible: =Parent.DisplayMode=DisplayMode.Edit
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =DataCardValue74.Y + DataCardValue74.Height
+                        - StarVisible74:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldRequired
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =RGBA(50, 49, 48, 1)
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =DataCardKey74.Height
+                              PaddingLeft: =0
+                              Text: ="*"
+                              Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =30
+                              Wrap: =false
+                              Y: =DataCardKey74.Y
+                  - EtiquetasOkAOL_DataCard1:
+                      Control: TypedDataCard@1.0.7
+                      Variant: ClassicComboBoxEdit
+                      Properties:
+                        BorderColor: =RGBA(244, 244, 244, 1)
+                        DataField: ="EtiquetasOkAOL"
+                        Default: =ThisItem.EtiquetasOkAOL
+                        DisplayName: =DataSourceInfo([@Checklist_OrganizacaoPellet2025],DataSourceInfo.DisplayName,EtiquetasOkAOL)
+                        Fill: =RGBA(238,238,238,1)
+                        Height: =150
+                        Required: =false
+                        Update: =DataCardValue75.Selected
+                        Width: =1296
+                        X: =0
+                        Y: =4
+                      Children:
+                        - DataCardKey75:
+                            Control: Label@2.5.1
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =Color.Black
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =34
+                              PaddingLeft: =0
+                              Size: =20
+                              Text: ="Prateleiras e armários estão identificados com etiquetas padronizadas?"
+                              Width: =Parent.Width - 60
+                              X: =40
+                              Y: =40
+                        - DataCardValue75:
+                            Control: Classic/ComboBox@2.4.0
+                            Properties:
+                              BorderColor: =RGBA(200, 200, 200, 1)
+                              ChevronBackground: =RGBA(245, 245, 245, 1)
+                              ChevronDisabledBackground: =RGBA(242, 242, 241, 0)
+                              ChevronDisabledFill: =RGBA(161, 159, 157, 1)
+                              ChevronFill: =RGBA(50, 49, 48, 1)
+                              ChevronHoverBackground: =RGBA(245, 245, 245, 1)
+                              ChevronHoverFill: =RGBA(50, 49, 48, 1)
+                              Color: =RGBA(51, 51, 51, 1)
+                              DefaultSelectedItems: =Parent.Default
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              DisabledFill: =RGBA(242, 242, 241, 0)
+                              DisplayFields: =["Value"]
+                              DisplayMode: =Parent.DisplayMode
+                              Fill: =Color.White
+                              FocusedBorderColor: =RGBA(0, 122, 255, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =80
+                              HoverBorderColor: =RGBA(0, 122, 255, 1)
+                              HoverColor: =RGBA(51, 51, 51, 1)
+                              HoverFill: =Color.White
+                              Items: =Choices([@Checklist_OrganizacaoPellet2025].EtiquetasOkAOL)
+                              PaddingBottom: =10
+                              PaddingLeft: =10
+                              PaddingRight: =12
+                              PaddingTop: =10
+                              PressedBorderColor: =RGBA(16, 110, 190, 1)
+                              PressedColor: =RGBA(255, 255, 255, 1)
+                              PressedFill: =RGBA(0, 120, 212, 1)
+                              SearchFields: =["Value"]
+                              SelectMultiple: =false
+                              SelectionColor: =RGBA(255, 255, 255, 1)
+                              SelectionFill: =RGBA(0, 120, 212, 1)
+                              Size: =20
+                              Tooltip: =Parent.DisplayName
+                              Width: =Parent.Width - 60
+                              X: =40
+                              Y: =DataCardKey75.Y + DataCardKey75.Height + 5
+                        - ErrorMessage75:
+                            Control: Label@2.5.1
+                            MetadataKey: ErrorMessage
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =RGBA(168, 0, 0, 1)
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(168, 0, 0, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =10
+                              Live: =Live.Assertive
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Text: =Parent.Error
+                              Visible: =Parent.DisplayMode=DisplayMode.Edit
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =DataCardValue75.Y + DataCardValue75.Height
+                        - StarVisible75:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldRequired
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =RGBA(50, 49, 48, 1)
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =DataCardKey75.Height
+                              PaddingLeft: =0
+                              Text: ="*"
+                              Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =30
+                              Wrap: =false
+                              Y: =DataCardKey75.Y
+                  - ArmariosIdentificadosAOL_DataCard1:
+                      Control: TypedDataCard@1.0.7
+                      Variant: ClassicComboBoxEdit
+                      Properties:
+                        BorderColor: =RGBA(244, 244, 244, 1)
+                        DataField: ="ArmariosIdentificadosAOL"
+                        Default: =ThisItem.ArmariosIdentificadosAOL
+                        DisplayName: =DataSourceInfo([@Checklist_OrganizacaoPellet2025],DataSourceInfo.DisplayName,ArmariosIdentificadosAOL)
+                        Fill: =RGBA(238,238,238,1)
+                        Height: =150
+                        Required: =false
+                        Update: =DataCardValue76.Selected
+                        Width: =1296
+                        X: =0
+                        Y: =5
+                      Children:
+                        - DataCardKey76:
+                            Control: Label@2.5.1
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =Color.Black
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =34
+                              PaddingLeft: =0
+                              Size: =20
+                              Text: ="Prateleiras e armários estão organizados conforme a finalidade?"
+                              Width: =Parent.Width - 60
+                              Wrap: =false
+                              X: =40
+                              Y: =40
+                        - DataCardValue76:
+                            Control: Classic/ComboBox@2.4.0
+                            Properties:
+                              BorderColor: =RGBA(200, 200, 200, 1)
+                              ChevronBackground: =RGBA(245, 245, 245, 1)
+                              ChevronDisabledBackground: =RGBA(242, 242, 241, 0)
+                              ChevronDisabledFill: =RGBA(161, 159, 157, 1)
+                              ChevronFill: =RGBA(50, 49, 48, 1)
+                              ChevronHoverBackground: =RGBA(245, 245, 245, 1)
+                              ChevronHoverFill: =RGBA(50, 49, 48, 1)
+                              Color: =RGBA(51, 51, 51, 1)
+                              DefaultSelectedItems: =Parent.Default
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              DisabledFill: =RGBA(242, 242, 241, 0)
+                              DisplayFields: =["Value"]
+                              DisplayMode: =Parent.DisplayMode
+                              Fill: =Color.White
+                              FocusedBorderColor: =RGBA(0, 122, 255, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =80
+                              HoverBorderColor: =RGBA(0, 122, 255, 1)
+                              HoverColor: =RGBA(51, 51, 51, 1)
+                              HoverFill: =Color.White
+                              Items: =Choices([@Checklist_OrganizacaoPellet2025].ArmariosIdentificadosAOL)
+                              PaddingBottom: =10
+                              PaddingLeft: =10
+                              PaddingRight: =12
+                              PaddingTop: =10
+                              PressedBorderColor: =RGBA(16, 110, 190, 1)
+                              PressedColor: =RGBA(255, 255, 255, 1)
+                              PressedFill: =RGBA(0, 120, 212, 1)
+                              SearchFields: =["Value"]
+                              SelectMultiple: =false
+                              SelectionColor: =RGBA(255, 255, 255, 1)
+                              SelectionFill: =RGBA(0, 120, 212, 1)
+                              Size: =20
+                              Tooltip: =Parent.DisplayName
+                              Width: =Parent.Width - 60
+                              X: =40
+                              Y: =DataCardKey76.Y + DataCardKey76.Height + 5
+                        - ErrorMessage76:
+                            Control: Label@2.5.1
+                            MetadataKey: ErrorMessage
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =RGBA(168, 0, 0, 1)
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(168, 0, 0, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =10
+                              Live: =Live.Assertive
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Text: =Parent.Error
+                              Visible: =Parent.DisplayMode=DisplayMode.Edit
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =DataCardValue76.Y + DataCardValue76.Height
+                        - StarVisible76:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldRequired
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =RGBA(50, 49, 48, 1)
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =DataCardKey76.Height
+                              PaddingLeft: =0
+                              Text: ="*"
+                              Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =30
+                              Wrap: =false
+                              Y: =DataCardKey76.Y
+                  - PontoColeta_DataCard1:
+                      Control: TypedDataCard@1.0.7
+                      Variant: ClassicComboBoxEdit
+                      Properties:
+                        BorderColor: =RGBA(244, 244, 244, 1)
+                        DataField: ="PontoColeta"
+                        Default: =ThisItem.PontoColeta
+                        DisplayName: =DataSourceInfo([@Checklist_OrganizacaoPellet2025],DataSourceInfo.DisplayName,PontoColeta)
+                        Fill: =RGBA(238,238,238,1)
+                        Height: =150
+                        Required: =false
+                        Update: =DataCardValue77.Selected
+                        Width: =1296
+                        X: =0
+                        Y: =6
+                      Children:
+                        - DataCardKey77:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldName
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =Color.Black
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =34
+                              PaddingLeft: =0
+                              Size: =20
+                              Text: ="Ponto de coleta de resíduos está limpo e sinalizado?"
+                              Width: =Parent.Width - 60
+                              Wrap: =false
+                              X: =30
+                              Y: =10
+                        - DataCardValue77:
+                            Control: Classic/ComboBox@2.4.0
+                            MetadataKey: FieldValue
+                            Properties:
+                              BorderColor: =RGBA(200, 200, 200, 1)
+                              ChevronBackground: =RGBA(245, 245, 245, 1)
+                              ChevronDisabledBackground: =RGBA(242, 242, 241, 0)
+                              ChevronDisabledFill: =RGBA(161, 159, 157, 1)
+                              ChevronFill: =RGBA(50, 49, 48, 1)
+                              ChevronHoverBackground: =RGBA(245, 245, 245, 1)
+                              ChevronHoverFill: =RGBA(50, 49, 48, 1)
+                              Color: =RGBA(51, 51, 51, 1)
+                              DefaultSelectedItems: =Parent.Default
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              DisabledFill: =RGBA(242, 242, 241, 0)
+                              DisplayFields: =["Value"]
+                              DisplayMode: =Parent.DisplayMode
+                              Fill: =Color.White
+                              FocusedBorderColor: =RGBA(0, 122, 255, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =80
+                              HoverBorderColor: =RGBA(0, 122, 255, 1)
+                              HoverColor: =RGBA(51, 51, 51, 1)
+                              HoverFill: =Color.White
+                              Items: =Choices([@Checklist_OrganizacaoPellet2025].PontoColeta)
+                              PaddingBottom: =10
+                              PaddingLeft: =10
+                              PaddingRight: =12
+                              PaddingTop: =10
+                              PressedBorderColor: =RGBA(16, 110, 190, 1)
+                              PressedColor: =RGBA(255, 255, 255, 1)
+                              PressedFill: =RGBA(0, 120, 212, 1)
+                              SearchFields: =["Value"]
+                              SelectMultiple: =false
+                              SelectionColor: =RGBA(255, 255, 255, 1)
+                              SelectionFill: =RGBA(0, 120, 212, 1)
+                              Size: =20
+                              Tooltip: =Parent.DisplayName
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =DataCardKey77.Y + DataCardKey77.Height + 5
+                        - ErrorMessage77:
+                            Control: Label@2.5.1
+                            MetadataKey: ErrorMessage
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =RGBA(168, 0, 0, 1)
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(168, 0, 0, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =10
+                              Live: =Live.Assertive
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Text: =Parent.Error
+                              Visible: =Parent.DisplayMode=DisplayMode.Edit
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =DataCardValue77.Y + DataCardValue77.Height
+                        - StarVisible77:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldRequired
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =RGBA(50, 49, 48, 1)
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =DataCardKey77.Height
+                              PaddingLeft: =0
+                              Text: ="*"
+                              Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =30
+                              Wrap: =false
+                              Y: =DataCardKey77.Y
+                  - DataCard4:
+                      Control: TypedDataCard@1.0.7
+                      Variant: BlankCard
+                      Properties:
+                        BorderColor: =RGBA(244, 244, 244, 1)
+                        DisplayMode: =Parent.DisplayMode
+                        Fill: =RGBA(238,238,238,1)
+                        Height: =150
+                        Width: =1296
+                        X: =0
+                        Y: =7
+                      Children:
+                        - BtnEnviarTelaOficina:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              Color: =Color.White
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              DisabledFill: =RGBA(242, 242, 241, 0)
+                              DisplayMode: |+
+                                =// =======================================================
+                                // TelaOficinaAOL - BtnEnviar.DisplayMode (CORRETO)
+                                // =======================================================
+                                If(
+                                    varBusy,
+                                    DisplayMode.Disabled,
+                                    If(
+                                        Or(
+                                            IsBlank(varRegistroChecklist) || IsBlank(varRegistroChecklist.ID),
+
+                                            IsBlank(DataCardValue71.Selected.Value),
+                                            IsBlank(DataCardValue72.Selected.Value),
+                                            IsBlank(DataCardValue73.Selected.Value),
+                                            IsBlank(DataCardValue74.Selected.Value),
+                                            IsBlank(DataCardValue75.Selected.Value),
+                                            IsBlank(DataCardValue76.Selected.Value),
+                                            IsBlank(DataCardValue77.Selected.Value)
+                                        ),
+                                        DisplayMode.Disabled,
+                                        DisplayMode.Edit
+                                    )
+                                )
+                              Fill: '=RGBA(0, 56, 168, 1) '
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =95
+                              HoverBorderColor: =RGBA(0, 0, 0, 0)
+                              HoverColor: =RGBA(255, 255, 255, 1)
+                              HoverFill: =RGBA(0, 90, 160, 1)
+                              OnSelect: |-
+                                =If(
+                                    varBusy,
+                                    Blank(),
+
+                                    Set(varBusy, true);
+                                    Set(varRodizioValidado, true);
+                                    Set(varChecklistSemRodizioAtivo, false);
+                                    Set(varErroSalvarOficinaAOL, false);
+                                    Set(varPodeAvancarOficinaAOL, true);
+                                    Set(varOficinaAOLPossuiNCCritica, false);
+
+                                    Clear(colRodizioSalaAtual);
+                                    Clear(colNcOficinaAOL);
+                                    Clear(colNCtemporarias);
+                                    Clear(colNCtemporariasEnriquecidas);
+                                    Clear(colErrosMatrizNCOficinaAOL);
+
+                                    Set(
+                                        varPessoaLogadaSP,
+                                        {
+                                            '@odata.type': "#Microsoft.Azure.Connectors.SharePoint.SPListExpandedUser",
+                                            Claims: "i:0#.f|membership|" & Lower(Coalesce(varUserEmail, User().Email)),
+                                            DisplayName: Coalesce(varUserNome, User().FullName),
+                                            Email: Lower(Coalesce(varUserEmail, User().Email)),
+                                            Department: "",
+                                            JobTitle: "",
+                                            Picture: ""
+                                        }
+                                    );
+
+                                    If(
+                                        Or(
+                                            IsBlank(varRegistroChecklist) || IsBlank(varRegistroChecklist.ID),
+                                            IsBlank(DataCardValue71.Selected.Value),
+                                            IsBlank(DataCardValue72.Selected.Value),
+                                            IsBlank(DataCardValue73.Selected.Value),
+                                            IsBlank(DataCardValue74.Selected.Value),
+                                            IsBlank(DataCardValue75.Selected.Value),
+                                            IsBlank(DataCardValue76.Selected.Value),
+                                            IsBlank(DataCardValue77.Selected.Value)
+                                        ),
+
+                                        Notify(
+                                            "❌ Preencha todos os campos obrigatórios.",
+                                            NotificationType.Error
+                                        );
+                                        Set(varBusy, false),
+
+                                        Set(
+                                            varTemNC_OficinaAOL,
+                                            Or(
+                                                DataCardValue71.Selected.Value = "Não Conforme",
+                                                DataCardValue72.Selected.Value = "Não Conforme",
+                                                DataCardValue73.Selected.Value = "Não Conforme",
+                                                DataCardValue74.Selected.Value = "Não Conforme",
+                                                DataCardValue75.Selected.Value = "Não Conforme",
+                                                DataCardValue76.Selected.Value = "Não Conforme",
+                                                DataCardValue77.Selected.Value = "Não Conforme"
+                                            )
+                                        );
+
+                                        ClearCollect(
+                                            colNcOficinaAOL,
+                                            Filter(
+                                                Table(
+                                                    {
+                                                        ItemChecklistOrigem: BancadaLimpaAOL_DataCard1.DataField,
+                                                        ItemNC: "Bancadas estão limpas, organizadas e sem obstruções?",
+                                                        Valor: DataCardValue71.Selected.Value
+                                                    },
+                                                    {
+                                                        ItemChecklistOrigem: FerramentasOkAOL_DataCard1.DataField,
+                                                        ItemNC: "Ferramentas estão guardadas em local adequado e identificado?",
+                                                        Valor: DataCardValue72.Selected.Value
+                                                    },
+                                                    {
+                                                        ItemChecklistOrigem: FiosOk_DataCard1.DataField,
+                                                        ItemNC: "Cabos e fios estão organizados e não obstruem áreas de passagem?",
+                                                        Valor: DataCardValue73.Selected.Value
+                                                    },
+                                                    {
+                                                        ItemChecklistOrigem: ChaoOk_DataCard1.DataField,
+                                                        ItemNC: "Área de circulação está livre de materiais no chão?",
+                                                        Valor: DataCardValue74.Selected.Value
+                                                    },
+                                                    {
+                                                        ItemChecklistOrigem: EtiquetasOkAOL_DataCard1.DataField,
+                                                        ItemNC: "Prateleiras e armários estão identificados com etiquetas padronizadas?",
+                                                        Valor: DataCardValue75.Selected.Value
+                                                    },
+                                                    {
+                                                        ItemChecklistOrigem: ArmariosIdentificadosAOL_DataCard1.DataField,
+                                                        ItemNC: "Prateleiras e armários estão organizados conforme a finalidade?",
+                                                        Valor: DataCardValue76.Selected.Value
+                                                    },
+                                                    {
+                                                        ItemChecklistOrigem: PontoColeta_DataCard1.DataField,
+                                                        ItemNC: "Ponto de coleta de resíduos está limpo e sinalizado?",
+                                                        Valor: DataCardValue77.Selected.Value
+                                                    }
+                                                ),
+                                                Valor = "Não Conforme"
+                                            )
+                                        );
+
+                                        Set(
+                                            varQtdNCOficinaAOL,
+                                            CountRows(colNcOficinaAOL)
+                                        );
+
+                                        If(
+                                            varTemNC_OficinaAOL,
+
+                                            ClearCollect(
+                                                colRodizioSalaAtual,
+                                                Filter(
+                                                    RodizioPlanejado,
+                                                    Sala.Value = varRegistroChecklist.Sala.Value &&
+                                                    Publicado = true &&
+                                                    StatusRodizio.Value = "Ativo" &&
+                                                    InicioRodizio <= Today() &&
+                                                    FimRodizio >= Today()
+                                                )
+                                            );
+
+                                            If(
+                                                CountRows(colRodizioSalaAtual) > 1,
+
+                                                Notify(
+                                                    "❌ Existe mais de um rodízio ativo publicado para esta sala. Corrija a lista RodizioPlanejado antes de continuar.",
+                                                    NotificationType.Error
+                                                );
+                                                Set(varRodizioValidado, false);
+                                                Set(varPodeAvancarOficinaAOL, false),
+
+                                                CountRows(colRodizioSalaAtual) = 0,
+
+                                                Set(varChecklistSemRodizioAtivo, true);
+                                                Set(varRodizioSala, Blank());
+                                                Set(
+                                                    varResponsaveisNCOficina,
+                                                    Table(varPessoaLogadaSP)
+                                                );
+                                                Notify(
+                                                    "⚠️ Nenhum rodízio ativo publicado foi encontrado. A NC será registrada provisoriamente para o usuário logado.",
+                                                    NotificationType.Warning
+                                                ),
+
+                                                Set(varChecklistSemRodizioAtivo, false);
+                                                Set(
+                                                    varRodizioSala,
+                                                    First(colRodizioSalaAtual)
+                                                );
+                                                If(
+                                                    CountRows(varRodizioSala.ResponsavelSala) = 0,
+                                                    Set(
+                                                        varResponsaveisNCOficina,
+                                                        Table(varPessoaLogadaSP)
+                                                    );
+                                                    Notify(
+                                                        "⚠️ Rodízio ativo encontrado, mas sem responsável cadastrado. A NC será registrada provisoriamente para o usuário logado.",
+                                                        NotificationType.Warning
+                                                    ),
+                                                    Set(
+                                                        varResponsaveisNCOficina,
+                                                        varRodizioSala.ResponsavelSala
+                                                    )
+                                                )
+                                            );
+
+                                            If(
+                                                varRodizioValidado,
+
+                                                ForAll(
+                                                    colNcOficinaAOL As r,
+                                                    With(
+                                                        {
+                                                            qtdRegrasAtivas: CountRows(
+                                                                Filter(
+                                                                    colMatrizClassificacaoNCAtiva As m,
+                                                                    m.Campo = r.ItemChecklistOrigem
+                                                                )
+                                                            ),
+                                                            regraNC: LookUp(
+                                                                colMatrizClassificacaoNCAtiva As m,
+                                                                m.Campo = r.ItemChecklistOrigem
+                                                            )
+                                                        },
+                                                        With(
+                                                            {
+                                                                regraValida:
+                                                                    varMatrizClassificacaoNCValida &&
+                                                                    qtdRegrasAtivas = 1 &&
+                                                                    !IsBlank(regraNC.ID) &&
+                                                                    !IsBlank(regraNC.Pilar.Value) &&
+                                                                    !IsBlank(regraNC.ClassificacaoPadrao.Value) &&
+                                                                    !IsBlank(regraNC.PrazoDias) &&
+                                                                    !IsBlank(
+                                                                        Trim(
+                                                                            Coalesce(
+                                                                                regraNC.PrazoOperacional,
+                                                                                ""
+                                                                            )
+                                                                        )
+                                                                    ) &&
+                                                                    (
+                                                                        (
+                                                                            regraNC.ClassificacaoPadrao.Value = "Baixa" &&
+                                                                            regraNC.PrazoDias = 15 &&
+                                                                            Trim(
+                                                                                Coalesce(
+                                                                                    regraNC.PrazoOperacional,
+                                                                                    ""
+                                                                                )
+                                                                            ) = "15 dias corridos"
+                                                                        ) ||
+                                                                        (
+                                                                            regraNC.ClassificacaoPadrao.Value = "Média" &&
+                                                                            regraNC.PrazoDias = 10 &&
+                                                                            Trim(
+                                                                                Coalesce(
+                                                                                    regraNC.PrazoOperacional,
+                                                                                    ""
+                                                                                )
+                                                                            ) = "10 dias corridos"
+                                                                        ) ||
+                                                                        (
+                                                                            regraNC.ClassificacaoPadrao.Value = "Alta" &&
+                                                                            regraNC.PrazoDias = 7 &&
+                                                                            Trim(
+                                                                                Coalesce(
+                                                                                    regraNC.PrazoOperacional,
+                                                                                    ""
+                                                                                )
+                                                                            ) = "7 dias corridos"
+                                                                        ) ||
+                                                                        (
+                                                                            regraNC.ClassificacaoPadrao.Value = "Crítica / Segurança" &&
+                                                                            regraNC.PrazoDias = 0 &&
+                                                                            Trim(
+                                                                                Coalesce(
+                                                                                    regraNC.PrazoOperacional,
+                                                                                    ""
+                                                                                )
+                                                                            ) = "Ação imediata"
+                                                                        )
+                                                                    )
+                                                            },
+                                                            If(
+                                                                !regraValida,
+                                                                Collect(
+                                                                    colErrosMatrizNCOficinaAOL,
+                                                                    {
+                                                                        ItemChecklistOrigem: r.ItemChecklistOrigem,
+                                                                        ItemNC: r.ItemNC,
+                                                                        Motivo: If(
+                                                                            !varMatrizClassificacaoNCValida,
+                                                                            "Falha de carregamento da MatrizClassificacaoNC",
+                                                                            qtdRegrasAtivas = 0,
+                                                                            "Item sem correspondência ativa na MatrizClassificacaoNC",
+                                                                            qtdRegrasAtivas > 1,
+                                                                            "Mais de uma regra ativa encontrada para o item",
+                                                                            "Regra ativa incompleta ou incompatível com a classificação oficial"
+                                                                        )
+                                                                    }
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                );
+
+                                                ClearCollect(
+                                                    colNCtemporariasEnriquecidas,
+                                                    ForAll(
+                                                        colNcOficinaAOL As r,
+                                                        With(
+                                                            {
+                                                                qtdRegrasAtivas: CountRows(
+                                                                    Filter(
+                                                                        colMatrizClassificacaoNCAtiva As m,
+                                                                        m.Campo = r.ItemChecklistOrigem
+                                                                    )
+                                                                ),
+                                                                regraNC: LookUp(
+                                                                    colMatrizClassificacaoNCAtiva As m,
+                                                                    m.Campo = r.ItemChecklistOrigem
+                                                                ),
+                                                                pilarFallback: LookUp(
+                                                                    colMapaItens As mapa,
+                                                                    mapa.Campo = r.ItemChecklistOrigem,
+                                                                    mapa.Pilar
+                                                                )
+                                                            },
+                                                            With(
+                                                                {
+                                                                    regraValida:
+                                                                        varMatrizClassificacaoNCValida &&
+                                                                        qtdRegrasAtivas = 1 &&
+                                                                        !IsBlank(regraNC.ID) &&
+                                                                        !IsBlank(regraNC.Pilar.Value) &&
+                                                                        !IsBlank(regraNC.ClassificacaoPadrao.Value) &&
+                                                                        !IsBlank(regraNC.PrazoDias) &&
+                                                                        !IsBlank(
+                                                                            Trim(
+                                                                                Coalesce(
+                                                                                    regraNC.PrazoOperacional,
+                                                                                    ""
+                                                                                )
+                                                                            )
+                                                                        ) &&
+                                                                        (
+                                                                            (
+                                                                                regraNC.ClassificacaoPadrao.Value = "Baixa" &&
+                                                                                regraNC.PrazoDias = 15 &&
+                                                                                Trim(
+                                                                                    Coalesce(
+                                                                                        regraNC.PrazoOperacional,
+                                                                                        ""
+                                                                                    )
+                                                                                ) = "15 dias corridos"
+                                                                            ) ||
+                                                                            (
+                                                                                regraNC.ClassificacaoPadrao.Value = "Média" &&
+                                                                                regraNC.PrazoDias = 10 &&
+                                                                                Trim(
+                                                                                    Coalesce(
+                                                                                        regraNC.PrazoOperacional,
+                                                                                        ""
+                                                                                    )
+                                                                                ) = "10 dias corridos"
+                                                                            ) ||
+                                                                            (
+                                                                                regraNC.ClassificacaoPadrao.Value = "Alta" &&
+                                                                                regraNC.PrazoDias = 7 &&
+                                                                                Trim(
+                                                                                    Coalesce(
+                                                                                        regraNC.PrazoOperacional,
+                                                                                        ""
+                                                                                    )
+                                                                                ) = "7 dias corridos"
+                                                                            ) ||
+                                                                            (
+                                                                                regraNC.ClassificacaoPadrao.Value = "Crítica / Segurança" &&
+                                                                                regraNC.PrazoDias = 0 &&
+                                                                                Trim(
+                                                                                    Coalesce(
+                                                                                        regraNC.PrazoOperacional,
+                                                                                        ""
+                                                                                    )
+                                                                                ) = "Ação imediata"
+                                                                            )
+                                                                        )
+                                                                },
+                                                                {
+                                                                    ItemChecklistOrigem: r.ItemChecklistOrigem,
+                                                                    ItemNC: r.ItemNC,
+                                                                    Pilar: If(
+                                                                        regraValida,
+                                                                        regraNC.Pilar.Value,
+                                                                        pilarFallback
+                                                                    ),
+                                                                    ClassificacaoNC: If(
+                                                                        regraValida,
+                                                                        regraNC.ClassificacaoPadrao.Value,
+                                                                        "Média"
+                                                                    ),
+                                                                    PrazoDias: If(
+                                                                        regraValida,
+                                                                        regraNC.PrazoDias,
+                                                                        10
+                                                                    ),
+                                                                    PrazoOperacional: If(
+                                                                        regraValida,
+                                                                        regraNC.PrazoOperacional,
+                                                                        "10 dias corridos"
+                                                                    ),
+                                                                    ExigeEvidencia: If(
+                                                                        regraValida,
+                                                                        Coalesce(
+                                                                            regraNC.ExigeEvidencia.Value,
+                                                                            "Não"
+                                                                        ),
+                                                                        "Não"
+                                                                    ),
+                                                                    OrigemNC: "Checklist",
+                                                                    SalaNC: varRegistroChecklist.Sala.Value,
+                                                                    ChecklistID: varRegistroChecklist.ID,
+                                                                    Ciclo: Coalesce(
+                                                                        varRegistroChecklist.Ciclo,
+                                                                        varCicloAtual
+                                                                    ),
+                                                                    DataCriacao: Now(),
+                                                                    ResponsavelSala: If(
+                                                                        IsEmpty(varResponsaveisNCOficina),
+                                                                        Table(varPessoaLogadaSP),
+                                                                        varResponsaveisNCOficina
+                                                                    ),
+                                                                    DescricaoNC: ""
+                                                                }
+                                                            )
+                                                        )
+                                                    )
+                                                );
+
+                                                ClearCollect(
+                                                    colNCtemporarias,
+                                                    colNCtemporariasEnriquecidas
+                                                );
+                                                Clear(colNCtemporariasEnriquecidas);
+
+                                                If(
+                                                    CountIf(
+                                                        colNCtemporarias,
+                                                        IsBlank(Pilar)
+                                                    ) > 0,
+                                                    Notify(
+                                                        "❌ Existe item não conforme sem pilar correspondente em colMapaItens. Corrija o mapeamento antes de continuar.",
+                                                        NotificationType.Error
+                                                    );
+                                                    Set(varPodeAvancarOficinaAOL, false)
+                                                );
+
+                                                If(
+                                                    !IsEmpty(colErrosMatrizNCOficinaAOL),
+                                                    Notify(
+                                                        "⚠️ Existem itens com falha na MatrizClassificacaoNC. Eles serão registrados em contingência com classificação Média e prazo de 10 dias: " &
+                                                            Concat(
+                                                                colErrosMatrizNCOficinaAOL,
+                                                                ItemChecklistOrigem & " — " & Motivo,
+                                                                " | "
+                                                            ),
+                                                        NotificationType.Warning
+                                                    )
+                                                );
+
+                                                Set(
+                                                    varOficinaAOLPossuiNCCritica,
+                                                    CountIf(
+                                                        colNCtemporarias,
+                                                        ClassificacaoNC = "Crítica / Segurança"
+                                                    ) > 0
+                                                )
+                                            )
+                                        );
+
+                                        If(
+                                            !varPodeAvancarOficinaAOL,
+
+                                            Set(varBusy, false),
+
+                                            Set(
+                                                varStatusGeralOficinaAOL,
+                                                If(
+                                                    Coalesce(
+                                                        varRegistroChecklist.StatusGeral.Value,
+                                                        ""
+                                                    ) = "Crítico" ||
+                                                    varOficinaAOLPossuiNCCritica,
+                                                    "Crítico",
+                                                    If(
+                                                        Coalesce(
+                                                            varRegistroChecklist.StatusGeral.Value,
+                                                            ""
+                                                        ) = "Atenção" ||
+                                                        varTemNC_OficinaAOL,
+                                                        "Atenção",
+                                                        "Conforme"
+                                                    )
+                                                )
+                                            );
+
+                                            IfError(
+                                                Set(
+                                                    varRegistroChecklist,
+                                                    Patch(
+                                                        Checklist_OrganizacaoPellet2025,
+                                                        varRegistroChecklist,
+                                                        {
+                                                            BancadaLimpaAOL: {
+                                                                Value: DataCardValue71.Selected.Value
+                                                            },
+                                                            FerramentasOkAOL: {
+                                                                Value: DataCardValue72.Selected.Value
+                                                            },
+                                                            FiosOk: {
+                                                                Value: DataCardValue73.Selected.Value
+                                                            },
+                                                            ChaoOk: {
+                                                                Value: DataCardValue74.Selected.Value
+                                                            },
+                                                            EtiquetasOkAOL: {
+                                                                Value: DataCardValue75.Selected.Value
+                                                            },
+                                                            ArmariosIdentificadosAOL: {
+                                                                Value: DataCardValue76.Selected.Value
+                                                            },
+                                                            PontoColeta: {
+                                                                Value: DataCardValue77.Selected.Value
+                                                            },
+                                                            StatusGeral: {
+                                                                Value: varStatusGeralOficinaAOL
+                                                            },
+                                                            StatusNC: If(
+                                                                varTemNC_OficinaAOL ||
+                                                                Coalesce(
+                                                                    varRegistroChecklist.StatusNC.Value,
+                                                                    ""
+                                                                ) = "Pendente",
+                                                                {
+                                                                    Value: "Pendente"
+                                                                },
+                                                                {
+                                                                    Value: "Concluído"
+                                                                }
+                                                            )
+                                                        }
+                                                    )
+                                                ),
+                                                Set(varErroSalvarOficinaAOL, true);
+                                                Notify(
+                                                    "❌ Erro ao salvar checklist da Oficina AOL. Verifique conexão ou permissão.",
+                                                    NotificationType.Error
+                                                );
+                                                Set(varBusy, false)
+                                            );
+
+                                            If(
+                                                !varErroSalvarOficinaAOL,
+                                                If(
+                                                    varTemNC_OficinaAOL,
+                                                    Set(varBusy, false);
+                                                    Navigate(
+                                                        TelaNCOficinaAOL,
+                                                        ScreenTransition.Fade
+                                                    ),
+                                                    ResetForm(Form_Oficina);
+                                                    Set(varBusy, false);
+                                                    Navigate(
+                                                        TelaFinal,
+                                                        ScreenTransition.Fade
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                              PressedBorderColor: =RGBA(0, 69, 120, 1)
+                              PressedColor: =RGBA(255, 255, 255, 1)
+                              PressedFill: =RGBA(16, 110, 190, 1)
+                              RadiusBottomLeft: =12
+                              RadiusBottomRight: =12
+                              RadiusTopLeft: =12
+                              RadiusTopRight: =12
+                              Size: =24
+                              Text: ="ENVIAR CHECK LIST"
+                              Width: =Parent.Width - 60
+                              X: =30
+      - Container14_12:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Group: Group10_1
+          Properties:
+            Fill: =RGBA(3, 52, 162, 1)
+            Height: =95
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            PaddingBottom: =8
+            PaddingLeft: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Width: =1271
+            X: =48
+            Y: =20
+      - Icone_home_6:
+          Control: Classic/Icon@2.5.0
+          Group: Group10_1
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: =Color.White
+            DisabledBorderColor: =RGBA(245, 245, 245, 1)
+            DisabledColor: =RGBA(225, 223, 221, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =65
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(16, 110, 190, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.Home
+            OnSelect: =Navigate(TelaInicio, ScreenTransition.Fade)
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =RGBA(16, 110, 190, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =45
+            X: =1253
+            Y: =35
+      - Label1_11:
+          Control: Label@2.5.1
+          Group: Group10_1
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =Color.White
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =52
+            Size: =24
+            Text: ="Oficina de Manutenção AOL"
+            Width: =472
+            X: =61
+            Y: =49
+      - Icon10_7:
+          Control: Classic/Icon@2.5.0
+          Group: Group10_1
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: =RGBA(255, 200, 0, 1)
+            DisabledBorderColor: =RGBA(245, 245, 245, 1)
+            DisabledColor: =RGBA(225, 223, 221, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =21
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(16, 110, 190, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.HorizontalLine
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =RGBA(16, 110, 190, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =100
+            X: =72
+            Y: =28
+      - Container14_13:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Group: Group10_1
+          Properties:
+            Fill: =RGBA(3, 52, 162, 1)
+            Height: =29
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            PaddingBottom: =8
+            PaddingLeft: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Width: =1271
+            X: =48
+            Y: =739

@@ -1,0 +1,1707 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+Screens:
+  TelaInicio:
+    Properties:
+      Fill: =RGBA(238, 238, 238, 1)
+      Height: |+
+        =App.Height
+      LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+      OnVisible: |+
+        =// =====================================
+        // Telainicio.OnVisible (COMPLETO)
+        // =====================================
+        Concurrent(
+            Set(varUserNome, User().FullName),
+            Set(varUserEmail, Lower(User().Email)),
+            Set(varBusy, false),
+            Set(varMostraErrosInicio, false)
+        );
+
+        Set(varChecklistInicio, Now());
+      Width: |+
+        =App.Width
+    Children:
+      - Container10_1:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =478
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Horizontal
+            PaddingBottom: =8
+            PaddingLeft: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            X: =834
+            Y: =225
+      - Image2:
+          Control: Image@2.2.3
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =768
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Image: ='templete oficial sem fundo'
+            ImagePosition: =ImagePosition.Fill
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =1366
+      - lblBoasVindas_1:
+          Control: Label@2.5.1
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(70, 90, 130, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.'Open Sans'
+            Height: =28
+            OnSelect: =
+            Size: =10
+            Text: ="Idealizado e Implementado por Rodrigo Barbosa Tavares da Mota | LCQ RJ - Braskem"
+            Width: =600
+            X: =223
+            Y: =740
+      - Image1:
+          Control: Image@2.2.3
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =83
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Image: =logo
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =168
+            X: =17
+      - Container10:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =478
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Horizontal
+            PaddingBottom: =8
+            PaddingLeft: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            X: =260
+            Y: =225
+      - Form_InicioSala:
+          Control: Form@2.4.4
+          Variant: Classic
+          Layout: Vertical
+          Properties:
+            BorderColor: =RGBA(245, 245, 245, 1)
+            DataSource: =Checklist_OrganizacaoPellet2025
+            DefaultMode: =FormMode.New
+            Fill: =Color.Transparent
+            Height: =413
+            NumberOfColumns: =2
+            OnFailure: |
+              =Notify("❗Falha ao iniciar checklist. Verifique os campos e tente novamente.", NotificationType.Error);
+            OnSuccess: =
+            SnapToColumns: =false
+            Width: =500
+            X: =260
+            Y: =290
+          Children:
+            - DataInspecao_DataCard3:
+                Control: TypedDataCard@1.0.7
+                Variant: ClassicDateEdit
+                Properties:
+                  BorderColor: =RGBA(255, 255, 255, 1)
+                  DataField: ="DataInspecao"
+                  Default: =Coalesce( ThisItem.DataInspecao, varChecklistInicio )
+                  DisplayMode: =DisplayMode.View
+                  DisplayName: =DataSourceInfo([@Checklist_OrganizacaoPellet2025],DataSourceInfo.DisplayName,DataInspecao)
+                  Fill: =RGBA(255, 255, 255, 0)
+                  Height: =120
+                  Required: =true
+                  Update: =Coalesce( ThisItem.DataInspecao, varChecklistInicio )
+                  Width: =492
+                  X: =50
+                  Y: =0
+                Children:
+                  - containerTurnoVisual:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(225, 229, 235, 1)
+                        BorderThickness: =1
+                        Fill: =RGBA(255, 255, 255, 1)
+                        Height: =45
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutJustifyContent: =LayoutJustifyContent.Center
+                        PaddingLeft: =10
+                        PaddingRight: =10
+                        RadiusBottomLeft: =16
+                        RadiusBottomRight: =16
+                        RadiusTopLeft: =16
+                        RadiusTopRight: =16
+                        Width: =340
+                        X: =77
+                        Y: =65
+                  - DataCardKey32:
+                      Control: Label@2.5.1
+                      MetadataKey: FieldName
+                      Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =2
+                        Color: =RGBA(2, 52, 162, 1)
+                        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                        DisabledColor: =RGBA(161, 159, 157, 1)
+                        FocusedBorderThickness: =4
+                        Font: =Font.'Segoe UI'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =37
+                        PaddingLeft: =12
+                        Size: =14
+                        Text: ="DATA E HORA DA INSPEÇÃO"
+                        Width: =290
+                        Wrap: =false
+                        X: =91
+                        Y: =28
+                  - ErrorMessage32:
+                      Control: Label@2.5.1
+                      MetadataKey: ErrorMessage
+                      Properties:
+                        AutoHeight: =true
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =2
+                        Color: =RGBA(168, 0, 0, 1)
+                        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                        DisabledColor: =RGBA(168, 0, 0, 1)
+                        FocusedBorderThickness: =4
+                        Font: =Font.'Segoe UI'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =10
+                        Live: =Live.Assertive
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Text: =Parent.Error
+                        Visible: =Parent.DisplayMode=DisplayMode.Edit
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardValue32.Y + DataCardValue32.Height
+                  - StarVisible32:
+                      Control: Label@2.5.1
+                      MetadataKey: FieldRequired
+                      Properties:
+                        Align: =Align.Center
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =2
+                        Color: =RGBA(50, 49, 48, 1)
+                        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                        DisabledColor: =RGBA(161, 159, 157, 1)
+                        FocusedBorderThickness: =4
+                        Font: =Font.'Segoe UI'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =DataCardKey32.Height
+                        PaddingLeft: =0
+                        Text: |-
+                          ="
+                          "
+                        Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                        Width: =30
+                        Wrap: =false
+                        Y: =DataCardKey32.Y
+                  - DataCardValue32:
+                      Control: Classic/DatePicker@2.6.0
+                      MetadataKey: FieldValue
+                      Properties:
+                        BorderColor: =Color.Transparent
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =0
+                        Color: =RGBA(2, 52, 162, 1)
+                        DefaultDate: =Parent.Default
+                        DisabledBorderColor: =RGBA(180, 200, 255, 1)
+                        DisabledColor: =RGBA(161, 159, 157, 1)
+                        DisabledFill: =RGBA(242, 242, 241, 0)
+                        DisplayMode: =Parent.DisplayMode
+                        EndYear: =(Today())+100
+                        Fill: =RGBA(0, 56, 168, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =70
+                        IconBackground: =RGBA(0, 56, 168, 1)
+                        IconFill: =RGBA(255, 255, 255, 1)
+                        IsEditable: =true
+                        PaddingBottom: =10
+                        PaddingLeft: =16
+                        PaddingRight: =40
+                        PaddingTop: =5
+                        Size: =16
+                        StartYear: =1899
+                        Tooltip: =Parent.DisplayName
+                        Visible: =false
+                        Width: =470
+                        X: =104
+                        Y: =72
+                  - lbl_DataInspecaoValor:
+                      Control: Label@2.5.1
+                      Properties:
+                        Align: =Align.Center
+                        BorderColor: =RGBA(225, 229, 235, 1)
+                        BorderStyle: =BorderStyle.None
+                        Color: =RGBA(100, 110, 125, 1)
+                        DisabledBorderColor: =RGBA(180, 200, 255, 1)
+                        DisabledColor: =RGBA(161, 159, 157, 1)
+                        DisabledFill: =RGBA(242, 242, 241, 0)
+                        Fill: =RGBA(248, 250, 252, 1)
+                        FocusedBorderColor: =RGBA(255, 204, 0, 1)
+                        FocusedBorderThickness: =4
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =30
+                        HoverBorderColor: =RGBA(0, 43, 150, 1)
+                        HoverColor: =Color.White
+                        HoverFill: =RGBA(0, 56, 168, 1)
+                        PaddingBottom: =0
+                        PaddingLeft: =16
+                        PaddingRight: =16
+                        PaddingTop: =0
+                        PressedBorderColor: =RGBA(16, 110, 190, 1)
+                        PressedColor: =Color.White
+                        PressedFill: =ColorFade(Self.Fill, -20%)
+                        Size: =16
+                        TabIndex: =0
+                        Text: |+
+                          =Text( Parent.Default, "[$-pt-BR]dd/mm/yyyy     HH:mm" )
+
+                        Width: =255
+                        X: =111
+                        Y: =72
+            - Sala_DataCard1:
+                Control: TypedDataCard@1.0.7
+                Variant: ClassicComboBoxEdit
+                Properties:
+                  BorderColor: =RGBA(255, 255, 255, 0)
+                  DataField: ="Sala"
+                  Default: |
+                    =ThisItem.Sala
+                  DisplayName: =DataSourceInfo([@Checklist_OrganizacaoPellet2025],DataSourceInfo.DisplayName,Sala)
+                  Fill: =RGBA(255, 255, 255, 0)
+                  Height: =120
+                  Required: =true
+                  Update: |
+                    =First(DataCardValue49.SelectedItems)
+                  Width: =492
+                  X: =2
+                  Y: =186
+                Children:
+                  - containerTurnoVisual_1:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(225, 229, 235, 1)
+                        BorderThickness: =1
+                        Fill: =RGBA(255, 255, 255, 1)
+                        Height: =45
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutJustifyContent: =LayoutJustifyContent.Center
+                        PaddingLeft: =10
+                        PaddingRight: =10
+                        PaddingTop: =10
+                        RadiusBottomLeft: =16
+                        RadiusBottomRight: =16
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =16
+                        Width: =340
+                        X: =76
+                        Y: =65
+                  - DataCardKey49:
+                      Control: Label@2.5.1
+                      MetadataKey: FieldName
+                      Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =2
+                        Color: =RGBA(2, 52, 162, 1)
+                        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                        DisabledColor: =RGBA(161, 159, 157, 1)
+                        FocusedBorderThickness: =4
+                        Font: =Font.'Segoe UI'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =37
+                        PaddingLeft: =12
+                        Size: =14
+                        Text: ="SALA INSPECIONADA"
+                        Width: =290
+                        Wrap: =false
+                        X: =91
+                        Y: =28
+                  - ErrorMessage49:
+                      Control: Label@2.5.1
+                      MetadataKey: ErrorMessage
+                      Properties:
+                        AutoHeight: =true
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =2
+                        Color: =Color.Transparent
+                        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                        DisabledColor: =RGBA(168, 0, 0, 1)
+                        FocusedBorderThickness: =4
+                        Font: =Font.'Segoe UI'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =10
+                        Live: =Live.Assertive
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Text: ="Preencha a Sala."
+                        Visible: =IsEmpty(DataCardValue49.SelectedItems) || IsBlank(First(DataCardValue49.SelectedItems).Value)
+                        Width: =Parent.Width - 60
+                        X: =30
+                        Y: =DataCardValue49.Y + DataCardValue49.Height
+                  - DataCardValue49:
+                      Control: Classic/ComboBox@2.4.0
+                      MetadataKey: FieldValue
+                      Properties:
+                        BorderColor: =RGBA(225, 229, 235, 1)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =0
+                        ChevronBackground: =RGBA(248, 250, 252, 1)
+                        ChevronDisabledBackground: =RGBA(242, 242, 241, 0)
+                        ChevronDisabledFill: =RGBA(0, 56, 168, 1)
+                        ChevronFill: =RGBA(2, 52, 162, 1)
+                        ChevronHoverBackground: =RGBA(248, 250, 252, 1)
+                        ChevronHoverFill: =RGBA(2, 52, 162, 1)
+                        Color: =RGBA(120, 130, 145, 1)
+                        Default: =Parent.Default
+                        DisabledBorderColor: =RGBA(180, 200, 255, 1)
+                        DisabledColor: =RGBA(161, 159, 157, 1)
+                        DisabledFill: =RGBA(242, 242, 241, 0)
+                        DisplayFields: =["Value"]
+                        DisplayMode: =Parent.DisplayMode
+                        Fill: =RGBA(248, 250, 252, 1)
+                        FocusedBorderColor: =RGBA(2, 52, 162, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =30
+                        HoverBorderColor: =RGBA(0, 43, 150, 1)
+                        HoverColor: =RGBA(45, 45, 45, 1)
+                        HoverFill: =RGBA(248, 250, 252, 1)
+                        InputTextPlaceholder: ="Selecione a sala "
+                        Items: =Choices([@Checklist_OrganizacaoPellet2025].Sala)
+                        OnSelect: =
+                        PaddingBottom: =0
+                        PaddingLeft: =16
+                        PaddingRight: =16
+                        PaddingTop: =0
+                        PressedBorderColor: =RGBA(16, 110, 190, 1)
+                        PressedColor: =RGBA(45, 45, 45, 1)
+                        PressedFill: =RGBA(240, 245, 250, 1)
+                        SearchFields: =["Value"]
+                        SelectMultiple: =false
+                        SelectionColor: =RGBA(255, 255, 255, 1)
+                        SelectionFill: =RGBA(2, 52, 162, 1)
+                        Size: =16
+                        Tooltip: =Parent.DisplayName
+                        Width: =300
+                        X: =111
+                        Y: =72
+            - Turno_DataCard3:
+                Control: TypedDataCard@1.0.7
+                Variant: ClassicComboBoxEdit
+                Properties:
+                  BorderColor: =RGBA(245, 245, 245, 1)
+                  DataField: ="Turno"
+                  Default: =ThisItem.Turno
+                  DisplayName: =DataSourceInfo([@Checklist_OrganizacaoPellet2025],DataSourceInfo.DisplayName,Turno)
+                  Height: =130
+                  Required: =true
+                  Update: =First(DataCardValue33.SelectedItems)
+                  Width: =492
+                  X: =100
+                  Y: =200
+                Children:
+                  - containerTurnoVisual_2:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(225, 229, 235, 1)
+                        BorderThickness: =1
+                        Fill: =RGBA(255, 255, 255, 1)
+                        Height: =45
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutJustifyContent: =LayoutJustifyContent.Center
+                        PaddingLeft: =10
+                        PaddingRight: =10
+                        RadiusBottomLeft: =16
+                        RadiusBottomRight: =16
+                        RadiusTopLeft: =16
+                        RadiusTopRight: =16
+                        Width: =340
+                        X: =78
+                        Y: =66
+                  - DataCardKey33:
+                      Control: Label@2.5.1
+                      MetadataKey: FieldName
+                      Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =2
+                        Color: =RGBA(2, 52, 162, 1)
+                        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                        DisabledColor: =RGBA(161, 159, 157, 1)
+                        FocusedBorderThickness: =4
+                        Font: =Font.'Segoe UI'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =38
+                        PaddingLeft: =12
+                        Size: =14
+                        Text: ="GRUPO DE TURNO"
+                        Width: =290
+                        Wrap: =false
+                        X: =91
+                        Y: =28
+                  - ErrorMessage33:
+                      Control: Label@2.5.1
+                      MetadataKey: ErrorMessage
+                      Properties:
+                        AutoHeight: =true
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =2
+                        Color: =Color.Transparent
+                        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                        DisabledColor: =RGBA(168, 0, 0, 1)
+                        FocusedBorderThickness: =4
+                        Font: =Font.'Segoe UI'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =10
+                        Live: =Live.Assertive
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Text: ="Preencha o Turno."
+                        Visible: =IsEmpty(DataCardValue33.SelectedItems) || IsBlank(First(DataCardValue33.SelectedItems).Value)
+                        Width: =Parent.Width - 60
+                        Y: =DataCardValue33.Y + DataCardValue33.Height
+                  - DataCardValue33:
+                      Control: Classic/ComboBox@2.4.0
+                      Properties:
+                        BorderColor: =RGBA(225, 229, 235, 1)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =0
+                        ChevronBackground: =RGBA(248, 250, 252, 1)
+                        ChevronDisabledBackground: =RGBA(242, 242, 241, 0)
+                        ChevronDisabledFill: =RGBA(161, 159, 157, 1)
+                        ChevronFill: =RGBA(2, 52, 162, 1)
+                        ChevronHoverBackground: =RGBA(248, 250, 252, 1)
+                        ChevronHoverFill: =RGBA(2, 52, 162, 1)
+                        Color: =RGBA(120, 130, 145, 1)
+                        Default: =Parent.Default
+                        DisabledBorderColor: =RGBA(180, 200, 255, 1)
+                        DisabledColor: =RGBA(161, 159, 157, 1)
+                        DisabledFill: =RGBA(242, 242, 241, 0)
+                        DisplayFields: =["Value"]
+                        DisplayMode: =Parent.DisplayMode
+                        Fill: =RGBA(248, 250, 252, 1)
+                        FocusedBorderColor: =RGBA(2, 52, 162, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =30
+                        HoverBorderColor: =RGBA(0, 43, 150, 1)
+                        HoverColor: =RGBA(45, 45, 45, 1)
+                        HoverFill: =RGBA(248, 250, 252, 1)
+                        InputTextPlaceholder: ="Selecione o turno"
+                        Items: |
+                          =Choices(Checklist_OrganizacaoPellet2025.Turno)
+                        PaddingBottom: =0
+                        PaddingLeft: =16
+                        PaddingRight: =16
+                        PaddingTop: =0
+                        PressedBorderColor: =RGBA(16, 110, 190, 1)
+                        PressedColor: =RGBA(45, 45, 45, 1)
+                        PressedFill: =RGBA(240, 245, 250, 1)
+                        SearchFields: =["Value"]
+                        SelectMultiple: =false
+                        SelectionColor: =RGBA(255, 255, 255, 1)
+                        SelectionFill: =RGBA(2, 52, 162, 1)
+                        Size: =16
+                        Tooltip: =Parent.DisplayName
+                        Width: =300
+                        X: =111
+                        Y: =72
+      - lbl_InformeDados:
+          Control: Label@2.5.1
+          Group: grp_DadosInpecaoTitulo
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(123, 121, 123, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.'Segoe UI'
+            Height: =37
+            PaddingLeft: =12
+            Size: =12
+            Text: ="Informe os dados para iniciar a nova inspeção."
+            Width: =400
+            Wrap: =false
+            X: =355
+            Y: =263
+      - Icon4:
+          Control: Classic/Icon@2.5.0
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: =RGBA(33, 82, 156, 1)
+            DisabledBorderColor: =RGBA(245, 245, 245, 1)
+            DisabledColor: =RGBA(225, 223, 221, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =20
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(16, 110, 190, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.People
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =RGBA(16, 110, 190, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =38
+            X: =347
+            Y: =607
+      - Icon5:
+          Control: Classic/Icon@2.5.0
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: =RGBA(33, 82, 156, 1)
+            DisabledBorderColor: =RGBA(245, 245, 245, 1)
+            DisabledColor: =RGBA(225, 223, 221, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =20
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(16, 110, 190, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.OfficeBuilding
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =RGBA(16, 110, 190, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =38
+            X: =347
+            Y: =489
+      - Icon3:
+          Control: Classic/Icon@2.5.0
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: =RGBA(2, 52, 162, 1)
+            DisabledBorderColor: =RGBA(245, 245, 245, 1)
+            DisabledColor: =RGBA(225, 223, 221, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =20
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(16, 110, 190, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.CalendarBlank
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =RGBA(16, 110, 190, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =38
+            X: =347
+            Y: =369
+      - Icon10_1:
+          Control: Classic/Icon@2.5.0
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: =RGBA(255, 200, 0, 1)
+            DisabledBorderColor: =RGBA(245, 245, 245, 1)
+            DisabledColor: =RGBA(225, 223, 221, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =21
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(16, 110, 190, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.HorizontalLine
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =RGBA(16, 110, 190, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =100
+            X: =273
+            Y: =62
+      - btn_iniciar:
+          Control: Classic/Button@2.2.0
+          Group: grp_IniciarCheckListaAcoesRapidas
+          Properties:
+            Align: =Align.Left
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            Color: =RGBA(255, 255, 255, 1)
+            DisabledBorderColor: =RGBA(0, 56, 168, 1)
+            DisabledColor: =RGBA(255, 255, 255, 1)
+            DisabledFill: =RGBA(0, 56, 168, 1)
+            DisplayMode: |+
+              =If(
+                  varBusy ||
+                  IsEmpty(DataCardValue49.SelectedItems) ||
+                  IsEmpty(DataCardValue33.SelectedItems),
+                  DisplayMode.Disabled,
+                  DisplayMode.Edit
+              )
+
+            Fill: =RGBA(0, 56, 168, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Bold
+            Height: =119
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =RGBA(16, 110, 190, 1)
+            OnSelect: |-
+              =If(
+                  varBusy,
+                  Blank(),
+
+                  If(
+                      IsEmpty(DataCardValue49.SelectedItems) || IsEmpty(DataCardValue33.SelectedItems),
+
+                      Notify(
+                          "Selecione Sala e Turno para iniciar.",
+                          NotificationType.Warning
+                      ),
+
+                      Set(varBusy, true);
+                      Set(varErroIniciarChecklist, false);
+                      Set(varChecklistSemRodizioAtivo, false);
+                      Set(varSalaVaiParaPellet, false);
+
+                      With(
+                          {
+                              salaChoice: First(DataCardValue49.SelectedItems),
+                              turnoChoice: First(DataCardValue33.SelectedItems)
+                          },
+
+                          Set(varSalaSelecionada, salaChoice);
+
+                          Set(
+                              varPessoaLogadaSP,
+                              {
+                                  '@odata.type': "#Microsoft.Azure.Connectors.SharePoint.SPListExpandedUser",
+                                  Claims: "i:0#.f|membership|" & Lower(Coalesce(varUserEmail, User().Email)),
+                                  DisplayName: Coalesce(varUserNome, User().FullName),
+                                  Email: Lower(Coalesce(varUserEmail, User().Email)),
+                                  Department: "",
+                                  JobTitle: "",
+                                  Picture: ""
+                              }
+                          );
+
+                          Set(
+                              varSalaVaiParaPellet,
+                              Or(
+                                  salaChoice.Value = "Sala de Físico-Químico 3",
+                                  salaChoice.Value = "Sala de Físico-Químico 4",
+                                  salaChoice.Value = "Sala de Processamento de Resinas",
+                                  salaChoice.Value = "Sala de Reserva Técnica"
+                              )
+                          );
+
+                          ClearCollect(
+                              colRodizioAtivoSala,
+                              Filter(
+                                  RodizioPlanejado,
+                                  Sala.Value = salaChoice.Value &&
+                                  StatusRodizio.Value = "Ativo" &&
+                                  Publicado = true &&
+                                  InicioRodizio <= Today() &&
+                                  FimRodizio >= Today()
+                              )
+                          );
+
+                          If(
+                              CountRows(colRodizioAtivoSala) > 1,
+
+                              Notify(
+                                  "❌ Existe mais de um rodízio ativo publicado para esta sala. Corrija a lista RodizioPlanejado antes de iniciar o checklist.",
+                                  NotificationType.Error
+                              );
+                              Set(varBusy, false),
+
+                              If(
+                                  CountRows(colRodizioAtivoSala) = 0,
+
+                                  Set(varChecklistSemRodizioAtivo, true);
+
+                                  Set(
+                                      varCicloAtual,
+                                      Switch(
+                                          true,
+                                          Month(Today()) <= 4, "C1-" & Text(Year(Today())),
+                                          Month(Today()) <= 8, "C2-" & Text(Year(Today())),
+                                          "C3-" & Text(Year(Today()))
+                                      )
+                                  );
+
+                                  Set(
+                                      varRodizioSalaAtual,
+                                      {
+                                          Sala: salaChoice,
+                                          Ciclo: varCicloAtual,
+                                          ResponsavelSala: Table(varPessoaLogadaSP)
+                                      }
+                                  );
+
+                                  Notify(
+                                      "⚠️ Nenhum rodízio ativo publicado foi encontrado para esta sala. O checklist será iniciado em modo contingência no ciclo " & varCicloAtual & ".",
+                                      NotificationType.Warning
+                                  ),
+
+                                  Set(varChecklistSemRodizioAtivo, false);
+
+                                  Set(
+                                      varRodizioSalaAtual,
+                                      First(colRodizioAtivoSala)
+                                  );
+
+                                  Set(
+                                      varCicloAtual,
+                                      Coalesce(
+                                          Text(varRodizioSalaAtual.Ciclo),
+                                          ""
+                                      )
+                                  )
+                              );
+
+                              If(
+                                  IsBlank(varCicloAtual),
+
+                                  Notify(
+                                      "❌ Não foi possível definir o ciclo atual. Corrija o RodizioPlanejado ou a regra de ciclo antes de iniciar.",
+                                      NotificationType.Error
+                                  );
+                                  Set(varBusy, false),
+
+                                  IfError(
+                                      Set(
+                                          varRegistroChecklist,
+                                          Patch(
+                                              Checklist_OrganizacaoPellet2025,
+                                              Defaults(Checklist_OrganizacaoPellet2025),
+                                              {
+                                                  Título:
+                                                      If(
+                                                          varChecklistSemRodizioAtivo,
+                                                          "Checklist CONTINGÊNCIA - ",
+                                                          "Checklist - "
+                                                      ) &
+                                                      salaChoice.Value &
+                                                      " - " &
+                                                      Text(Now(), "[$-pt-BR]dd/mm/yyyy HH:mm"),
+
+                                                  ResponsavelInspecao: varPessoaLogadaSP,
+
+                                                  Sala: salaChoice,
+                                                  Turno: turnoChoice,
+                                                  DataInspecao: Now(),
+                                                  Ciclo: varCicloAtual,
+
+                                                  TipoVerificacao: If(
+                                                      turnoChoice.Value = "Equipe ADM",
+                                                      {Value: "Checklist Quinzenal - Equipe Administrativa"},
+                                                      {Value: "Checklist Semanal - Equipe de Turno"}
+                                                  ),
+
+                                                  StatusNC: {Value: "Pendente"},
+                                                  StatusGeral: {Value: "Conforme"}
+                                              }
+                                          )
+                                      ),
+
+                                      Set(varErroIniciarChecklist, true);
+                                      Notify(
+                                          "❌ Falha ao iniciar o checklist. Verifique permissão, conexão ou campos obrigatórios.",
+                                          NotificationType.Error
+                                      )
+                                  );
+
+                                  If(
+                                      varErroIniciarChecklist,
+
+                                      Set(varBusy, false),
+
+                                      Notify(
+                                          If(
+                                              varChecklistSemRodizioAtivo,
+                                              "⚠️ Checklist iniciado em modo contingência. Ciclo: " & varCicloAtual,
+                                              "✅ Checklist iniciado com sucesso! Ciclo: " & varCicloAtual
+                                          ),
+                                          If(
+                                              varChecklistSemRodizioAtivo,
+                                              NotificationType.Warning,
+                                              NotificationType.Success
+                                          )
+                                      );
+
+                                      Concurrent(
+                                          ResetForm(Form_telaOrganizacao),
+                                          ResetForm(Form_telaFinal),
+                                          ResetForm(Form_Telapellet),
+                                          ResetForm(Form_Reserva),
+                                          ResetForm(Form_Oficina),
+                                          ResetForm(Form_Shelter),
+                                          ResetForm(Form_Deposito1),
+                                          ResetForm(Form_Lavagem),
+                                          ResetForm(Form_Almoxarifado)
+                                      );
+
+                                      Concurrent(
+                                          Clear(colNCtemporarias),
+                                          Set(varTemNC_Organizacao, false),
+                                          Set(varTemNC_Pellet, false),
+                                          Set(varTemNC_ReservaTecnica, false),
+                                          Set(varTemNC_OficinaAOL, false),
+                                          Set(varTemNC_Almoxarifado, false),
+                                          Set(varTemNC_Lavagem, false),
+                                          Set(varTemNC_Shelter, false),
+                                          Set(varTemNC_Deposito1, false)
+                                      );
+
+                                      Set(varBusy, false);
+
+                                      If(
+                                          StartsWith(varSalaSelecionada.Value, "Shelter"),
+
+                                          Navigate(
+                                              TelaShelter,
+                                              ScreenTransition.Fade
+                                          ),
+
+                                          Switch(
+                                              varSalaSelecionada.Value,
+
+                                              "Sala de Reserva Técnica",
+                                              Navigate(
+                                                  TelaReservaTecnica,
+                                                  ScreenTransition.Fade
+                                              ),
+
+                                              "Oficina de Manutenção AOL",
+                                              Navigate(
+                                                  TelaOficinaAOL,
+                                                  ScreenTransition.Fade
+                                              ),
+
+                                              "Depósito 01 AOL",
+                                              Navigate(
+                                                  TelaDeposito,
+                                                  ScreenTransition.Fade
+                                              ),
+
+                                              "Depósito 02 AOL/Q4",
+                                              Navigate(
+                                                  TelaDeposito,
+                                                  ScreenTransition.Fade
+                                              ),
+
+                                              "Sala de Físico-Químico 1",
+                                              Navigate(
+                                                  TelaOrganizacao,
+                                                  ScreenTransition.Fade
+                                              ),
+
+                                              "Sala de Físico-Químico 2",
+                                              Navigate(
+                                                  TelaOrganizacao,
+                                                  ScreenTransition.Fade
+                                              ),
+
+                                              "Sala de Físico-Químico 3",
+                                              Navigate(
+                                                  TelaOrganizacao,
+                                                  ScreenTransition.Fade
+                                              ),
+
+                                              "Sala de Físico-Químico 4",
+                                              Navigate(
+                                                  TelaOrganizacao,
+                                                  ScreenTransition.Fade
+                                              ),
+
+                                              "Sala de Cromatografia 1",
+                                              Navigate(
+                                                  TelaOrganizacao,
+                                                  ScreenTransition.Fade
+                                              ),
+
+                                              "Sala de Cromatografia 2",
+                                              Navigate(
+                                                  TelaOrganizacao,
+                                                  ScreenTransition.Fade
+                                              ),
+
+                                              "Sala de Processamento de Resinas",
+                                              Navigate(
+                                                  TelaOrganizacao,
+                                                  ScreenTransition.Fade
+                                              ),
+
+                                              "Sala de Lavagem",
+                                              Navigate(
+                                                  TelaLavagem,
+                                                  ScreenTransition.Fade
+                                              ),
+
+                                              "Almoxarifado",
+                                              Navigate(
+                                                  TelaAlmoxarifado,
+                                                  ScreenTransition.Fade
+                                              ),
+
+                                              Notify(
+                                                  "⚠️ Sala não mapeada para navegação: " & varSalaSelecionada.Value,
+                                                  NotificationType.Warning
+                                              );
+                                              Navigate(
+                                                  TelaOrganizacao,
+                                                  ScreenTransition.Fade
+                                              )
+                                          )
+                                      )
+                                  )
+                              )
+                          )
+                      )
+                  )
+              )
+            PaddingBottom: =30
+            PaddingLeft: =110
+            PressedBorderColor: =RGBA(0, 69, 120, 1)
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =RGBA(16, 110, 190, 1)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Size: =16
+            Text: ="INICIAR CHECKLIST"
+            Width: =452
+            X: =858
+            Y: =334
+      - IconIniciar:
+          Control: Classic/Icon@2.5.0
+          Group: grp_IniciarCheckListaAcoesRapidas
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: =Color.White
+            DisabledBorderColor: =RGBA(245, 245, 245, 1)
+            DisabledColor: =RGBA(225, 223, 221, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =90
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(16, 110, 190, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.CheckBadge
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =RGBA(16, 110, 190, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =60
+            X: =880
+            Y: =348
+      - Image3:
+          Control: Image@2.2.3
+          Group: grp_AcoesRapidasTitulo
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =69
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Image: =raio
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =65
+            X: =860
+            Y: =238
+      - lbl_AcoesRapidas:
+          Control: Label@2.5.1
+          Group: grp_AcoesRapidasTitulo
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(2, 52, 162, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Height: =37
+            PaddingLeft: =12
+            Size: =15
+            Text: ="Ações Rápidas"
+            Width: =290
+            Wrap: =false
+            X: =925
+            Y: =236
+      - Image3_1:
+          Control: Image@2.2.3
+          Group: grp_DadosInpecaoTitulo
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =69
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Image: =calendario
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =65
+            X: =290
+            Y: =238
+      - lbl_dadosInspecao:
+          Control: Label@2.5.1
+          Group: grp_DadosInpecaoTitulo
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(2, 52, 162, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Height: =37
+            PaddingLeft: =12
+            Size: =15
+            Text: ="Dados da Inspeção"
+            Width: =290
+            Wrap: =false
+            X: =355
+            Y: =236
+      - lbl_InformeDados_1:
+          Control: Label@2.5.1
+          Group: grp_AcoesRapidasTitulo
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(123, 121, 123, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.'Segoe UI'
+            Height: =37
+            PaddingLeft: =12
+            Size: =12
+            Text: ="Escolha uma ação para continuar."
+            Width: =400
+            Wrap: =false
+            X: =925
+            Y: =263
+      - btn_tratarNaoConformidadeAcoesRapidas:
+          Control: Classic/Button@2.2.0
+          Group: grp_TratarNaoConformidadesAcoes
+          Properties:
+            Align: =Align.Left
+            BorderColor: =RGBA(0, 56, 168, 1)
+            BorderThickness: =3
+            Color: =RGBA(36, 70, 165, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            DisabledFill: =RGBA(242, 242, 241, 0)
+            Fill: =RGBA(255, 255, 255, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Bold
+            Height: =119
+            HoverBorderColor: =RGBA(0, 56, 168, 1)
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =RGBA(0, 56, 168, 1)
+            OnSelect: =Navigate(TelaNCUsuario, ScreenTransition.Fade)
+            PaddingBottom: =30
+            PaddingLeft: =110
+            PressedBorderColor: =RGBA(0, 56, 168, 1)
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =RGBA(0, 56, 168, 1)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Text: ="TRATAR NÃO CONFORMIDADES"
+            Width: =452
+            X: =864
+            Y: =500
+      - Image3_2:
+          Control: Image@2.2.3
+          Group: grp_TratarNaoConformidadesAcoes
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =95
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Image: ='icone ferramenta'
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =73
+            X: =880
+            Y: =512
+      - lbl_BotaoNaoConformidades:
+          Control: Label@2.5.1
+          Group: grp_TratarNaoConformidadesAcoes
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(100, 110, 130, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.'Segoe UI'
+            Height: =25
+            Text: ="  Registre ou trate uma não conformidade"
+            Width: =350
+            X: =960
+            Y: =565
+      - lbl_BotaoNaoConformidades_1:
+          Control: Label@2.5.1
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =Color.White
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.'Segoe UI'
+            Height: =25
+            Text: ="Inicie o checklist da inspeção selecionada"
+            Width: =350
+            X: =966
+            Y: =402
+      - ctnMenuLateralBotoes:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =Color.Transparent
+            Height: =284
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            Width: =218
+            Y: =225
+          Children:
+            - ctnMenuChecklist:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.SetByContainer
+                  BorderColor: =RGBA(16, 110, 190, 1)
+                  BorderThickness: =1
+                  Fill: =Color.Transparent
+                  FillPortions: =0
+                  Height: =56
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutMinHeight: =56
+                  LayoutMinWidth: =0
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =6
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =6
+                  Width: =Parent.Width
+                  X: =
+                  Y: =
+                Children:
+                  - IconIniciar_1:
+                      Control: Classic/Icon@2.5.0
+                      Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        Color: =Color.White
+                        DisabledBorderColor: =RGBA(245, 245, 245, 1)
+                        DisabledColor: =RGBA(225, 223, 221, 1)
+                        DisabledFill: =RGBA(0, 0, 0, 0)
+                        DisplayMode: =DisplayMode.View
+                        FocusedBorderThickness: =4
+                        Height: =Parent.Height
+                        HoverBorderColor: =RGBA(0, 0, 0, 0)
+                        HoverColor: =RGBA(16, 110, 190, 1)
+                        HoverFill: =RGBA(0, 0, 0, 0)
+                        Icon: =Icon.CheckBadge
+                        PaddingBottom: =14
+                        PaddingLeft: =8
+                        PaddingRight: =8
+                        PaddingTop: =14
+                        PressedBorderColor: =RGBA(0, 0, 0, 0)
+                        PressedColor: =RGBA(16, 110, 190, 1)
+                        PressedFill: =RGBA(0, 0, 0, 0)
+                        Width: =44
+                  - btn_iniciar_BarradeBotoes:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Align: =Align.Left
+                        BorderColor: =RGBA(16, 110, 190, 1)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =0
+                        Color: =RGBA(255, 255, 255, 1)
+                        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                        DisabledColor: =RGBA(161, 159, 157, 1)
+                        DisabledFill: =RGBA(242, 242, 241, 0)
+                        DisplayMode: |+
+                          =If(
+                              varBusy ||
+                              IsEmpty(DataCardValue49.SelectedItems) ||
+                              IsEmpty(DataCardValue33.SelectedItems),
+                              DisplayMode.Disabled,
+                              DisplayMode.Edit
+                          )
+
+                        Fill: =Color.Transparent
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Normal
+                        Height: =Parent.Height
+                        HoverBorderColor: =RGBA(0, 0, 0, 0)
+                        HoverColor: =RGBA(255, 255, 255, 1)
+                        HoverFill: =RGBA(16, 110, 190, 1)
+                        OnSelect: =Select(btn_iniciar)
+                        PaddingBottom: =0
+                        PaddingLeft: =8
+                        PaddingRight: =6
+                        PaddingTop: =0
+                        PressedBorderColor: =RGBA(0, 69, 120, 1)
+                        PressedColor: =RGBA(255, 255, 255, 1)
+                        PressedFill: =RGBA(0, 69, 120, 1)
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =6
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =6
+                        Size: =10
+                        Text: ="CHECKLIST"
+                        Width: =Parent.Width - 44
+            - ctnMenuNC:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.SetByContainer
+                  BorderColor: =RGBA(16, 110, 190, 1)
+                  BorderThickness: =1
+                  Fill: =Color.Transparent
+                  FillPortions: =0
+                  Height: =56
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutMinHeight: =56
+                  LayoutMinWidth: =0
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =6
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =6
+                  Width: =Parent.Width
+                  X: =
+                  Y: =
+                Children:
+                  - Icon6:
+                      Control: Classic/Icon@2.5.0
+                      Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        Color: =Color.White
+                        DisabledBorderColor: =RGBA(245, 245, 245, 1)
+                        DisabledColor: =RGBA(225, 223, 221, 1)
+                        DisabledFill: =RGBA(0, 0, 0, 0)
+                        DisplayMode: =DisplayMode.View
+                        FocusedBorderThickness: =4
+                        Height: =Parent.Height
+                        HoverBorderColor: =RGBA(0, 0, 0, 0)
+                        HoverColor: =RGBA(16, 110, 190, 1)
+                        HoverFill: =RGBA(0, 0, 0, 0)
+                        Icon: =Icon.ToolsWrench
+                        PaddingBottom: =14
+                        PaddingLeft: =8
+                        PaddingRight: =8
+                        PaddingTop: =14
+                        PressedBorderColor: =RGBA(0, 0, 0, 0)
+                        PressedColor: =RGBA(16, 110, 190, 1)
+                        PressedFill: =RGBA(0, 0, 0, 0)
+                        Width: =44
+                  - btnTratativa:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Align: =Align.Left
+                        BorderColor: =RGBA(16, 110, 190, 1)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =0
+                        Color: =RGBA(255, 255, 255, 1)
+                        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                        DisabledColor: =RGBA(161, 159, 157, 1)
+                        DisabledFill: =RGBA(242, 242, 241, 0)
+                        Fill: =Color.Transparent
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Normal
+                        Height: =Parent.Height
+                        HoverBorderColor: =RGBA(0, 0, 0, 0)
+                        HoverColor: =RGBA(255, 255, 255, 1)
+                        HoverFill: =RGBA(16, 110, 190, 1)
+                        OnSelect: =Navigate(TelaNCUsuario, ScreenTransition.Fade)
+                        PaddingBottom: =0
+                        PaddingLeft: =8
+                        PaddingRight: =6
+                        PaddingTop: =0
+                        PressedBorderColor: =RGBA(0, 69, 120, 1)
+                        PressedColor: =RGBA(255, 255, 255, 1)
+                        PressedFill: =RGBA(0, 69, 120, 1)
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =6
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =6
+                        Size: =10
+                        Text: ="NÃO CONFORMIDADES"
+                        Width: =Parent.Width-44
+                        Y: =184
+            - ctnMenuRelatorios:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.SetByContainer
+                  BorderColor: =RGBA(16, 110, 190, 1)
+                  BorderThickness: =1
+                  Fill: =Color.Transparent
+                  FillPortions: =0
+                  Height: =56
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutMinHeight: =56
+                  LayoutMinWidth: =0
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =6
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =6
+                  Width: =Parent.Width
+                  X: =
+                  Y: =
+                Children:
+                  - Icon2:
+                      Control: Classic/Icon@2.5.0
+                      Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        Color: =RGBA(255, 255, 255, 1)
+                        DisabledBorderColor: =RGBA(245, 245, 245, 1)
+                        DisabledColor: =RGBA(225, 223, 221, 1)
+                        DisabledFill: =RGBA(0, 0, 0, 0)
+                        DisplayMode: =DisplayMode.View
+                        FocusedBorderThickness: =4
+                        Height: =Parent.Height
+                        HoverBorderColor: =RGBA(0, 0, 0, 0)
+                        HoverColor: =RGBA(16, 110, 190, 1)
+                        HoverFill: =RGBA(0, 0, 0, 0)
+                        Icon: =Icon.DocumentWithContent
+                        PaddingBottom: =14
+                        PaddingLeft: =8
+                        PaddingRight: =8
+                        PaddingTop: =14
+                        PressedBorderColor: =RGBA(0, 0, 0, 0)
+                        PressedColor: =RGBA(16, 110, 190, 1)
+                        PressedFill: =RGBA(0, 0, 0, 0)
+                        Width: =44
+                  - btnRelatorioInicial:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Align: =Align.Left
+                        BorderColor: =RGBA(16, 110, 190, 1)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =0
+                        Color: =RGBA(255, 255, 255, 1)
+                        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                        DisabledColor: =RGBA(161, 159, 157, 1)
+                        DisabledFill: =RGBA(242, 242, 241, 0)
+                        DisplayMode: =DisplayMode.Disabled
+                        Fill: =Color.Transparent
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Normal
+                        Height: =Parent.Height
+                        HoverBorderColor: =RGBA(0, 0, 0, 0)
+                        HoverColor: =RGBA(255, 255, 255, 1)
+                        HoverFill: =RGBA(16, 110, 190, 1)
+                        OnSelect: =Navigate(scrRelatorioFiltroFlex, ScreenTransition.Fade)
+                        PaddingBottom: =0
+                        PaddingLeft: =8
+                        PaddingRight: =6
+                        PaddingTop: =0
+                        PressedBorderColor: =RGBA(0, 69, 120, 1)
+                        PressedColor: =RGBA(255, 255, 255, 1)
+                        PressedFill: =RGBA(0, 69, 120, 1)
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =6
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =6
+                        Size: =10
+                        Text: ="RELATÓRIOS"
+                        Width: =Parent.Width-44
+                        Y: =246
+            - ctnMenuIndicadores:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.SetByContainer
+                  BorderColor: =RGBA(16, 110, 190, 1)
+                  BorderThickness: =1
+                  Fill: =Color.Transparent
+                  FillPortions: =0
+                  Height: =56
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutMinHeight: =56
+                  LayoutMinWidth: =0
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =6
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =6
+                  Width: =Parent.Width
+                  X: =
+                  Y: =
+                Children:
+                  - Icon7:
+                      Control: Classic/Icon@2.5.0
+                      Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        Color: =RGBA(255, 255, 255, 1)
+                        DisabledBorderColor: =RGBA(245, 245, 245, 1)
+                        DisabledColor: =RGBA(225, 223, 221, 1)
+                        DisabledFill: =RGBA(0, 0, 0, 0)
+                        DisplayMode: =DisplayMode.View
+                        FocusedBorderThickness: =4
+                        Height: =Parent.Height
+                        HoverBorderColor: =RGBA(0, 0, 0, 0)
+                        HoverColor: =RGBA(16, 110, 190, 1)
+                        HoverFill: =RGBA(0, 0, 0, 0)
+                        Icon: =Icon.Trending
+                        PaddingBottom: =14
+                        PaddingLeft: =8
+                        PaddingRight: =8
+                        PaddingTop: =14
+                        PressedBorderColor: =RGBA(0, 0, 0, 0)
+                        PressedColor: =RGBA(16, 110, 190, 1)
+                        PressedFill: =RGBA(0, 0, 0, 0)
+                        Width: =44
+                  - btn_IndicadoresInicial:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Align: =Align.Left
+                        BorderColor: =RGBA(16, 110, 190, 1)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =0
+                        Color: =RGBA(255, 255, 255, 1)
+                        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                        DisabledColor: =RGBA(161, 159, 157, 1)
+                        DisabledFill: =RGBA(242, 242, 241, 0)
+                        DisplayMode: =DisplayMode.Disabled
+                        Fill: =Color.Transparent
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Normal
+                        Height: =Parent.Height
+                        HoverBorderColor: =RGBA(0, 0, 0, 0)
+                        HoverColor: =RGBA(255, 255, 255, 1)
+                        HoverFill: =RGBA(16, 110, 190, 1)
+                        OnSelect: =Navigate(scrIndicadoresPrograma, ScreenTransition.Fade)
+                        PaddingBottom: =0
+                        PaddingLeft: =8
+                        PaddingRight: =6
+                        PaddingTop: =0
+                        PressedBorderColor: =RGBA(0, 69, 120, 1)
+                        PressedColor: =RGBA(255, 255, 255, 1)
+                        PressedFill: =RGBA(0, 69, 120, 1)
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =6
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =6
+                        Size: =10
+                        Text: ="INDICADORES"
+                        Width: =Parent.Width-44
+                        Y: =307
+            - ctnMenuAuditorias:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  AlignInContainer: =AlignInContainer.SetByContainer
+                  BorderColor: =RGBA(16, 110, 190, 1)
+                  BorderThickness: =1
+                  Fill: =Color.Transparent
+                  FillPortions: =0
+                  Height: =56
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutMinHeight: =56
+                  LayoutMinWidth: =0
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =6
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =6
+                  Width: =Parent.Width
+                  X: =
+                  Y: =
+                Children:
+                  - Icon12:
+                      Control: Classic/Icon@2.5.0
+                      Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        Color: =Color.White
+                        DisabledBorderColor: =RGBA(245, 245, 245, 1)
+                        DisabledColor: =RGBA(225, 223, 221, 1)
+                        DisabledFill: =RGBA(0, 0, 0, 0)
+                        FocusedBorderThickness: =4
+                        Height: =56
+                        HoverBorderColor: =RGBA(0, 0, 0, 0)
+                        HoverColor: =RGBA(16, 110, 190, 1)
+                        HoverFill: =RGBA(0, 0, 0, 0)
+                        Icon: =Icon.Edit
+                        PaddingBottom: =14
+                        PaddingTop: =14
+                        PressedBorderColor: =RGBA(0, 0, 0, 0)
+                        PressedColor: =RGBA(16, 110, 190, 1)
+                        PressedFill: =RGBA(0, 0, 0, 0)
+                        Width: =44
+                        X: =40
+                        Y: =40
+                  - btn_Auditorias:
+                      Control: Classic/Button@2.2.0
+                      Properties:
+                        Align: =Align.Left
+                        BorderColor: =RGBA(16, 110, 190, 1)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =0
+                        Color: =RGBA(255, 255, 255, 1)
+                        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                        DisabledColor: =RGBA(161, 159, 157, 1)
+                        DisabledFill: =RGBA(242, 242, 241, 0)
+                        DisplayMode: =DisplayMode.Disabled
+                        Fill: =Color.Transparent
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Normal
+                        Height: =Parent.Height
+                        HoverBorderColor: =RGBA(0, 0, 0, 0)
+                        HoverColor: =RGBA(255, 255, 255, 1)
+                        HoverFill: =RGBA(16, 110, 190, 1)
+                        OnSelect: =Navigate(TelaNovaAuditoria, ScreenTransition.Fade)
+                        PaddingBottom: =0
+                        PaddingLeft: =8
+                        PaddingRight: =6
+                        PaddingTop: =0
+                        PressedBorderColor: =RGBA(0, 69, 120, 1)
+                        PressedColor: =RGBA(255, 255, 255, 1)
+                        PressedFill: =RGBA(0, 69, 120, 1)
+                        RadiusBottomLeft: =0
+                        RadiusBottomRight: =6
+                        RadiusTopLeft: =0
+                        RadiusTopRight: =6
+                        Size: =10
+                        Text: ="AUDITORIAS"
+                        Width: =Parent.Width-44
+                        Y: =307
+      - HtmlBoasVindas:
+          Control: HtmlViewer@2.1.0
+          Properties:
+            DisabledBorderColor: =RGBA(161, 159, 157, 1)
+            Font: =Font.'Segoe UI'
+            Height: =101
+            HtmlText: |-
+              =With(
+                  {
+                      _nome:
+                          Trim(
+                              Substitute(
+                                  Substitute(
+                                      Substitute(
+                                          Substitute(
+                                              Substitute(
+                                                  Substitute(
+                                                      " " & Proper(Lower(User().FullName)) & " ",
+                                                      " De ", " de "
+                                                  ),
+                                                  " Da ", " da "
+                                              ),
+                                              " Do ", " do "
+                                          ),
+                                          " Dos ", " dos "
+                                      ),
+                                      " Das ", " das "
+                                  ),
+                                  " E ", " e "
+                              )
+                          )
+                  },
+                  "<div style='
+                      width:100%;
+                      font-family:Open Sans, Segoe UI, Arial, sans-serif;
+                      color:#FFFFFF;
+                      line-height:1.45;
+                  '>
+                      <div style='
+                          margin:0 0 6px 0;
+                          font-size:24px;
+                          font-weight:700;
+                      '>
+                          Olá, " & _nome & "!
+                      </div>
+
+                      <div style='
+                          margin:0;
+                          font-size:18px;
+                          font-weight:600;
+                      '>
+                          Seja bem-vindo ao Programa de Segurança, Organização Física e Sustentação do Programa Pellet Zero do LCQ-RJ
+                      </div>
+                  </div>"
+              )
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Width: =1063
+            X: =267
+            Y: =90

@@ -1,0 +1,542 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+App:
+  Properties:
+    OnStart: |-
+      =Set(varUserNome, User().FullName);
+      Set(varUserEmail, Lower(User().Email));
+
+      Set(varBusy, false);
+      Set(varBusyRelFlex, false);
+      Set(varBusyIndicadores, false);
+      Set(varBusyPDF, false);
+      Set(varBusyAuditoria, false);
+      Set(varResultadoAuditoria, Blank());
+
+      Set(varMatrizClassificacaoNCValida, false);
+      Set(varErroCarregamentoMatrizNC, false);
+
+      Clear(colMatrizClassificacaoNCAtiva);
+
+      IfError(
+          Refresh(MatrizClassificacaoNC);
+          ClearCollect(
+              colMatrizClassificacaoNCAtiva,
+              Filter(
+                  MatrizClassificacaoNC,
+                  Ativo.Value = "Sim"
+              )
+          );
+          Set(
+              varMatrizClassificacaoNCValida,
+              CountRows(colMatrizClassificacaoNCAtiva) > 0
+          ),
+          Clear(colMatrizClassificacaoNCAtiva);
+          Set(varErroCarregamentoMatrizNC, true);
+          Set(varMatrizClassificacaoNCValida, false);
+          Notify(
+              "⚠️ Não foi possível carregar as regras ativas da MatrizClassificacaoNC. Quando aplicável, as NCs serão registradas em contingência para preservar a rastreabilidade.",
+              NotificationType.Warning
+          )
+      );
+
+      If(
+          !varErroCarregamentoMatrizNC &&
+          !varMatrizClassificacaoNCValida,
+          Notify(
+              "⚠️ A MatrizClassificacaoNC não possui itens ativos. Quando aplicável, as NCs serão registradas em contingência para preservar a rastreabilidade.",
+              NotificationType.Warning
+          )
+      );
+
+      Set(varTemNC_Organizacao, false);
+      Set(varTemNC_Pellet, false);
+      Set(varTemNC_ReservaTecnica, false);
+      Set(varTemNC_OficinaAOL, false);
+      Set(varTemNC_Almoxarifado, false);
+      Set(varTemNC_Lavagem, false);
+      Set(varTemNC_Shelter, false);
+      Set(varTemNC_Deposito1, false);
+
+      ClearCollect(
+          colMapaItens,
+          Table(
+              {
+                  Campo: "DescartesSinalizados",
+                  Item: "Pontos de descarte estão corretamente identificados?",
+                  Pilar: "Organização Física",
+                  Ordem: 110
+              },
+              {
+                  Campo: "VidrariasOk",
+                  Item: "Vidrarias limpas e organizadas em local apropriado?",
+                  Pilar: "Organização Física",
+                  Ordem: 120
+              },
+              {
+                  Campo: "IdentificacaoFrascos",
+                  Item: "Frascos e cilindros possuem identificação conforme o padrão?",
+                  Pilar: "Organização Física",
+                  Ordem: 130
+              },
+              {
+                  Campo: "EtiquetasOk",
+                  Item: "Etiquetas estão padronizadas e visíveis?",
+                  Pilar: "Organização Física",
+                  Ordem: 140
+              },
+              {
+                  Campo: "PrateleirasId",
+                  Item: "Prateleiras e armários estão identificados corretamente?",
+                  Pilar: "Organização Física",
+                  Ordem: 150
+              },
+              {
+                  Campo: "SinalizacaoAtual",
+                  Item: "Sinalização das rotas de fuga no corredor e sala estão visíveis e claras?",
+                  Pilar: "Segurança",
+                  Ordem: 160
+              },
+              {
+                  Campo: "RotasFuga",
+                  Item: "Rotas de fuga no corredor e sala estão livres e desobstruídas?",
+                  Pilar: "Segurança",
+                  Ordem: 170
+              },
+              {
+                  Campo: "ReagentesOk",
+                  Item: "Todos os reagentes estão dentro do prazo de validade?",
+                  Pilar: "Segurança",
+                  Ordem: 180
+              },
+              {
+                  Campo: "FerramentasOk",
+                  Item: "Ferramentas estão identificadas conforme o padrão visual do ciclo vigente?",
+                  Pilar: "Organização Física",
+                  Ordem: 190
+              },
+
+              {
+                  Campo: "AcessoriosDisponiveis",
+                  Item: "Aspiradores e ferramentas de coleta estão funcionando e acessíveis?",
+                  Pilar: "Pellet Zero",
+                  Ordem: 210
+              },
+              {
+                  Campo: "AmostrasTampa",
+                  Item: "Frascos e potes de amostras estão armazenados com tampa?",
+                  Pilar: "Pellet Zero",
+                  Ordem: 220
+              },
+              {
+                  Campo: "BancadasLimpas",
+                  Item: "Bancadas estão livres de pellets e pó de resina?",
+                  Pilar: "Pellet Zero",
+                  Ordem: 230
+              },
+              {
+                  Campo: "BarreirasPellet",
+                  Item: "Barreiras de contenção estão íntegras, sem danos ou falhas de vedação?",
+                  Pilar: "Pellet Zero",
+                  Ordem: 240
+              },
+              {
+                  Campo: "ColetorOk",
+                  Item: "Coletores de descarte estão posicionados próximos às áreas críticas?",
+                  Pilar: "Pellet Zero",
+                  Ordem: 250
+              },
+              {
+                  Campo: "ExtrusaoLimpa",
+                  Item: "Há pellets ou resíduos abaixo, sobre ou ao redor das extrusoras?",
+                  Pilar: "Pellet Zero",
+                  Ordem: 260
+              },
+              {
+                  Campo: "PelletAusente",
+                  Item: "O chão está livre de pellets ou pó de resina?",
+                  Pilar: "Pellet Zero",
+                  Ordem: 270
+              },
+              {
+                  Campo: "PrateleirasLimpas",
+                  Item: "Prateleiras estão limpas, sem pellets ou pó de resina?",
+                  Pilar: "Pellet Zero",
+                  Ordem: 280
+              },
+              {
+                  Campo: "SacosArmazenados",
+                  Item: "Sacos de pellets e pó de resina estão identificados, fechados e bem armazenados?",
+                  Pilar: "Pellet Zero",
+                  Ordem: 290
+              },
+              {
+                  Campo: "VarreduraOk",
+                  Item: "Big bag de varredura está presente e sinalizado?",
+                  Pilar: "Pellet Zero",
+                  Ordem: 300
+              },
+
+              {
+                  Campo: "PrateleirasLiberadas",
+                  Item: "Prateleira do mês vigente está liberada?",
+                  Pilar: "Organização Física",
+                  Ordem: 410
+              },
+              {
+                  Campo: "PotesPendentes",
+                  Item: "Há potes pendentes de descarte?",
+                  Pilar: "Organização Física",
+                  Ordem: 420
+              },
+              {
+                  Campo: "PrateleirasExcesso",
+                  Item: "Prateleiras estão sem excesso de potes?",
+                  Pilar: "Organização Física",
+                  Ordem: 430
+              },
+              {
+                  Campo: "PotesChao",
+                  Item: "Todos os potes estão armazenados nas prateleiras, sem contato com o chão?",
+                  Pilar: "Organização Física",
+                  Ordem: 440
+              },
+              {
+                  Campo: "PisoOk",
+                  Item: "Piso está limpo e livre de pellets ou resíduos?",
+                  Pilar: "Organização Física",
+                  Ordem: 450
+              },
+              {
+                  Campo: "PrateleirasOk",
+                  Item: "Prateleiras estão livres de acúmulo de pellets, pó ou sujeira?",
+                  Pilar: "Organização Física",
+                  Ordem: 460
+              },
+              {
+                  Campo: "EscadaOk",
+                  Item: "Escada e acesso ao segundo andar estão livres de obstrução?",
+                  Pilar: "Segurança",
+                  Ordem: 470
+              },
+              {
+                  Campo: "EscadaFirme",
+                  Item: "Escada metálica está firme, sem ferrugem ou desgaste?",
+                  Pilar: "Segurança",
+                  Ordem: 480
+              },
+              {
+                  Campo: "CorrimaoOk",
+                  Item: "Corrimão e degraus estão em boas condições?",
+                  Pilar: "Segurança",
+                  Ordem: 490
+              },
+              {
+                  Campo: "SegundoAndarOk",
+                  Item: "Acesso ao segundo andar está seguro?",
+                  Pilar: "Segurança",
+                  Ordem: 500
+              },
+              {
+                  Campo: "PlataformaOk",
+                  Item: "Plataforma metálica do segundo andar está estável e sem danos?",
+                  Pilar: "Segurança",
+                  Ordem: 510
+              },
+              {
+                  Campo: "LuminariasOk",
+                  Item: "Luminárias estão funcionando corretamente?",
+                  Pilar: "Segurança",
+                  Ordem: 520
+              },
+              {
+                  Campo: "PrateleirasIdentificas",
+                  Item: "Prateleiras estão identificadas com etiquetas padronizadas?",
+                  Pilar: "Organização Física",
+                  Ordem: 530
+              },
+              {
+                  Campo: "PrateleirasSobrecarga",
+                  Item: "Prateleiras estão sem sobrecarga?",
+                  Pilar: "Segurança",
+                  Ordem: 540
+              },
+              {
+                  Campo: "PrateleiraDanos",
+                  Item: "Nenhuma prateleira apresenta danos estruturais?",
+                  Pilar: "Segurança",
+                  Ordem: 550
+              },
+              {
+                  Campo: "PrateleirasNumerdas",
+                  Item: "Prateleiras estão numeradas conforme o padrão?",
+                  Pilar: "Organização Física",
+                  Ordem: 560
+              },
+              {
+                  Campo: "PotesLocaisNaoDefinidos",
+                  Item: "Não há potes armazenados em locais não definidos?",
+                  Pilar: "Organização Física",
+                  Ordem: 570
+              },
+
+              {
+                  Campo: "BancadaLimpaAOL",
+                  Item: "Bancadas estão limpas, organizadas e sem obstruções?",
+                  Pilar: "Organização Física",
+                  Ordem: 610
+              },
+              {
+                  Campo: "FerramentasOkAOL",
+                  Item: "Ferramentas estão guardadas em local adequado e identificado?",
+                  Pilar: "Organização Física",
+                  Ordem: 620
+              },
+              {
+                  Campo: "FiosOk",
+                  Item: "Cabos e fios estão organizados e não obstruem áreas de passagem?",
+                  Pilar: "Segurança",
+                  Ordem: 630
+              },
+              {
+                  Campo: "ChaoOk",
+                  Item: "Área de circulação está livre de materiais no chão?",
+                  Pilar: "Organização Física",
+                  Ordem: 640
+              },
+              {
+                  Campo: "ArmariosIdentificadosAOL",
+                  Item: "Prateleiras e armários estão identificados com etiquetas padronizadas?",
+                  Pilar: "Organização Física",
+                  Ordem: 650
+              },
+              {
+                  Campo: "EtiquetasOkAOL",
+                  Item: "Prateleiras e armários estão organizados conforme a finalidade?",
+                  Pilar: "Organização Física",
+                  Ordem: 660
+              },
+              {
+                  Campo: "PontoColeta",
+                  Item: "Ponto de coleta de resíduos está limpo e sinalizado?",
+                  Pilar: "Organização Física",
+                  Ordem: 670
+              },
+
+              {
+                  Campo: "MateriaisForaLugar",
+                  Item: "Materiais armazenados corretamente e em local adequado?",
+                  Pilar: "Organização Física",
+                  Ordem: 710
+              },
+              {
+                  Campo: "CaixasNaoID",
+                  Item: "Caixas organizadas e identificadas?",
+                  Pilar: "Organização Física",
+                  Ordem: 720
+              },
+              {
+                  Campo: "ReagentesIDOk",
+                  Item: "Reagentes estão identificados corretamente?",
+                  Pilar: "Segurança",
+                  Ordem: 730
+              },
+              {
+                  Campo: "DocumentosArmariosOk",
+                  Item: "Documentos nos armários estão identificados corretamente e acessíveis?",
+                  Pilar: "Organização Física",
+                  Ordem: 740
+              },
+              {
+                  Campo: "PrateleirasId_Almox",
+                  Item: "Prateleiras estão organizadas, sem acúmulo de itens?",
+                  Pilar: "Organização Física",
+                  Ordem: 750
+              },
+              {
+                  Campo: "ReagentesOk_Almox",
+                  Item: "Reagentes dentro da validade?",
+                  Pilar: "Segurança",
+                  Ordem: 760
+              },
+              {
+                  Campo: "VidrariasOk_Almox",
+                  Item: "Vidrarias limpas e organizadas em local apropriado?",
+                  Pilar: "Organização Física",
+                  Ordem: 770
+              },
+
+              {
+                  Campo: "SalaLimpaOrganizada",
+                  Item: "Área está limpa, sem acúmulo de sujeira ou resíduos?",
+                  Pilar: "Organização Física",
+                  Ordem: 810
+              },
+              {
+                  Campo: "BancadasLimpas_Lav",
+                  Item: "Bancadas estão livres e desobstruídas?",
+                  Pilar: "Organização Física",
+                  Ordem: 820
+              },
+              {
+                  Campo: "DescartesSinalizados_Lav",
+                  Item: "Recipientes de descarte estão identificados corretamente?",
+                  Pilar: "Organização Física",
+                  Ordem: 830
+              },
+              {
+                  Campo: "ResiduosForaLugar",
+                  Item: "Resíduos estão armazenados de forma segura e adequada?",
+                  Pilar: "Segurança",
+                  Ordem: 840
+              },
+              {
+                  Campo: "ReagentesIDOk_Lav",
+                  Item: "Amostras estão identificadas corretamente?",
+                  Pilar: "Segurança",
+                  Ordem: 850
+              },
+              {
+                  Campo: "ReagentesOk_Lav",
+                  Item: "Há amostras vencidas ou sem uso armazenadas?",
+                  Pilar: "Segurança",
+                  Ordem: 860
+              },
+              {
+                  Campo: "GeladeiraOk",
+                  Item: "Geladeira está limpa, organizada e em bom funcionamento?",
+                  Pilar: "Segurança",
+                  Ordem: 870
+              },
+              {
+                  Campo: "GeradorGeloOk",
+                  Item: "Gerador de gelo está em funcionamento?",
+                  Pilar: "Segurança",
+                  Ordem: 880
+              },
+              {
+                  Campo: "CapelaStatus",
+                  Item: "Capela está com manutenção atualizada e funcionamento adequado?",
+                  Pilar: "Segurança",
+                  Ordem: 890
+              },
+
+              {
+                  Campo: "CilindrosComCorrente",
+                  Item: "Cilindros estão fixados com corrente de segurança?",
+                  Pilar: "Segurança",
+                  Ordem: 910
+              },
+              {
+                  Campo: "CilindrosComProtecao",
+                  Item: "Cilindros com reguladora ou proteção de válvula instaladas?",
+                  Pilar: "Segurança",
+                  Ordem: 920
+              },
+              {
+                  Campo: "FerramentasOk_Shelter",
+                  Item: "Ferramentas estão identificadas conforme o padrão visual do ciclo vigente?",
+                  Pilar: "Organização Física",
+                  Ordem: 930
+              },
+              {
+                  Campo: "ArmarFerramOrganizado",
+                  Item: "Armário de ferramentas está organizado?",
+                  Pilar: "Organização Física",
+                  Ordem: 940
+              },
+              {
+                  Campo: "VazamentoCalhaNecessitaLimpeza",
+                  Item: "Vazamentos em calhas de chuva estão ausentes?",
+                  Pilar: "Segurança",
+                  Ordem: 950
+              },
+              {
+                  Campo: "ProdutosFracionadosOk",
+                  Item: "Produtos fracionados estão com etiqueta de identificação devidamente preenchida?",
+                  Pilar: "Organização Física",
+                  Ordem: 960
+              },
+              {
+                  Campo: "VazamentoEmContencao",
+                  Item: "Há ausência de vazamento de reagente dentro das contenções?",
+                  Pilar: "Segurança",
+                  Ordem: 970
+              },
+              {
+                  Campo: "PainelAnalisadorFechado",
+                  Item: "Painéis dos analisadores estão devidamente fechados?",
+                  Pilar: "Segurança",
+                  Ordem: 980
+              },
+              {
+                  Campo: "TempShelterAdequada",
+                  Item: "Temperatura do shelter está adequada?",
+                  Pilar: "Segurança",
+                  Ordem: 990
+              },
+
+              {
+                  Campo: "ChaoLivreDeposito1",
+                  Item: "Ausência de materiais no chão?",
+                  Pilar: "Organização Física",
+                  Ordem: 1010
+              },
+              {
+                  Campo: "PrateleirasOrgDeposito1",
+                  Item: "Prateleiras estão organizadas por categoria?",
+                  Pilar: "Organização Física",
+                  Ordem: 1020
+              },
+              {
+                  Campo: "EtiquetasOkDeposito1",
+                  Item: "Todos os itens estão identificados com etiquetas padronizadas?",
+                  Pilar: "Organização Física",
+                  Ordem: 1030
+              },
+              {
+                  Campo: "EquipamentosIdentificacao1",
+                  Item: "Equipamentos possuem etiquetas de identificação visíveis?",
+                  Pilar: "Organização Física",
+                  Ordem: 1040
+              },
+              {
+                  Campo: "DescarteDeposito1",
+                  Item: "Itens danificados ou para descarte estão sinalizados com etiqueta?",
+                  Pilar: "Organização Física",
+                  Ordem: 1050
+              },
+              {
+                  Campo: "PlataformaDeposito1",
+                  Item: "Plataforma metálica do segundo andar está estável e sem danos?",
+                  Pilar: "Segurança",
+                  Ordem: 1060
+              },
+              {
+                  Campo: "PrateleirasFirmes1",
+                  Item: "Prateleiras estão firmes e sem sobrecarga?",
+                  Pilar: "Segurança",
+                  Ordem: 1070
+              },
+
+              {
+                  Campo: "StatusGeral",
+                  Item: "Status Geral da Área Inspecionada",
+                  Pilar: "Final",
+                  Ordem: 2010
+              },
+              {
+                  Campo: "ClassificacaoNC",
+                  Item: "Nível de Prioridade Para Ação Corretiva",
+                  Pilar: "Final",
+                  Ordem: 2020
+              }
+          )
+      )
+    Theme: =PowerAppsTheme

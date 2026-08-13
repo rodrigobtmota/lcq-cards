@@ -1,0 +1,762 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+Screens:
+  TelaFinal:
+    Properties:
+      Fill: =RGBA(238, 238, 238, 1)
+      LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+      OnVisible: |-
+        =Set(varBusy, false);
+        Set(statusGeralCalc, Blank());
+        Set(statusNCCalc, Blank());
+        Set(qtdNc, 0);
+        Set(varPossuiStatusNCInvalidoFinal, false);
+
+        Clear(colNcChecklist);
+        Clear(colNCAbertasChecklistAtualLocal);
+
+        If(
+            IsBlank(varRegistroChecklist) ||
+            IsBlank(varRegistroChecklist.ID),
+
+            Notify(
+                "⚠️ Não existe checklist ativo para finalizar. Volte ao início e reinicie a inspeção.",
+                NotificationType.Warning
+            ),
+
+            Refresh(NaoConformidadesPorSala);
+
+            ClearCollect(
+                colNcChecklist,
+                Filter(
+                    NaoConformidadesPorSala,
+                    ChecklistID = varRegistroChecklist.ID
+                )
+            );
+
+            Set(
+                varPossuiStatusNCInvalidoFinal,
+                !IsBlank(
+                    LookUp(
+                        colNcChecklist,
+                        IsBlank(StatusNC.Value) ||
+                        !(
+                            StatusNC.Value = "Aberta" ||
+                            StatusNC.Value = "Em Tratamento" ||
+                            StatusNC.Value = "Encerrada" ||
+                            StatusNC.Value = "Cancelada"
+                        ),
+                        ID
+                    )
+                )
+            );
+
+            If(
+                varPossuiStatusNCInvalidoFinal,
+
+                Notify(
+                    "⚠️ Existe uma não conformidade com status vazio ou inesperado. Informe o Focal do Programa para regularização.",
+                    NotificationType.Warning
+                ),
+
+                ClearCollect(
+                    colNCAbertasChecklistAtualLocal,
+                    Filter(
+                        colNcChecklist,
+                        StatusNC.Value <> "Encerrada"
+                    )
+                );
+
+                Set(
+                    qtdNc,
+                    CountRows(colNCAbertasChecklistAtualLocal)
+                );
+
+                Set(
+                    statusGeralCalc,
+                    If(
+                        qtdNc = 0,
+                        "Conforme",
+                        If(
+                            CountIf(
+                                colNCAbertasChecklistAtualLocal,
+                                ClassificacaoNC.Value = "Crítica / Segurança"
+                            ) > 0,
+                            "Crítico",
+                            "Atenção"
+                        )
+                    )
+                );
+
+                Set(
+                    statusNCCalc,
+                    If(
+                        qtdNc = 0,
+                        "Concluído",
+                        "Pendente"
+                    )
+                )
+            )
+        )
+    Children:
+      - Container7:
+          Control: GroupContainer@1.5.0
+          Variant: ManualLayout
+          Properties:
+            BorderColor: =RGBA(245, 245, 245, 1)
+            DropShadow: =DropShadow.None
+            Fill: =RGBA(238,238,238,1)
+            Height: =499
+            PaddingBottom: =10
+            PaddingLeft: =10
+            PaddingRight: =12
+            PaddingTop: =10
+            Width: |+
+              =1271
+            X: =48
+            Y: =115
+          Children:
+            - Form_telaFinal:
+                Control: Form@2.4.4
+                Variant: Classic
+                Layout: Vertical
+                Properties:
+                  BorderColor: =RGBA(245, 245, 245, 1)
+                  DataSource: =Checklist_OrganizacaoPellet2025
+                  Fill: =RGBA(238,238,238,1)
+                  FocusedBorderThickness: =2
+                  Height: =650
+                  Item: =varRegistroChecklist
+                  NumberOfColumns: =1
+                  OnFailure: |
+                    =Notify("❌ Erro ao enviar. Verifique os campos e tente novamente.", NotificationType.Error)
+                  OnSuccess: |+
+                    =
+
+                  Width: =Parent.Width
+                  X: =(Parent.Width - Self.Width) / 2
+                  Y: =15
+                Children:
+                  - StatusGeral_DataCard3:
+                      Control: TypedDataCard@1.0.7
+                      Variant: ClassicComboBoxEdit
+                      Properties:
+                        BorderColor: =RGBA(224, 224, 224, 1)
+                        DataField: ="StatusGeral"
+                        Default: =ThisItem.StatusGeral
+                        DisplayMode: =DisplayMode.Edit
+                        DisplayName: =DataSourceInfo([@Checklist_OrganizacaoPellet2025],DataSourceInfo.DisplayName,StatusGeral)
+                        Fill: =RGBA(238,238,238,1)
+                        Height: =150
+                        Required: =false
+                        Update: =DataCardValue47.Selected
+                        Width: =1297
+                        X: =0
+                        Y: =0
+                      Children:
+                        - DataCardKey47:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldName
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =Color.Black
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =34
+                              PaddingLeft: =0
+                              Size: =20
+                              Text: |-
+                                ="Status Geral da Área Inspecionada
+                                "
+                              Width: =Parent.Width - 60
+                              Wrap: =false
+                              X: =42
+                              Y: =10
+                        - DataCardValue47:
+                            Control: Classic/ComboBox@2.4.0
+                            MetadataKey: FieldValue
+                            Properties:
+                              BorderColor: =RGBA(200, 200, 200, 1)
+                              ChevronBackground: =RGBA(245, 245, 245, 1)
+                              ChevronDisabledBackground: =RGBA(242, 242, 241, 0)
+                              ChevronDisabledFill: =RGBA(161, 159, 157, 1)
+                              ChevronFill: =RGBA(50, 49, 48, 1)
+                              ChevronHoverBackground: =RGBA(245, 245, 245, 1)
+                              ChevronHoverFill: =RGBA(50, 49, 48, 1)
+                              Color: '=RGBA(0, 56, 168, 1) '
+                              DefaultSelectedItems: |-
+                                =If(
+                                    IsBlank(statusGeralCalc),
+                                    Blank(),
+                                    [
+                                        LookUp(
+                                            Choices([@Checklist_OrganizacaoPellet2025].StatusGeral),
+                                            Value = statusGeralCalc
+                                        )
+                                    ]
+                                )
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              DisabledFill: =RGBA(242, 242, 241, 0)
+                              DisplayFields: =["Value"]
+                              DisplayMode: |+
+                                =DisplayMode.View
+                              Fill: =Color.White
+                              FocusedBorderColor: =RGBA(0, 122, 225, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =80
+                              HoverBorderColor: =RGBA(0, 122, 255, 1)
+                              HoverColor: =RGBA(51, 51, 51, 1)
+                              HoverFill: =Color.White
+                              Items: =Choices([@Checklist_OrganizacaoPellet2025].StatusGeral)
+                              PaddingBottom: =10
+                              PaddingLeft: =10
+                              PaddingRight: =12
+                              PaddingTop: =10
+                              PressedBorderColor: =RGBA(16, 110, 190, 1)
+                              PressedColor: =RGBA(255, 255, 255, 1)
+                              PressedFill: =RGBA(0, 120, 212, 1)
+                              SearchFields: =["Value"]
+                              SelectMultiple: =false
+                              SelectionColor: =RGBA(255, 255, 255, 1)
+                              SelectionFill: =RGBA(0, 120, 212, 1)
+                              Size: =30
+                              Tooltip: =Parent.DisplayName
+                              Width: =Parent.Width - 60
+                              X: =42
+                              Y: =61
+                        - ErrorMessage47:
+                            Control: Label@2.5.1
+                            MetadataKey: ErrorMessage
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =RGBA(168, 0, 0, 1)
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(168, 0, 0, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =10
+                              Live: =Live.Assertive
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Text: =Parent.Error
+                              Visible: =Parent.DisplayMode=DisplayMode.Edit
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =DataCardValue47.Y + DataCardValue47.Height
+                        - StarVisible47:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldRequired
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =RGBA(50, 49, 48, 1)
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =DataCardKey47.Height
+                              PaddingLeft: =0
+                              Text: ="*"
+                              Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =30
+                              Wrap: =false
+                              Y: =DataCardKey47.Y
+                  - ClassificacaoNC_DataCard1:
+                      Control: TypedDataCard@1.0.7
+                      Variant: ClassicComboBoxEdit
+                      Properties:
+                        BorderColor: =RGBA(224, 224, 224, 1)
+                        DataField: ="ClassificacaoNC"
+                        Default: =ThisItem.ClassificacaoNC
+                        DisplayMode: =DisplayMode.Edit
+                        DisplayName: =DataSourceInfo([@Checklist_OrganizacaoPellet2025],DataSourceInfo.DisplayName,ClassificacaoNC)
+                        Fill: =RGBA(238,238,238,1)
+                        Height: =150
+                        Required: =false
+                        Update: =DataCardValue43.Selected
+                        Visible: =false
+                        Width: =1297
+                        X: =0
+                        Y: =1
+                      Children:
+                        - DataCardKey43:
+                            Control: Label@2.5.1
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =Color.Black
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =34
+                              PaddingLeft: =0
+                              Size: =20
+                              Text: ="Resultado do Checklist"
+                              Width: =Parent.Width - 60
+                              Wrap: =false
+                              X: =40
+                              Y: =40
+                        - DataCardValue43:
+                            Control: Classic/ComboBox@2.4.0
+                            Properties:
+                              BorderColor: =RGBA(200, 200, 200, 1)
+                              ChevronBackground: =RGBA(245, 245, 245, 1)
+                              ChevronDisabledBackground: =RGBA(242, 242, 241, 0)
+                              ChevronDisabledFill: =RGBA(161, 159, 157, 1)
+                              ChevronFill: =RGBA(50, 49, 48, 1)
+                              ChevronHoverBackground: =RGBA(245, 245, 245, 1)
+                              ChevronHoverFill: =RGBA(50, 49, 48, 1)
+                              Color: '=RGBA(0, 56, 168, 1) '
+                              DefaultSelectedItems: =Blank()
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              DisabledFill: =RGBA(242, 242, 241, 0)
+                              DisplayFields: =["Value"]
+                              DisplayMode: |+
+                                =DisplayMode.View
+                              Fill: =Color.White
+                              FocusedBorderColor: =RGBA(0, 122, 225, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =80
+                              HoverBorderColor: =RGBA(0, 122, 255, 1)
+                              HoverColor: =RGBA(51, 51, 51, 1)
+                              HoverFill: =Color.White
+                              Items: =Choices([@Checklist_OrganizacaoPellet2025].ClassificacaoNC)
+                              PaddingBottom: =10
+                              PaddingLeft: =10
+                              PaddingRight: =12
+                              PaddingTop: =10
+                              PressedBorderColor: =RGBA(16, 110, 190, 1)
+                              PressedColor: =RGBA(255, 255, 255, 1)
+                              PressedFill: =RGBA(0, 120, 212, 1)
+                              SearchFields: =["Value"]
+                              SelectMultiple: =false
+                              SelectionColor: =RGBA(255, 255, 255, 1)
+                              SelectionFill: =RGBA(0, 120, 212, 1)
+                              Size: =30
+                              Tooltip: =Parent.DisplayName
+                              Width: =Parent.Width - 60
+                              X: =40
+                              Y: =DataCardKey43.Y + DataCardKey43.Height + 5
+                        - ErrorMessage43:
+                            Control: Label@2.5.1
+                            MetadataKey: ErrorMessage
+                            Properties:
+                              AutoHeight: =true
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =RGBA(168, 0, 0, 1)
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(168, 0, 0, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =10
+                              Live: =Live.Assertive
+                              PaddingBottom: =0
+                              PaddingLeft: =0
+                              PaddingRight: =0
+                              PaddingTop: =0
+                              Text: =Parent.Error
+                              Visible: =Parent.DisplayMode=DisplayMode.Edit
+                              Width: =Parent.Width - 60
+                              X: =30
+                              Y: =DataCardValue43.Y + DataCardValue43.Height
+                        - StarVisible43:
+                            Control: Label@2.5.1
+                            MetadataKey: FieldRequired
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =2
+                              Color: =RGBA(50, 49, 48, 1)
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              FocusedBorderThickness: =4
+                              Font: =Font.'Segoe UI'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =DataCardKey43.Height
+                              PaddingLeft: =0
+                              Text: ="*"
+                              Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                              Width: =30
+                              Wrap: =false
+                              Y: =DataCardKey43.Y
+                  - DataCard7:
+                      Control: TypedDataCard@1.0.7
+                      Variant: BlankCard
+                      Properties:
+                        BorderColor: =RGBA(245, 245, 245, 1)
+                        Fill: =RGBA(238,238,238,1)
+                        Height: =120
+                        Width: =1297
+                        X: =0
+                        Y: =1
+                      Children:
+                        - btnEnviarTelaFinal:
+                            Control: Classic/Button@2.2.0
+                            Properties:
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              Color: =Color.White
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledColor: =RGBA(161, 159, 157, 1)
+                              DisabledFill: =RGBA(242, 242, 241, 0)
+                              Fill: '=RGBA(0, 56, 168, 1) '
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =80
+                              HoverBorderColor: =RGBA(0, 0, 0, 0)
+                              HoverColor: =RGBA(255, 255, 255, 1)
+                              HoverFill: =RGBA(0, 90, 160, 1)
+                              OnSelect: |-
+                                =If(
+                                    varBusy,
+
+                                    Notify(
+                                        "⏳ Aguarde, a finalização do checklist já está em processamento.",
+                                        NotificationType.Information
+                                    ),
+
+                                    Set(varBusy, true);
+                                    Set(varPodeFinalizarChecklist, true);
+                                    Set(varErroFinalizarChecklist, false);
+                                    Set(varPossuiStatusNCInvalidoFinal, false);
+                                    Set(
+                                        varRegistroChecklistAtualizadoTelaFinal,
+                                        Defaults(Checklist_OrganizacaoPellet2025)
+                                    );
+
+                                    If(
+                                        IsBlank(varRegistroChecklist) ||
+                                        IsBlank(varRegistroChecklist.ID),
+
+                                        Notify(
+                                            "❌ Não existe checklist ativo para finalizar. Volte ao início e reinicie a inspeção.",
+                                            NotificationType.Error
+                                        );
+                                        Set(varPodeFinalizarChecklist, false)
+                                    );
+
+                                    If(
+                                        varPodeFinalizarChecklist,
+
+                                        Refresh(NaoConformidadesPorSala);
+                                        Refresh(Checklist_OrganizacaoPellet2025);
+
+                                        ClearCollect(
+                                            colNcChecklist,
+                                            Filter(
+                                                NaoConformidadesPorSala,
+                                                ChecklistID = varRegistroChecklist.ID
+                                            )
+                                        );
+
+                                        Set(
+                                            varPossuiStatusNCInvalidoFinal,
+                                            !IsBlank(
+                                                LookUp(
+                                                    colNcChecklist,
+                                                    IsBlank(StatusNC.Value) ||
+                                                    !(
+                                                        StatusNC.Value = "Aberta" ||
+                                                        StatusNC.Value = "Em Tratamento" ||
+                                                        StatusNC.Value = "Encerrada" ||
+                                                        StatusNC.Value = "Cancelada"
+                                                    ),
+                                                    ID
+                                                )
+                                            )
+                                        );
+
+                                        If(
+                                            varPossuiStatusNCInvalidoFinal,
+
+                                            Notify(
+                                                "⚠️ Existe uma não conformidade com status vazio ou inesperado. Informe o Focal do Programa para regularização.",
+                                                NotificationType.Warning
+                                            );
+                                            Set(varPodeFinalizarChecklist, false),
+
+                                            ClearCollect(
+                                                colNCAbertasChecklistAtualLocal,
+                                                Filter(
+                                                    colNcChecklist,
+                                                    StatusNC.Value <> "Encerrada"
+                                                )
+                                            );
+
+                                            Set(
+                                                qtdNc,
+                                                CountRows(colNCAbertasChecklistAtualLocal)
+                                            );
+
+                                            Set(
+                                                statusGeralCalc,
+                                                If(
+                                                    qtdNc = 0,
+                                                    "Conforme",
+                                                    If(
+                                                        CountIf(
+                                                            colNCAbertasChecklistAtualLocal,
+                                                            ClassificacaoNC.Value = "Crítica / Segurança"
+                                                        ) > 0,
+                                                        "Crítico",
+                                                        "Atenção"
+                                                    )
+                                                )
+                                            );
+
+                                            Set(
+                                                statusNCCalc,
+                                                If(
+                                                    qtdNc = 0,
+                                                    "Concluído",
+                                                    "Pendente"
+                                                )
+                                            )
+                                        )
+                                    );
+
+                                    If(
+                                        varPodeFinalizarChecklist,
+
+                                        Set(
+                                            varRegistroChecklistAtualizadoTelaFinal,
+                                            IfError(
+                                                Patch(
+                                                    Checklist_OrganizacaoPellet2025,
+                                                    LookUp(
+                                                        Checklist_OrganizacaoPellet2025,
+                                                        ID = varRegistroChecklist.ID
+                                                    ),
+                                                    {
+                                                        StatusGeral: {
+                                                            Value: statusGeralCalc
+                                                        },
+                                                        StatusNC: {
+                                                            Value: statusNCCalc
+                                                        }
+                                                    }
+                                                ),
+                                                Blank()
+                                            )
+                                        );
+
+                                        If(
+                                            IsBlank(varRegistroChecklistAtualizadoTelaFinal.ID),
+
+                                            Set(varErroFinalizarChecklist, true);
+                                            Notify(
+                                                "❌ Erro ao concluir o checklist. Verifique conexão, permissão ou opções das colunas.",
+                                                NotificationType.Error
+                                            ),
+
+                                            Set(
+                                                varRegistroChecklist,
+                                                varRegistroChecklistAtualizadoTelaFinal
+                                            )
+                                        )
+                                    );
+
+                                    If(
+                                        varPodeFinalizarChecklist &&
+                                        !varErroFinalizarChecklist,
+
+                                        ResetForm(Form_telaOrganizacao);
+                                        ResetForm(Form_InicioSala);
+                                        ResetForm(Form_telaFinal);
+                                        ResetForm(Form_Telapellet);
+                                        ResetForm(Form_Reserva);
+                                        ResetForm(Form_Oficina);
+                                        ResetForm(Form_Shelter);
+                                        ResetForm(Form_Deposito1);
+                                        ResetForm(Form_Lavagem);
+                                        ResetForm(Form_Almoxarifado);
+
+                                        Clear(colNCtemporarias);
+                                        Clear(colNcChecklist);
+                                        Clear(colNCAbertasChecklistAtualLocal);
+                                        Clear(colNCcriadas);
+                                        Clear(colErrosNC);
+                                        Clear(colNCDuplicadas);
+                                        Clear(colNCChecklistAtualLocal);
+
+                                        Set(varTemNC_Organizacao, false);
+                                        Set(varTemNC_Pellet, false);
+                                        Set(varTemNC_ReservaTecnica, false);
+                                        Set(varTemNC_OficinaAOL, false);
+                                        Set(varTemNC_Almoxarifado, false);
+                                        Set(varTemNC_Lavagem, false);
+                                        Set(varTemNC_Shelter, false);
+                                        Set(varTemNC_Deposito1, false);
+
+                                        Set(varBusy, false);
+
+                                        Notify(
+                                            "✅ Checklist concluído com sucesso. Resultado: " &
+                                            statusGeralCalc &
+                                            " | NCs pendentes: " &
+                                            qtdNc,
+                                            NotificationType.Success
+                                        );
+
+                                        Set(varRegistroChecklist, Blank());
+
+                                        Navigate(
+                                            TelaInicio,
+                                            ScreenTransition.Fade
+                                        ),
+
+                                        Set(varBusy, false)
+                                    )
+                                )
+                              PressedBorderColor: =RGBA(0, 69, 120, 1)
+                              PressedColor: =RGBA(255, 255, 255, 1)
+                              PressedFill: =RGBA(16, 110, 190, 1)
+                              RadiusBottomLeft: =12
+                              RadiusBottomRight: =12
+                              RadiusTopLeft: =12
+                              RadiusTopRight: =12
+                              Size: =22
+                              Text: |-
+                                =If(
+                                    varBusy,
+                                    "FINALIZANDO...",
+                                    "FINALIZAR CHECKLIST"
+                                )
+                              Width: =1233
+                              X: =32
+                              Y: =16
+      - Container14_22:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Group: Group10_6
+          Properties:
+            Fill: =RGBA(3, 52, 162, 1)
+            Height: =95
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            PaddingBottom: =8
+            PaddingLeft: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Width: =1271
+            X: =48
+            Y: =20
+      - Icone_home_11:
+          Control: Classic/Icon@2.5.0
+          Group: Group10_6
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: =Color.White
+            DisabledBorderColor: =RGBA(245, 245, 245, 1)
+            DisabledColor: =RGBA(225, 223, 221, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =65
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(16, 110, 190, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.Home
+            OnSelect: =Navigate(TelaInicio, ScreenTransition.Fade)
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =RGBA(16, 110, 190, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =45
+            X: =1253
+            Y: =35
+      - Label1_18:
+          Control: Label@2.5.1
+          Group: Group10_6
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =Color.White
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =52
+            Size: =24
+            Text: ="Resultado Final da Inspeção"
+            Width: =472
+            X: =61
+            Y: =49
+      - Icon10_12:
+          Control: Classic/Icon@2.5.0
+          Group: Group10_6
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: =RGBA(255, 200, 0, 1)
+            DisabledBorderColor: =RGBA(245, 245, 245, 1)
+            DisabledColor: =RGBA(225, 223, 221, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =21
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(16, 110, 190, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.HorizontalLine
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =RGBA(16, 110, 190, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =100
+            X: =72
+            Y: =28
+      - Container14_23:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Group: Group10_6
+          Properties:
+            Fill: =RGBA(3, 52, 162, 1)
+            Height: =29
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            PaddingBottom: =8
+            PaddingLeft: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Width: =1271
+            X: =48
+            Y: =739

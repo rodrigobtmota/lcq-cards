@@ -1,0 +1,1089 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+Screens:
+  scrRelatorioFiltroFlex:
+    Properties:
+      Fill: =RGBA(245, 245, 245, 1)
+      LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+      OnVisible: |-
+        =
+
+
+
+        Clear(colSalas);
+
+        Collect(
+            colSalas,
+            {Value: "TODAS"}
+        );
+
+        IfError(
+            Collect(
+                colSalas,
+                Sort(
+                    Filter(
+                        Choices([@Checklist_OrganizacaoPellet2025].Sala),
+                        !IsBlank(Value)
+                    ),
+                    Value,
+                    SortOrder.Ascending
+                )
+            ),
+
+            Notify(
+                "⚠️ Não foi possível carregar as salas da lista Checklist_OrganizacaoPellet2025. Verifique a coluna Sala ou a conexão da lista.",
+                NotificationType.Warning
+            )
+        );
+
+        Reset(ddSalaFiltroRel);
+
+        ClearCollect(
+            colRodizioPlanejadoLocal,
+            Filter(
+                RodizioPlanejado,
+                Publicado = true &&
+                StatusRodizio.Value <> "Cancelado"
+            )
+        );
+
+        ClearCollect(
+            colMapaPerguntas,
+            Sort(
+                ForAll(
+                    colMapaItens As itemMapa,
+                    {
+                        Campo: itemMapa.Campo,
+                        Pergunta: itemMapa.Item,
+                        Ordem: itemMapa.Ordem
+                    }
+                ),
+                Ordem,
+                SortOrder.Ascending
+            )
+        );
+
+        If(
+            CountRows(colMapaPerguntas) = 0,
+
+            Notify(
+                "⚠️ O mapa de perguntas não foi carregado. Execute o App.OnStart ou verifique se colMapaItens está sendo criada corretamente.",
+                NotificationType.Warning
+            )
+        );
+
+        Clear(colRelPerguntasRespostas);
+        Clear(colRelChecklistAgrupado);
+        Clear(colRelCheckPreview);
+
+        Set(varBusyRelFlex, false);
+        Set(varBusyPDF, false);
+        Set(varLinkPDF, Blank());
+        Set(varRetornoPDF, Blank());
+        Set(varParametrosPDF, Blank())
+    Children:
+      - cardFiltros:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            BorderColor: =RGBA(226,232,240,1)
+            BorderThickness: =1
+            Fill: =RGBA(255,255,255,1)
+            Height: =72
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Horizontal
+            PaddingBottom: =8
+            PaddingLeft: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            RadiusBottomLeft: =14
+            RadiusBottomRight: =14
+            RadiusTopLeft: =14
+            RadiusTopRight: =14
+            Width: =1280
+            X: =40
+            Y: =118
+      - btnBuscar:
+          Control: Classic/Button@2.2.0
+          Properties:
+            AccessibleLabel: ="Buscar histórico de inspeções"
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            Color: =Color.White
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            DisabledFill: =RGBA(242, 242, 241, 0)
+            DisplayMode: |-
+              =If(
+                  varBusyRelFlex,
+                  DisplayMode.Disabled,
+                  DisplayMode.Edit
+              )
+            Fill: =RGBA(3, 52, 162, 1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Height: =48
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =RGBA(0,95,180,1)
+            OnSelect: |-
+              =If(
+                  varBusyRelFlex,
+
+                  Notify(
+                      "⏳ Aguarde, a busca do relatório já está em processamento.",
+                      NotificationType.Information
+                  ),
+
+                  If(
+                      !IsBlank(dtIniFiltroRel.SelectedDate) &&
+                      !IsBlank(dtFimFiltroRel.SelectedDate) &&
+                      DateValue(dtIniFiltroRel.SelectedDate) > DateValue(dtFimFiltroRel.SelectedDate),
+
+                      Notify(
+                          "❌ A data inicial não pode ser maior que a data final.",
+                          NotificationType.Error
+                      ),
+
+                      If(
+                          ddSalaFiltroRel.Selected.Value = "TODAS" &&
+                          IsBlank(dtIniFiltroRel.SelectedDate) &&
+                          IsBlank(dtFimFiltroRel.SelectedDate),
+
+                          Notify(
+                              "⚠️ Selecione uma sala ou informe um período para evitar uma busca muito ampla.",
+                              NotificationType.Warning
+                          ),
+
+                          Set(varBusyRelFlex, true);
+
+                          IfError(
+                              Refresh(Checklist_OrganizacaoPellet2025);
+                              Refresh(RodizioPlanejado);
+                              Refresh(NaoConformidadesPorSala);
+
+                              Clear(colRelPerguntasRespostas);
+                              Clear(colRelChecklistAgrupado);
+                              Clear(colRelCheckPreview);
+
+                              ClearCollect(
+                                  colRelCheckPreview,
+                                  SortByColumns(
+                                      Filter(
+                                          Checklist_OrganizacaoPellet2025,
+                                          (
+                                              ddSalaFiltroRel.Selected.Value = "TODAS" ||
+                                              Sala.Value = ddSalaFiltroRel.Selected.Value
+                                          ) &&
+                                          (
+                                              IsBlank(dtIniFiltroRel.SelectedDate) ||
+                                              DataInspecao >= DateValue(dtIniFiltroRel.SelectedDate)
+                                          ) &&
+                                          (
+                                              IsBlank(dtFimFiltroRel.SelectedDate) ||
+                                              DataInspecao < DateAdd(
+                                                  DateValue(dtFimFiltroRel.SelectedDate),
+                                                  1,
+                                                  TimeUnit.Days
+                                              )
+                                          )
+                                      ),
+                                      "DataInspecao",
+                                      SortOrder.Descending
+                                  )
+                              );
+
+                              ForAll(
+                                  colRelCheckPreview As chk,
+
+                                  With(
+                                      {
+                                          _EhAlmox: Lower(Trim(chk.Sala.Value)) = "almoxarifado",
+                                          _EhLav: Lower(Trim(chk.Sala.Value)) = "sala de lavagem",
+                                          _EhShelter: StartsWith(
+                                              Lower(Trim(chk.Sala.Value)),
+                                              "shelter"
+                                          ),
+
+                                          _RespSalaTexto:
+                                              With(
+                                                  {
+                                                      _RodizioHistorico:
+                                                          LookUp(
+                                                              colRodizioPlanejadoLocal,
+                                                              Sala.Value = chk.Sala.Value &&
+                                                              !IsBlank(chk.DataInspecao) &&
+                                                              InicioRodizio <= chk.DataInspecao &&
+                                                              FimRodizio >= chk.DataInspecao
+                                                          ),
+
+                                                      _NCHistorica:
+                                                          LookUp(
+                                                              NaoConformidadesPorSala,
+                                                              ChecklistID = chk.ID
+                                                          )
+                                                  },
+
+                                                  With(
+                                                      {
+                                                          _TextoRodizioHistorico:
+                                                              IfError(
+                                                                  Concat(
+                                                                      _RodizioHistorico.ResponsavelSala,
+                                                                      Coalesce(
+                                                                          DisplayName,
+                                                                          Email,
+                                                                          ""
+                                                                      ),
+                                                                      ", "
+                                                                  ),
+                                                                  ""
+                                                              ),
+
+                                                          _TextoResponsavelOriginalNC:
+                                                              IfError(
+                                                                  Concat(
+                                                                      _NCHistorica.ResponsavelOriginal,
+                                                                      Coalesce(
+                                                                          DisplayName,
+                                                                          Email,
+                                                                          ""
+                                                                      ),
+                                                                      ", "
+                                                                  ),
+                                                                  ""
+                                                              ),
+
+                                                          _TextoResponsavelAtualNC:
+                                                              IfError(
+                                                                  Concat(
+                                                                      _NCHistorica.ResponsavelSala,
+                                                                      Coalesce(
+                                                                          DisplayName,
+                                                                          Email,
+                                                                          ""
+                                                                      ),
+                                                                      ", "
+                                                                  ),
+                                                                  ""
+                                                              )
+                                                      },
+
+                                                      If(
+                                                          !IsBlank(Trim(_TextoRodizioHistorico)),
+                                                          _TextoRodizioHistorico,
+
+                                                          If(
+                                                              !IsBlank(Trim(_TextoResponsavelOriginalNC)),
+                                                              _TextoResponsavelOriginalNC,
+
+                                                              If(
+                                                                  !IsBlank(Trim(_TextoResponsavelAtualNC)),
+                                                                  _TextoResponsavelAtualNC,
+
+                                                                  "Sem responsável de sala vinculado ao período"
+                                                              )
+                                                          )
+                                                      )
+                                                  )
+                                              )
+                                      },
+
+                                      ForAll(
+                                          colMapaPerguntas As mp,
+
+                                          With(
+                                              {
+                                                  _Resposta:
+                                                      Switch(
+                                                          mp.Campo,
+
+                                                          "DescartesSinalizados", If(_EhLav, Blank(), Text(chk.DescartesSinalizados.Value)),
+                                                          "VidrariasOk", If(_EhAlmox, Blank(), Text(chk.VidrariasOk.Value)),
+                                                          "IdentificacaoFrascos", Text(chk.IdentificacaoFrascos.Value),
+                                                          "EtiquetasOk", Text(chk.EtiquetasOk.Value),
+                                                          "PrateleirasId", If(_EhAlmox, Blank(), Text(chk.PrateleirasId.Value)),
+                                                          "SinalizacaoAtual", Text(chk.SinalizacaoAtual.Value),
+                                                          "RotasFuga", Text(chk.RotasFuga.Value),
+                                                          "ReagentesOk", If(_EhAlmox || _EhLav, Blank(), Text(chk.ReagentesOk.Value)),
+                                                          "FerramentasOk", If(_EhShelter, Blank(), Text(chk.FerramentasOk.Value)),
+
+                                                          "AcessoriosDisponiveis", Text(chk.AcessoriosDisponiveis.Value),
+                                                          "AmostrasTampa", Text(chk.AmostrasTampa.Value),
+                                                          "BancadasLimpas", If(_EhLav, Blank(), Text(chk.BancadasLimpas.Value)),
+                                                          "BarreirasPellet", Text(chk.BarreirasPellet.Value),
+                                                          "ColetorOk", Text(chk.ColetorOk.Value),
+                                                          "ExtrusaoLimpa", Text(chk.ExtrusaoLimpa.Value),
+                                                          "PelletAusente", Text(chk.PelletAusente.Value),
+                                                          "PrateleirasLimpas", Text(chk.PrateleirasLimpas.Value),
+                                                          "SacosArmazenados", Text(chk.SacosArmazenados.Value),
+                                                          "VarreduraOk", Text(chk.VarreduraOk.Value),
+
+                                                          "PrateleirasLiberadas", Text(chk.PrateleirasLiberadas.Value),
+                                                          "PotesPendentes", Text(chk.PotesPendentes.Value),
+                                                          "PrateleirasExcesso", Text(chk.PrateleirasExcesso.Value),
+                                                          "PotesChao", Text(chk.PotesChao.Value),
+                                                          "PisoOk", Text(chk.PisoOk.Value),
+                                                          "PrateleirasOk", Text(chk.PrateleirasOk.Value),
+                                                          "EscadaOk", Text(chk.EscadaOk.Value),
+                                                          "EscadaFirme", Text(chk.EscadaFirme.Value),
+                                                          "CorrimaoOk", Text(chk.CorrimaoOk.Value),
+                                                          "SegundoAndarOk", Text(chk.SegundoAndarOk.Value),
+                                                          "PlataformaOk", Text(chk.PlataformaOk.Value),
+                                                          "LuminariasOk", Text(chk.LuminariasOk.Value),
+                                                          "PrateleirasIdentificas", Text(chk.PrateleirasIdentificas.Value),
+                                                          "PrateleirasSobrecarga", Text(chk.PrateleirasSobrecarga.Value),
+                                                          "PrateleiraDanos", Text(chk.PrateleiraDanos.Value),
+                                                          "PrateleirasNumerdas", Text(chk.PrateleirasNumerdas.Value),
+                                                          "PotesLocaisNaoDefinidos", Text(chk.PotesLocaisNaoDefinidos.Value),
+
+                                                          "BancadaLimpaAOL", Text(chk.BancadaLimpaAOL.Value),
+                                                          "FerramentasOkAOL", Text(chk.FerramentasOkAOL.Value),
+                                                          "FiosOk", Text(chk.FiosOk.Value),
+                                                          "ChaoOk", Text(chk.ChaoOk.Value),
+                                                          "ArmariosIdentificadosAOL", Text(chk.ArmariosIdentificadosAOL.Value),
+                                                          "EtiquetasOkAOL", Text(chk.EtiquetasOkAOL.Value),
+                                                          "PontoColeta", Text(chk.PontoColeta.Value),
+
+                                                          "MateriaisForaLugar", Text(chk.MateriaisForaLugar.Value),
+                                                          "CaixasNaoID", Text(chk.CaixasNaoID.Value),
+                                                          "ReagentesIDOk_Almox", If(_EhAlmox, Text(chk.ReagentesIDOk.Value), Blank()),
+                                                          "DocumentosArmariosOk", Text(chk.DocumentosArmariosOk.Value),
+                                                          "PrateleirasId_Almox", If(_EhAlmox, Text(chk.PrateleirasId.Value), Blank()),
+                                                          "ReagentesOk_Almox", If(_EhAlmox, Text(chk.ReagentesOk.Value), Blank()),
+                                                          "VidrariasOk_Almox", If(_EhAlmox, Text(chk.VidrariasOk.Value), Blank()),
+
+                                                          "SalaLimpaOrganizada", Text(chk.SalaLimpaOrganizada.Value),
+                                                          "BancadasLimpas_Lav", If(_EhLav, Text(chk.BancadasLimpas.Value), Blank()),
+                                                          "DescartesSinalizados_Lav", If(_EhLav, Text(chk.DescartesSinalizados.Value), Blank()),
+                                                          "ResiduosForaLugar", Text(chk.ResiduosForaLugar.Value),
+                                                          "ReagentesIDOk_Lav", If(_EhLav, Text(chk.ReagentesIDOk.Value), Blank()),
+                                                          "ReagentesOk_Lav", If(_EhLav, Text(chk.ReagentesOk.Value), Blank()),
+                                                          "GeladeiraOk", Text(chk.GeladeiraOk.Value),
+                                                          "GeradorGeloOk", Text(chk.GeradorGeloOk.Value),
+                                                          "CapelaStatus", Text(chk.CapelaStatus.Value),
+
+                                                          "CilindrosComCorrente", Text(chk.CilindrosComCorrente.Value),
+                                                          "CilindrosComProtecao", Text(chk.CilindrosComProtecao.Value),
+                                                          "FerramentasOk_Shelter", If(_EhShelter, Text(chk.FerramentasOk.Value), Blank()),
+                                                          "ArmarFerramOrganizado", Text(chk.ArmarFerramOrganizado.Value),
+                                                          "VazamentoCalhaNecessitaLimpeza", Text(chk.VazamentoCalhaNecessitaLimpeza.Value),
+                                                          "ProdutosFracionadosOk", Text(chk.ProdutosFracionadosOk.Value),
+                                                          "VazamentoEmContencao", Text(chk.VazamentoEmContencao.Value),
+                                                          "PainelAnalisadorFechado", Text(chk.PainelAnalisadorFechado.Value),
+                                                          "TempShelterAdequada", Text(chk.TempShelterAdequada.Value),
+
+                                                          "ChaoLivreDeposito1", Text(chk.ChaoLivreDeposito1.Value),
+                                                          "PrateleirasOrgDeposito1", Text(chk.PrateleirasOrgDeposito1.Value),
+                                                          "EtiquetasOkDeposito1", Text(chk.EtiquetasOkDeposito1.Value),
+                                                          "EquipamentosIdentificacao1", Text(chk.EquipamentosIdentificacao1.Value),
+                                                          "DescarteDeposito1", Text(chk.DescarteDeposito1.Value),
+                                                          "PlataformaDeposito1", Text(chk.PlataformaDeposito1.Value),
+                                                          "PrateleirasFirmes1", Text(chk.PrateleirasFirmes1.Value),
+
+                                                          "StatusGeral", Text(chk.StatusGeral.Value),
+                                                          "ClassificacaoNC", Text(chk.ClassificacaoNC.Value),
+
+                                                          Blank()
+                                                      )
+                                              },
+
+                                              If(
+                                                  !IsBlank(_Resposta) && Trim(_Resposta) <> "",
+
+                                                  Collect(
+                                                      colRelPerguntasRespostas,
+                                                      {
+                                                          ChecklistID: chk.ID,
+                                                          DataInspecao: chk.DataInspecao,
+                                                          Sala: chk.Sala.Value,
+                                                          Turno: chk.Turno.Value,
+                                                          ResponsavelInspecao: Coalesce(
+                                                              chk.ResponsavelInspecao.DisplayName,
+                                                              chk.ResponsavelInspecao.Email,
+                                                              ""
+                                                          ),
+                                                          ResponsavelSala: _RespSalaTexto,
+                                                          Ordem: mp.Ordem,
+                                                          Pergunta: mp.Pergunta,
+                                                          Resposta: _Resposta
+                                                      }
+                                                  )
+                                              )
+                                          )
+                                      )
+                                  )
+                              );
+
+                              Clear(colRelChecklistAgrupado);
+
+                              ForAll(
+                                  colRelCheckPreview As chk,
+
+                                  With(
+                                      {
+                                          _linhasChecklist:
+                                              SortByColumns(
+                                                  Filter(
+                                                      colRelPerguntasRespostas,
+                                                      ChecklistID = chk.ID
+                                                  ),
+                                                  "Ordem",
+                                                  SortOrder.Ascending
+                                              )
+                                      },
+
+                                      If(
+                                          CountRows(_linhasChecklist) > 0,
+
+                                          Collect(
+                                              colRelChecklistAgrupado,
+                                              {
+                                                  ChecklistID: chk.ID,
+                                                  PerguntasDoChecklist: _linhasChecklist,
+                                                  DataInspecaoCab: chk.DataInspecao,
+                                                  SalaTexto: chk.Sala.Value,
+                                                  TurnoTexto: chk.Turno.Value,
+                                                  ResponsavelInspecaoTexto: Coalesce(
+                                                      chk.ResponsavelInspecao.DisplayName,
+                                                      chk.ResponsavelInspecao.Email,
+                                                      ""
+                                                  ),
+                                                  ResponsavelSalaTexto: First(_linhasChecklist).ResponsavelSala
+                                              }
+                                          )
+                                      )
+                                  )
+                              );
+
+                              Set(varBusyRelFlex, false);
+
+                              Notify(
+                                  "✅ Busca concluída. Registros encontrados: " & CountRows(colRelChecklistAgrupado),
+                                  NotificationType.Success
+                              ),
+
+                              Notify(
+                                  "❌ Erro ao buscar o relatório. Verifique filtros, conexão ou permissões.",
+                                  NotificationType.Error
+                              );
+                              Set(varBusyRelFlex, false)
+                          )
+                      )
+                  )
+              )
+            PressedBorderColor: =RGBA(0, 69, 120, 1)
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =RGBA(16, 110, 190, 1)
+            Size: =18
+            Text: |-
+              =If(
+                  varBusyRelFlex,
+                  "BUSCANDO...",
+                  "🔍 Buscar"
+              )
+            Width: =160
+            X: =930
+            Y: =130
+      - ddSalaFiltroRel:
+          Control: Classic/DropDown@2.3.1
+          Properties:
+            AccessibleLabel: ="Filtro de sala do relatório"
+            BorderColor: =RGBA(218,225,235,1)
+            ChevronBackground: =RGBA(250,251,253,1)
+            ChevronDisabledBackground: =RGBA(242, 242, 241, 0)
+            ChevronDisabledFill: =RGBA(161, 159, 157, 1)
+            ChevronFill: =RGBA(0,56,168,1)
+            ChevronHoverBackground: =RGBA(245, 245, 245, 1)
+            ChevronHoverFill: =RGBA(50, 49, 48, 1)
+            Color: =RGBA(45,55,72,1)
+            Default: ="TODAS"
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            DisabledFill: =RGBA(242, 242, 241, 0)
+            Fill: =RGBA(250,251,253,1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =48
+            HoverBorderColor: =RGBA(16, 110, 190, 1)
+            HoverColor: =RGBA(50, 49, 48, 1)
+            HoverFill: =RGBA(245, 245, 245, 1)
+            Items: =colSalas
+            Items.Value: =Value
+            PaddingBottom: =5
+            PaddingLeft: =12
+            PaddingRight: =5
+            PaddingTop: =5
+            PressedBorderColor: =RGBA(16, 110, 190, 1)
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =RGBA(0, 120, 212, 1)
+            SelectionColor: =RGBA(50, 49, 48, 1)
+            SelectionFill: =RGBA(0, 120, 212, 1)
+            Size: =15
+            Width: =350
+            X: =60
+            Y: =130
+      - dtIniFiltroRel:
+          Control: Classic/DatePicker@2.6.0
+          Properties:
+            AccessibleLabel: ="Data inicial do período do relatório"
+            BorderColor: =RGBA(218,225,235,1)
+            Color: =RGBA(45,55,72,1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            DisabledFill: =RGBA(242, 242, 241, 0)
+            Fill: =RGBA(250,251,253,1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =48
+            IconBackground: =RGBA(0,56,168,1)
+            IconFill: =Color.White
+            PaddingTop: =5
+            Size: =15
+            Width: =220
+            X: =450
+            Y: =130
+      - dtFimFiltroRel:
+          Control: Classic/DatePicker@2.6.0
+          Properties:
+            AccessibleLabel: ="Data final do período do relatório"
+            BorderColor: =RGBA(218,225,235,1)
+            Color: =RGBA(45,55,72,1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            DisabledFill: =RGBA(242, 242, 241, 0)
+            Fill: =RGBA(250,251,253,1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =48
+            IconBackground: =RGBA(0,56,168,1)
+            IconFill: =Color.White
+            PaddingTop: =5
+            Size: =15
+            Width: =220
+            X: =700
+            Y: =130
+      - galPerguntasRespostas:
+          Control: Gallery@2.15.0
+          Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+          Properties:
+            BorderColor: =RGBA(226,232,240,1)
+            BorderThickness: =1
+            Fill: =RGBA(255,255,255,1)
+            Height: =539
+            Items: |-
+              =SortByColumns(
+                  colRelChecklistAgrupado,
+                  "DataInspecaoCab",
+                  SortOrder.Descending
+              )
+            TemplatePadding: =10
+            TemplateSize: =404
+            Width: =1280
+            X: =40
+            Y: =200
+          Children:
+            - galPerguntasInterna:
+                Control: Gallery@2.15.0
+                Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+                Properties:
+                  BorderColor: =RGBA(245,247,250,1)
+                  Height: =312
+                  Items: |-
+                    =SortByColumns(
+                        ThisItem.PerguntasDoChecklist,
+                        "Ordem",
+                        SortOrder.Ascending
+                    )
+                  TemplateSize: |+
+                    =40
+                  Width: |+
+                    =1260
+
+                  X: =8
+                  Y: =92
+                Children:
+                  - Separator6:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        Fill: =RGBA(245,247,250,1)
+                        Height: =3
+                        OnSelect: =Select(Parent)
+                        Width: =Parent.TemplateWidth
+                        Y: =Parent.TemplateHeight - Self.Height
+                  - Rectangle4:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        Fill: =RGBA(0, 120, 212, 1)
+                        Height: =Parent.TemplateHeight - Separator6.Height
+                        OnSelect: =Select(Parent)
+                        Visible: =false
+                        Width: =4
+                  - lblResposta:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =2
+                        Color: |-
+                          =Switch(
+                              Lower(Trim(ThisItem.Resposta)),
+                              "conforme", RGBA(0,110,45,1),
+                              "não conforme", RGBA(180,0,20,1),
+                              "nao conforme", RGBA(180,0,20,1),
+                              "não se aplica", RGBA(75,85,99,1),
+                              "nao se aplica", RGBA(75,85,99,1),
+                              "atenção", RGBA(160,105,0,1),
+                              "atencao", RGBA(160,105,0,1),
+                              "alta", RGBA(180,0,20,1),
+                              "média", RGBA(0,56,168,1),
+                              "media", RGBA(0,56,168,1),
+                              "baixa", RGBA(0,110,45,1),
+                              RGBA(45,55,72,1)
+                          )
+                        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                        DisabledColor: =RGBA(161, 159, 157, 1)
+                        Fill: |-
+                          =Switch(
+                              Lower(Trim(ThisItem.Resposta)),
+                              "conforme", RGBA(226,246,234,1),
+                              "não conforme", RGBA(255,232,236,1),
+                              "nao conforme", RGBA(255,232,236,1),
+                              "não se aplica", RGBA(241,243,246,1),
+                              "nao se aplica", RGBA(241,243,246,1),
+                              "atenção", RGBA(255,247,220,1),
+                              "atencao", RGBA(255,247,220,1),
+                              "alta", RGBA(255,232,236,1),
+                              "média", RGBA(232,239,255,1),
+                              "media", RGBA(232,239,255,1),
+                              "baixa", RGBA(226,246,234,1),
+                              Color.Transparent
+                          )
+                        FocusedBorderThickness: =4
+                        Font: =Font.'Segoe UI'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =22
+                        OnSelect: =Select(Parent)
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        Size: |+
+                          =12
+                        Text: =ThisItem.Resposta
+                        Width: =115
+                        X: |+
+                          =960
+
+                        Y: =7
+                  - lbl_Pergunta:
+                      Control: Label@2.5.1
+                      Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =2
+                        Color: =RGBA(31,41,55,1)
+                        DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                        DisabledColor: =RGBA(161, 159, 157, 1)
+                        FocusedBorderThickness: =4
+                        Font: =Font.'Segoe UI'
+                        Height: =28
+                        OnSelect: =Select(Parent)
+                        PaddingLeft: =6
+                        Size: |+
+                          =12
+                        Text: =ThisItem.Pergunta
+                        Width: =850
+                        X: =6
+            - lblCabecalho:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =RGBA(0,56,168,1)
+                  DisabledColor: =RGBA(161, 159, 157, 1)
+                  Fill: =RGBA(238,244,255,1)
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  Height: |+
+                    =42
+                  LineHeight: =1.5
+                  OnSelect: =Select(Parent)
+                  PaddingBottom: =0
+                  PaddingLeft: =18
+                  PaddingRight: =0
+                  PaddingTop: =6
+                  Size: |+
+                    =13
+
+                  Text: |-
+                    ="📍 Sala Inspecionada: " &
+                    ThisItem.SalaTexto &
+                    "    |    📅 Data da Inspeção: " &
+                    Text(ThisItem.DataInspecaoCab, "[$-pt-BR]dd/mm/yyyy")
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: |+
+                    =1260
+                  X: =8
+            - Separator5:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  Fill: =RGBA(245,247,250,1)
+                  Height: =4
+                  OnSelect: =Select(Parent)
+                  Width: =Parent.TemplateWidth
+                  Y: =Parent.TemplateHeight - Self.Height
+            - Rectangle3:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  Fill: =RGBA(0,56,168,1)
+                  Height: =540
+                  OnSelect: =Select(Parent)
+                  Visible: =false
+                  Width: =3
+            - lblCabecalho_1:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Color: =RGBA(55,65,81,1)
+                  DisabledColor: =RGBA(161, 159, 157, 1)
+                  Fill: =RGBA(238,244,255,1)
+                  Font: =Font.'Segoe UI'
+                  Height: |+
+                    =45
+
+
+                  LineHeight: =1.5
+                  OnSelect: =Select(Parent)
+                  PaddingBottom: =0
+                  PaddingLeft: =18
+                  PaddingRight: =0
+                  PaddingTop: =2
+                  Size: |+
+                    =10
+
+                  Text: |-
+                    ="👤 Responsável pela Inspeção: " &
+                    ThisItem.ResponsavelInspecaoTexto &
+                    Char(10) &
+                    "👥 Responsáveis pela Sala: " &
+                    ThisItem.ResponsavelSalaTexto
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =1260
+                  X: =8
+                  Y: =42
+      - Container14_26:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Group: Group10_8
+          Properties:
+            Fill: =RGBA(3, 52, 162, 1)
+            Height: =95
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            PaddingBottom: =8
+            PaddingLeft: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Width: =1271
+            X: =48
+            Y: =20
+      - Icone_home_13:
+          Control: Classic/Icon@2.5.0
+          Group: Group10_8
+          Properties:
+            AccessibleLabel: ="Voltar para a tela inicial"
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: =Color.White
+            DisabledBorderColor: =RGBA(245, 245, 245, 1)
+            DisabledColor: =RGBA(225, 223, 221, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =65
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(16, 110, 190, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.Home
+            OnSelect: =Navigate(TelaInicio, ScreenTransition.Fade)
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =RGBA(16, 110, 190, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =45
+            X: =1253
+            Y: =35
+      - Label1_20:
+          Control: Label@2.5.1
+          Group: Group10_8
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =Color.White
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =52
+            Size: =24
+            Text: ="Histórico de Inspeções"
+            Width: =472
+            X: =61
+            Y: =49
+      - Icon10_14:
+          Control: Classic/Icon@2.5.0
+          Group: Group10_8
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: =RGBA(255, 200, 0, 1)
+            DisabledBorderColor: =RGBA(245, 245, 245, 1)
+            DisabledColor: =RGBA(225, 223, 221, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =21
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(16, 110, 190, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.HorizontalLine
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =RGBA(16, 110, 190, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =100
+            X: =72
+            Y: =28
+      - Container14_27:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Group: Group10_8
+          Properties:
+            Fill: =RGBA(3, 52, 162, 1)
+            Height: =29
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            PaddingBottom: =8
+            PaddingLeft: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Width: =1271
+            X: =48
+            Y: =739
+      - btnGerarPDF:
+          Control: Classic/Button@2.2.0
+          Properties:
+            AccessibleLabel: ="Gerar relatório em PDF"
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            Color: =RGBA(255, 255, 255, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            DisabledFill: =RGBA(242, 242, 241, 0)
+            DisplayMode: |-
+              =If(
+                  varBusyPDF,
+                  DisplayMode.Disabled,
+                  DisplayMode.Edit
+              )
+            Fill: =RGBA(0, 120, 212, 1)
+            Font: =Font.'Segoe UI'
+            Height: =48
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =RGBA(16, 110, 190, 1)
+            OnSelect: |-
+              =If(
+                  varBusyPDF,
+
+                  Notify(
+                      "⏳ Aguarde, o PDF já está sendo gerado.",
+                      NotificationType.Information
+                  ),
+
+                  If(
+                      !IsBlank(dtIniFiltroRel.SelectedDate) &&
+                      !IsBlank(dtFimFiltroRel.SelectedDate) &&
+                      DateValue(dtIniFiltroRel.SelectedDate) > DateValue(dtFimFiltroRel.SelectedDate),
+
+                      Notify(
+                          "❌ A data inicial não pode ser maior que a data final.",
+                          NotificationType.Error
+                      ),
+
+                      If(
+                          ddSalaFiltroRel.Selected.Value = "TODAS" &&
+                          IsBlank(dtIniFiltroRel.SelectedDate) &&
+                          IsBlank(dtFimFiltroRel.SelectedDate),
+
+                          Notify(
+                              "⚠️ Para gerar o PDF, selecione uma sala ou informe um período.",
+                              NotificationType.Warning
+                          ),
+
+                          Set(varBusyPDF, true);
+                          Set(varLinkPDF, Blank());
+                          Set(varRetornoPDF, Blank());
+
+                          Set(
+                              varParametrosPDF,
+                              JSON(
+                                  {
+                                      SolicitadoPor: User().FullName,
+                                      Sala: Coalesce(
+                                          ddSalaFiltroRel.Selected.Value,
+                                          "TODAS"
+                                      ),
+                                      DataIni: If(
+                                          IsBlank(dtIniFiltroRel.SelectedDate),
+                                          "SEM_DATA",
+                                          Text(
+                                              DateValue(dtIniFiltroRel.SelectedDate),
+                                              "[$-en-US]yyyy-mm-dd"
+                                          )
+                                      ),
+                                      DataFim: If(
+                                          IsBlank(dtFimFiltroRel.SelectedDate),
+                                          "SEM_DATA",
+                                          Text(
+                                              DateValue(dtFimFiltroRel.SelectedDate),
+                                              "[$-en-US]yyyy-mm-dd"
+                                          )
+                                      )
+                                  },
+                                  JSONFormat.Compact
+                              )
+                          );
+
+                          IfError(
+                              Set(
+                                  varRetornoPDF,
+                                  RelatorioPDF_HistoricoInspecoes_JSON_V2.Run(
+                                      varParametrosPDF
+                                  )
+                              );
+
+                              Set(varBusyPDF, false);
+
+                              If(
+                                  Lower(Coalesce(varRetornoPDF.status, "")) = "sucesso" &&
+                                  !IsBlank(varRetornoPDF.urlrelatorio),
+
+                                  Set(varLinkPDF, varRetornoPDF.urlrelatorio);
+
+                                  Notify(
+                                      "✅ PDF gerado com sucesso.",
+                                      NotificationType.Success
+                                  );
+
+                                  Launch(varLinkPDF),
+
+                                  Notify(
+                                      Coalesce(
+                                          varRetornoPDF.mensagem,
+                                          "⚠️ O fluxo executou, mas não retornou o link do relatório."
+                                      ),
+                                      NotificationType.Warning
+                                  )
+                              ),
+
+                              Set(varBusyPDF, false);
+
+                              Notify(
+                                  "❌ Erro real ao acionar o fluxo: " &
+                                  Coalesce(
+                                      FirstError.Message,
+                                      "mensagem não retornada pelo Power Apps"
+                                  ),
+                                  NotificationType.Error
+                              )
+                          )
+                      )
+                  )
+              )
+            PressedBorderColor: =RGBA(0, 69, 120, 1)
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =RGBA(16, 110, 190, 1)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Text: |-
+              =If(
+                  varBusyPDF,
+                  "GERANDO PDF...",
+                  "📄 Gerar PDF"
+              )
+            X: =1100
+            Y: =130
+      - btnLimparFiltrosRel:
+          Control: Classic/Button@2.2.0
+          Properties:
+            AccessibleLabel: ="Limpar filtros do relatório"
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            Color: =Color.White
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            DisabledFill: =RGBA(242, 242, 241, 0)
+            DisplayMode: |-
+              =If(
+                  varBusyRelFlex || varBusyPDF,
+                  DisplayMode.Disabled,
+                  DisplayMode.Edit
+              )
+            Fill: =RGBA(96, 94, 92, 1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Height: =48
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =RGBA(70, 70, 70, 1)
+            OnSelect: |-
+              =Reset(ddSalaFiltroRel);
+              Reset(dtIniFiltroRel);
+              Reset(dtFimFiltroRel);
+              Clear(colRelPerguntasRespostas);
+              Clear(colRelChecklistAgrupado);
+              Clear(colRelCheckPreview);
+              Set(varLinkPDF, Blank());
+              Notify(
+                  "Filtros do relatório restaurados. Selecione novos filtros e clique em Buscar.",
+                  NotificationType.Information
+              )
+            PressedBorderColor: =RGBA(0, 69, 120, 1)
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =RGBA(16, 110, 190, 1)
+            Size: =16
+            Text: ="✕"
+            Width: =44
+            X: =1268
+            Y: =130
+      - lblSemDadosRel:
+          Control: Label@2.5.1
+          Properties:
+            Align: =Align.Center
+            BorderColor: =RGBA(0, 0, 0, 1)
+            Color: =RGBA(96, 94, 92, 1)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =60
+            Size: =16
+            Text: ="Sem resultados para exibir. Selecione sala e/ou período e clique em Buscar."
+            Visible: =!varBusyRelFlex && CountRows(colRelChecklistAgrupado) = 0
+            Width: =1280
+            X: =40
+            Y: =400

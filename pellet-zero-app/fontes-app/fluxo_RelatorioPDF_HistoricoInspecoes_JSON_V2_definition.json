@@ -1,0 +1,1992 @@
+{
+  "name": "3cb11638-bcb1-49ce-908b-0d328fbb4795",
+  "id": "/providers/Microsoft.Flow/flows/3cb11638-bcb1-49ce-908b-0d328fbb4795",
+  "type": "Microsoft.Flow/flows",
+  "properties": {
+    "apiId": "/providers/Microsoft.PowerApps/apis/shared_logicflows",
+    "displayName": "RelatorioPDF_HistoricoInspecoes_JSON_V2",
+    "definition": {
+      "metadata": {
+        "workflowEntityId": null,
+        "processAdvisorMetadata": null,
+        "flowChargedByPaygo": null,
+        "flowclientsuspensionreason": "None",
+        "flowclientsuspensiontime": null,
+        "flowclientsuspensionreasondetails": null,
+        "creator": {
+          "id": "c25dd494-9a67-4311-a1c1-407f98bd6c39",
+          "type": "User",
+          "tenantId": "592b5396-bf52-4b35-a844-d5ab522c3666"
+        },
+        "provisioningMethod": "FromDefinition",
+        "failureAlertSubscription": true,
+        "clientLastModifiedTime": "2026-05-08T04:10:12.4681964Z",
+        "connectionKeySavedTimeKey": "2026-05-08T04:09:22.4043293Z",
+        "creationSource": null,
+        "modifiedSources": "Portal"
+      },
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "cb6def65-ae4f-4a89-86ba-67afd6f30043"
+          },
+          "type": "Request",
+          "kind": "PowerAppV2",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "description": "pParametrosPDF",
+                  "title": "ParametrosPDF",
+                  "type": "string",
+                  "x-ms-content-hint": "TEXT",
+                  "x-ms-dynamically-added": true
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "varPerguntas": {
+          "runAfter": {
+            "SolicitadoPor_Normalizado": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5b51ae3c-92f5-4144-9417-915eb94fd334"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varPerguntas",
+                "type": "array",
+                "value": [
+                  {
+                    "Campo": "DescartesSinalizados",
+                    "Item": "Pontos de descarte estão corretamente identificados?",
+                    "Ordem": 110
+                  },
+                  {
+                    "Campo": "VidrariasOk",
+                    "Item": "Vidrarias limpas e organizadas em local apropriado?",
+                    "Ordem": 120
+                  },
+                  {
+                    "Campo": "IdentificacaoFrascos",
+                    "Item": "Frascos e cilindros possuem identificação conforme o padrão?",
+                    "Ordem": 130
+                  },
+                  {
+                    "Campo": "EtiquetasOk",
+                    "Item": "Etiquetas estão padronizadas e visíveis?",
+                    "Ordem": 140
+                  },
+                  {
+                    "Campo": "PrateleirasId",
+                    "Item": "Prateleiras e armários estão identificados corretamente?",
+                    "Ordem": 150
+                  },
+                  {
+                    "Campo": "SinalizacaoAtual",
+                    "Item": "Sinalização das rotas de fuga no corredor e sala estão visíveis e claras?",
+                    "Ordem": 160
+                  },
+                  {
+                    "Campo": "RotasFuga",
+                    "Item": "Rotas de fuga no corredor e sala estão livres e desobstruídas?",
+                    "Ordem": 170
+                  },
+                  {
+                    "Campo": "ReagentesOk",
+                    "Item": "Todos os reagentes estão dentro do prazo de validade?",
+                    "Ordem": 180
+                  },
+                  {
+                    "Campo": "FerramentasOk",
+                    "Item": "Ferramentas estão identificadas conforme o padrão visual do ciclo vigente?",
+                    "Ordem": 190
+                  },
+                  {
+                    "Campo": "AcessoriosDisponiveis",
+                    "Item": "Aspiradores e ferramentas de coleta estão funcionando e acessíveis?",
+                    "Ordem": 210
+                  },
+                  {
+                    "Campo": "AmostrasTampa",
+                    "Item": "Frascos e potes de amostras estão armazenados com tampa?",
+                    "Ordem": 220
+                  },
+                  {
+                    "Campo": "BancadasLimpas",
+                    "Item": "Bancadas estão livres de pellets e pó de resina?",
+                    "Ordem": 230
+                  },
+                  {
+                    "Campo": "BarreirasPellet",
+                    "Item": "Barreiras de contenção estão íntegras, sem danos ou falhas de vedação?",
+                    "Ordem": 240
+                  },
+                  {
+                    "Campo": "ColetorOk",
+                    "Item": "Coletores de descarte estão posicionados próximos às áreas críticas?",
+                    "Ordem": 250
+                  },
+                  {
+                    "Campo": "ExtrusaoLimpa",
+                    "Item": "Há pellets ou resíduos abaixo, sobre ou ao redor das extrusoras?",
+                    "Ordem": 260
+                  },
+                  {
+                    "Campo": "PelletAusente",
+                    "Item": "O chão está livre de pellets ou pó de resina?",
+                    "Ordem": 270
+                  },
+                  {
+                    "Campo": "PrateleirasLimpas",
+                    "Item": "Prateleiras estão limpas, sem pellets ou pó de resina?",
+                    "Ordem": 280
+                  },
+                  {
+                    "Campo": "SacosArmazenados",
+                    "Item": "Sacos de pellets e pó de resina estão identificados, fechados e bem armazenados?",
+                    "Ordem": 290
+                  },
+                  {
+                    "Campo": "VarreduraOk",
+                    "Item": "Big bag de varredura está presente e sinalizado?",
+                    "Ordem": 300
+                  },
+                  {
+                    "Campo": "PrateleirasLiberadas",
+                    "Item": "Prateleira do mês vigente está liberada?",
+                    "Ordem": 410
+                  },
+                  {
+                    "Campo": "PotesPendentes",
+                    "Item": "Há potes pendentes de descarte?",
+                    "Ordem": 420
+                  },
+                  {
+                    "Campo": "PrateleirasExcesso",
+                    "Item": "Prateleiras estão sem excesso de potes?",
+                    "Ordem": 430
+                  },
+                  {
+                    "Campo": "PotesChao",
+                    "Item": "Todos os potes estão armazenados nas prateleiras, sem contato com o chão?",
+                    "Ordem": 440
+                  },
+                  {
+                    "Campo": "PisoOk",
+                    "Item": "Piso está limpo e livre de pellets ou resíduos?",
+                    "Ordem": 450
+                  },
+                  {
+                    "Campo": "PrateleirasOk",
+                    "Item": "Prateleiras estão livres de acúmulo de pellets, pó ou sujeira?",
+                    "Ordem": 460
+                  },
+                  {
+                    "Campo": "EscadaOk",
+                    "Item": "Escada e acesso ao segundo andar livres de obstrução?",
+                    "Ordem": 470
+                  },
+                  {
+                    "Campo": "EscadaFirme",
+                    "Item": "Escada metálica está firme, sem ferrugem ou desgaste?",
+                    "Ordem": 480
+                  },
+                  {
+                    "Campo": "CorrimaoOk",
+                    "Item": "Corrimão e degraus estão em boas condições?",
+                    "Ordem": 490
+                  },
+                  {
+                    "Campo": "SegundoAndarOk",
+                    "Item": "Acesso ao segundo andar está seguro?",
+                    "Ordem": 500
+                  },
+                  {
+                    "Campo": "PlataformaOk",
+                    "Item": "Plataforma metálica do segundo andar está estável e sem danos?",
+                    "Ordem": 510
+                  },
+                  {
+                    "Campo": "LuminariasOk",
+                    "Item": "Luminárias estão funcionando corretamente?",
+                    "Ordem": 520
+                  },
+                  {
+                    "Campo": "PrateleirasIdentificas",
+                    "Item": "Prateleiras estão identificadas com etiquetas padronizadas?",
+                    "Ordem": 530
+                  },
+                  {
+                    "Campo": "PrateleirasSobrecarga",
+                    "Item": "Prateleiras estão sem sobrecarga?",
+                    "Ordem": 540
+                  },
+                  {
+                    "Campo": "PrateleiraDanos",
+                    "Item": "Nenhuma prateleira apresenta danos estruturais?",
+                    "Ordem": 550
+                  },
+                  {
+                    "Campo": "PrateleirasNumerdas",
+                    "Item": "Prateleiras estão numeradas conforme o padrão?",
+                    "Ordem": 560
+                  },
+                  {
+                    "Campo": "PotesLocaisNaoDefinidos",
+                    "Item": "Não há potes armazenados em locais não definidos?",
+                    "Ordem": 570
+                  },
+                  {
+                    "Campo": "BancadaLimpaAOL",
+                    "Item": "Bancadas estão limpas, organizadas e sem obstruções?",
+                    "Ordem": 610
+                  },
+                  {
+                    "Campo": "FerramentasOkAOL",
+                    "Item": "Ferramentas estão guardadas em local adequado e identificado?",
+                    "Ordem": 620
+                  },
+                  {
+                    "Campo": "FiosOk",
+                    "Item": "Cabos e fios estão organizados e não obstruem áreas de passagem?",
+                    "Ordem": 630
+                  },
+                  {
+                    "Campo": "ChaoOk",
+                    "Item": "Área de circulação está livre de materiais no chão?",
+                    "Ordem": 640
+                  },
+                  {
+                    "Campo": "ArmariosIdentificadosAOL",
+                    "Item": "Prateleiras e armários estão identificados com etiquetas padronizadas?",
+                    "Ordem": 650
+                  },
+                  {
+                    "Campo": "EtiquetasOkAOL",
+                    "Item": "Prateleiras e armários estão organizados conforme a finalidade?",
+                    "Ordem": 660
+                  },
+                  {
+                    "Campo": "PontoColeta",
+                    "Item": "Ponto de coleta de resíduos está limpo e sinalizado?",
+                    "Ordem": 670
+                  },
+                  {
+                    "Campo": "MateriaisForaLugar",
+                    "Item": "Materiais armazenados corretamente e em local adequado?",
+                    "Ordem": 710
+                  },
+                  {
+                    "Campo": "CaixasNaoID",
+                    "Item": "Caixas organizadas e identificadas?",
+                    "Ordem": 720
+                  },
+                  {
+                    "Campo": "ReagentesIDOk",
+                    "Item": "Reagentes estão identificados corretamente?",
+                    "Ordem": 730
+                  },
+                  {
+                    "Campo": "DocumentosArmariosOk",
+                    "Item": "Documentos nos armários estão identificados corretamente e acessíveis?",
+                    "Ordem": 740
+                  },
+                  {
+                    "Campo": "ReagentesOk",
+                    "Item": "Reagentes dentro da validade? (Almoxarifado)",
+                    "Ordem": 760
+                  },
+                  {
+                    "Campo": "VidrariasOk",
+                    "Item": "Vidrarias limpas e organizadas em local apropriado? (Almoxarifado)",
+                    "Ordem": 770
+                  },
+                  {
+                    "Campo": "SalaLimpaOrganizada",
+                    "Item": "Área está limpa, sem acúmulo de sujeira ou resíduos?",
+                    "Ordem": 810
+                  },
+                  {
+                    "Campo": "BancadasLimpas",
+                    "Item": "Bancadas estão livres e desobstruídas? (Lavagem)",
+                    "Ordem": 820
+                  },
+                  {
+                    "Campo": "DescartesSinalizados",
+                    "Item": "Recipientes de descarte estão identificados corretamente? (Lavagem)",
+                    "Ordem": 830
+                  },
+                  {
+                    "Campo": "ResiduosForaLugar",
+                    "Item": "Resíduos estão armazenados de forma segura e adequada?",
+                    "Ordem": 840
+                  },
+                  {
+                    "Campo": "ReagentesIDOk",
+                    "Item": "Amostras estão identificadas corretamente? (Lavagem)",
+                    "Ordem": 850
+                  },
+                  {
+                    "Campo": "ReagentesOk",
+                    "Item": "Há amostras vencidas ou sem uso armazenadas? (Lavagem)",
+                    "Ordem": 860
+                  },
+                  {
+                    "Campo": "GeladeiraOk",
+                    "Item": "Geladeira está limpa, organizada e em bom funcionamento?",
+                    "Ordem": 870
+                  },
+                  {
+                    "Campo": "GeradorGeloOk",
+                    "Item": "Gerador de gelo está em funcionamento?",
+                    "Ordem": 880
+                  },
+                  {
+                    "Campo": "CapelaStatus",
+                    "Item": "Capela está com manutenção atualizada e funcionamento adequado?",
+                    "Ordem": 890
+                  },
+                  {
+                    "Campo": "CilindrosComCorrente",
+                    "Item": "Cilindros estão fixados com corrente de segurança?",
+                    "Ordem": 910
+                  },
+                  {
+                    "Campo": "CilindrosComProtecao",
+                    "Item": "Cilindros com reguladora ou proteção de válvula instaladas?",
+                    "Ordem": 920
+                  },
+                  {
+                    "Campo": "FerramentasOk",
+                    "Item": "Ferramentas estão identificadas conforme o padrão visual do ciclo vigente?",
+                    "Ordem": 930
+                  },
+                  {
+                    "Campo": "ArmarFerramOrganizado",
+                    "Item": "Armário de ferramentas organizado e identificado?",
+                    "Ordem": 940
+                  },
+                  {
+                    "Campo": "VazamentoCalhaNecessitaLimpeza",
+                    "Item": "Calhas estão sem necessidade de limpeza e sem sinais de vazamento?",
+                    "Ordem": 950
+                  },
+                  {
+                    "Campo": "ProdutosFracionadosOk",
+                    "Item": "Produtos fracionados identificados corretamente?",
+                    "Ordem": 960
+                  },
+                  {
+                    "Campo": "VazamentoEmContencao",
+                    "Item": "Contenções sem sinais de vazamento?",
+                    "Ordem": 970
+                  },
+                  {
+                    "Campo": "PainelAnalisadorFechado",
+                    "Item": "Painel do analisador fechado e em bom estado?",
+                    "Ordem": 980
+                  },
+                  {
+                    "Campo": "TempShelterAdequada",
+                    "Item": "Temperatura do Shelter adequada?",
+                    "Ordem": 990
+                  },
+                  {
+                    "Campo": "ChaoLivreDeposito1",
+                    "Item": "Ausência de materiais no chão?",
+                    "Ordem": 1010
+                  },
+                  {
+                    "Campo": "PrateleirasOrgDeposito1",
+                    "Item": "Prateleiras estão organizadas por categoria?",
+                    "Ordem": 1020
+                  },
+                  {
+                    "Campo": "EtiquetasOkDeposito1",
+                    "Item": "Todos os itens estão identificados com etiquetas padronizadas?",
+                    "Ordem": 1030
+                  },
+                  {
+                    "Campo": "EquipamentosIdentificacao1",
+                    "Item": "Equipamentos possuem etiquetas de identificação visíveis?",
+                    "Ordem": 1040
+                  },
+                  {
+                    "Campo": "DescarteDeposito1",
+                    "Item": "Itens danificados ou para descarte estão sinalizados com etiqueta?",
+                    "Ordem": 1050
+                  },
+                  {
+                    "Campo": "PlataformaDeposito1",
+                    "Item": "Plataforma metálica do segundo andar está estável e sem danos?",
+                    "Ordem": 1060
+                  },
+                  {
+                    "Campo": "PrateleirasFirmes1",
+                    "Item": "Prateleiras estão firmes e sem sobrecarga?",
+                    "Ordem": 1070
+                  },
+                  {
+                    "Campo": "StatusGeral",
+                    "Item": "Status Geral da Área Inspecionada",
+                    "Ordem": 2010
+                  },
+                  {
+                    "Campo": "ClassificacaoNC",
+                    "Item": "Nível de Prioridade Para Ação Corretiva",
+                    "Ordem": 2020
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "vSolicitadoPor": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "fe2f4340-0d0d-4c70-8b04-e39c3472b25a"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vSolicitadoPor",
+                "type": "string",
+                "value": "@{coalesce(json(if(empty(triggerBody()?['text']), '{}', triggerBody()?['text']))?['SolicitadoPor'], 'Usuário')}"
+              }
+            ]
+          }
+        },
+        "vSala": {
+          "runAfter": {
+            "vSolicitadoPor": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "aa49aef1-3a08-4e62-9254-e479f8a9967d"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vSala",
+                "type": "string",
+                "value": "@{trim(coalesce(json(if(empty(triggerBody()?['text']), '{}', triggerBody()?['text']))?['Sala'], 'TODAS'))}"
+              }
+            ]
+          }
+        },
+        "vDataIni": {
+          "runAfter": {
+            "vSala": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "32a069fc-e8c6-4912-9637-0e98709d5c7a"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vDataIni",
+                "type": "string",
+                "value": "@{trim(coalesce(json(if(empty(triggerBody()?['text']), '{}', triggerBody()?['text']))?['DataIni'], 'SEM_DATA'))}"
+              }
+            ]
+          }
+        },
+        "vDataFim": {
+          "runAfter": {
+            "vDataIni": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "49a207e3-4be8-471b-a5ae-afd92925e020"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "vDataFim",
+                "type": "string",
+                "value": "@{trim(coalesce(json(if(empty(triggerBody()?['text']), '{}', triggerBody()?['text']))?['DataFim'], 'SEM_DATA'))}"
+              }
+            ]
+          }
+        },
+        "varRows": {
+          "runAfter": {
+            "varPerguntas": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "024c1c24-2227-4b04-8c17-9d9dbda9e6bd"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varRows",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "varNCRows": {
+          "runAfter": {
+            "varRows": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "0a3043f9-e0a6-4e9b-98ec-3e742c9439f6"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varNCRows",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "varTotal": {
+          "runAfter": {
+            "varRespNC_Nomes": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "8f65f652-b35b-45e8-8c07-3ae8315ec010"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varTotal",
+                "type": "integer",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "varConforme": {
+          "runAfter": {
+            "varTotal": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "43b6dab3-aa10-4804-9bf9-302d657dd022"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varConforme",
+                "type": "integer",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "varPend": {
+          "runAfter": {
+            "varConforme": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "0a0b172a-daf4-4dc2-9a93-7039e550dc9a"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varPend",
+                "type": "integer",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "varNA": {
+          "runAfter": {
+            "varPend": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "144dfeb6-c5e5-45a6-874d-e85b0f92520c"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varNA",
+                "type": "integer",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "varQtdNCs": {
+          "runAfter": {
+            "varNA": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "15754b0b-36b3-4a63-934e-16cd5033bd7c"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varQtdNCs",
+                "type": "integer",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "varQtdRegistros": {
+          "runAfter": {
+            "varQtdNCs": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d83db98c-367b-4ef3-ab44-415768b1fea1"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varQtdRegistros",
+                "type": "integer",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "Build_vFiltroChecklist": {
+          "runAfter": {
+            "varQtdRegistros": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f4489eb0-c11b-4a0f-ba75-ba5315eb06fb"
+          },
+          "type": "Compose",
+          "inputs": "@if(\n  and(\n    empty(outputs('Sala_Normalizada')),\n    empty(outputs('DataIni_Normalizada')),\n    empty(outputs('DataFim_Normalizada'))\n  ),\n  'ID gt 0',\n  trim(concat(\n    if(empty(outputs('Sala_Normalizada')), '', concat('Sala0 eq ''', replace(outputs('Sala_Normalizada'), '''', ''''''), '''')),\n    if(and(not(empty(outputs('Sala_Normalizada'))), not(empty(outputs('DataIni_Normalizada')))), ' and ', ''),\n    if(empty(outputs('DataIni_Normalizada')), '', concat('DataInspecao ge datetime''', outputs('DataIni_Normalizada'), 'T00:00:00Z''')),\n    if(and(or(not(empty(outputs('Sala_Normalizada'))), not(empty(outputs('DataIni_Normalizada')))), not(empty(outputs('DataFim_Normalizada')))), ' and ', ''),\n    if(empty(outputs('DataFim_Normalizada')), '', concat('DataInspecao le datetime''', outputs('DataFim_Normalizada'), 'T23:59:59Z'''))\n  ))\n)"
+        },
+        "Build_vFiltroNC": {
+          "runAfter": {
+            "Build_vFiltroChecklist": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "237b64ff-409a-4f48-b8a9-0a982224d486"
+          },
+          "type": "Compose",
+          "inputs": "@if(\n  and(\n    empty(outputs('Sala_Normalizada')),\n    empty(outputs('DataIni_Normalizada')),\n    empty(outputs('DataFim_Normalizada'))\n  ),\n  'ID gt 0',\n  trim(concat(\n    if(empty(outputs('Sala_Normalizada')), '', concat('SalaNC eq ''', replace(outputs('Sala_Normalizada'), '''', ''''''), '''')),\n    if(and(not(empty(outputs('Sala_Normalizada'))), not(empty(outputs('DataIni_Normalizada')))), ' and ', ''),\n    if(empty(outputs('DataIni_Normalizada')), '', concat('DataCriacao ge datetime''', outputs('DataIni_Normalizada'), 'T00:00:00Z''')),\n    if(and(or(not(empty(outputs('Sala_Normalizada'))), not(empty(outputs('DataIni_Normalizada')))), not(empty(outputs('DataFim_Normalizada')))), ' and ', ''),\n    if(empty(outputs('DataFim_Normalizada')), '', concat('DataCriacao le datetime''', outputs('DataFim_Normalizada'), 'T23:59:59Z'''))\n  ))\n)"
+        },
+        "TRY": {
+          "actions": {
+            "Obter_Checklists": {
+              "metadata": {
+                "operationMetadataId": "a34f1d92-70bb-48c0-998f-b4cd5a987981"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "dataset": "https://braskemsa.sharepoint.com/teams/LCQDCX",
+                  "table": "1fe119f0-7077-4a5e-b8e7-5eba9f3fffcd",
+                  "$filter": "@{outputs('Build_vFiltroChecklist')}",
+                  "$top": 5000
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                  "connectionName": "shared_sharepointonline",
+                  "operationId": "GetItems"
+                },
+                "authentication": {
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                  "type": "Raw"
+                }
+              },
+              "runtimeConfiguration": {
+                "paginationPolicy": {
+                  "minimumItemCount": 10000
+                }
+              }
+            },
+            "Loop_Checklists": {
+              "foreach": "@body('Obter_Checklists')?['value']",
+              "actions": {
+                "IncrQtdRegistros": {
+                  "metadata": {
+                    "operationMetadataId": "d9e7a3de-a123-4180-8872-b791c2a1fcda"
+                  },
+                  "type": "IncrementVariable",
+                  "inputs": {
+                    "name": "varQtdRegistros",
+                    "value": 1
+                  }
+                },
+                "Compose_ItemAtual": {
+                  "runAfter": {
+                    "IncrQtdRegistros": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "02c4a3f5-1e1b-4e0b-b8e8-f955c8cbac13"
+                  },
+                  "type": "Compose",
+                  "inputs": "@items('Loop_Checklists')"
+                },
+                "Loop_Perguntas": {
+                  "foreach": "@variables('varPerguntas')",
+                  "actions": {
+                    "Pergunta_Se_Aplica": {
+                      "actions": {
+                        "CampoAtual": {
+                          "metadata": {
+                            "operationMetadataId": "721fb3b1-9683-4160-91f5-3bd1de467e79"
+                          },
+                          "type": "Compose",
+                          "inputs": "@items('Loop_Perguntas')?['Campo']"
+                        },
+                        "RespostaNorm": {
+                          "runAfter": {
+                            "CampoAtual": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "f648a8ad-06c1-46d0-b6a7-8d150ea1bfc3"
+                          },
+                          "type": "Compose",
+                          "inputs": "@toLower(trim(string(coalesce(\n  outputs('Compose_ItemAtual')?[items('Loop_Perguntas')?['Campo']]?['Value'],\n  outputs('Compose_ItemAtual')?[items('Loop_Perguntas')?['Campo']],\n  ''\n))))"
+                        },
+                        "Foi_respondido": {
+                          "actions": {
+                            "RespostaDisplay": {
+                              "metadata": {
+                                "operationMetadataId": "07453270-11c7-46e2-8345-fa8850bd0cfb"
+                              },
+                              "type": "Compose",
+                              "inputs": "@if(\n  equals(outputs('RespostaNorm'), 'conforme'),\n  'Conforme',\n  if(\n    or(equals(outputs('RespostaNorm'), 'não conforme'), equals(outputs('RespostaNorm'), 'nao conforme')),\n    'Não Conforme',\n    if(\n      or(equals(outputs('RespostaNorm'), 'não se aplica'), equals(outputs('RespostaNorm'), 'nao se aplica')),\n      'Não se Aplica',\n      outputs('RespostaNorm')\n    )\n  )\n)"
+                            },
+                            "StatusCellStyle": {
+                              "runAfter": {
+                                "RespostaDisplay": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "72d0d5df-3235-4bef-8eae-6ec178fb8033"
+                              },
+                              "type": "Compose",
+                              "inputs": "@if(\n  equals(outputs('RespostaNorm'), 'conforme'),\n  'background-color:#e6f4ea;color:#137333;font-weight:600;',\n  if(\n    or(equals(outputs('RespostaNorm'), 'não conforme'), equals(outputs('RespostaNorm'), 'nao conforme')),\n    'background-color:#fce8e6;color:#c5221f;font-weight:600;',\n    'background-color:#f8f9fa;color:#5f6368;'\n  )\n)"
+                            },
+                            "Acrescentar_varRows": {
+                              "runAfter": {
+                                "StatusCellStyle": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "55bac4a6-e022-4769-b820-cfece8155147"
+                              },
+                              "type": "AppendToStringVariable",
+                              "inputs": {
+                                "name": "varRows",
+                                "value": "@concat(\n  '<tr>',\n  '<td style=\"padding:5px 8px;border:1px solid #ddd;font-size:8.5pt;\">',\n    if(empty(outputs('Compose_ItemAtual')?['DataInspecao']), '—', formatDateTime(outputs('Compose_ItemAtual')?['DataInspecao'], 'dd/MM/yyyy')),\n  '</td>',\n  '<td style=\"padding:5px 8px;border:1px solid #ddd;font-size:8.5pt;\">',\n    coalesce(outputs('Compose_ItemAtual')?['Sala0']?['Value'], outputs('Compose_ItemAtual')?['Sala0'], '—'),\n  '</td>',\n  '<td style=\"padding:5px 8px;border:1px solid #ddd;font-size:8.5pt;\">',\n    coalesce(outputs('Compose_ItemAtual')?['Turno']?['Value'], outputs('Compose_ItemAtual')?['Turno'], '—'),\n  '</td>',\n  '<td style=\"padding:5px 8px;border:1px solid #ddd;font-size:8.5pt;\">',\n    items('Loop_Perguntas')?['Item'],\n  '</td>',\n  '<td style=\"padding:5px 8px;border:1px solid #ddd;font-size:8.5pt;text-align:center;', outputs('StatusCellStyle'), '\">',\n    outputs('RespostaDisplay'),\n  '</td>',\n  '</tr>'\n)"
+                              }
+                            },
+                            "Incrementar_varTotal": {
+                              "runAfter": {
+                                "Acrescentar_varRows": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "c500b08c-9887-4709-9aef-308405090f5a"
+                              },
+                              "type": "IncrementVariable",
+                              "inputs": {
+                                "name": "varTotal",
+                                "value": 1
+                              }
+                            },
+                            "Eh_conforme": {
+                              "actions": {
+                                "Incrementar_varConforme": {
+                                  "metadata": {
+                                    "operationMetadataId": "ce743118-5350-401d-8b3f-fe183d227f33"
+                                  },
+                                  "type": "IncrementVariable",
+                                  "inputs": {
+                                    "name": "varConforme",
+                                    "value": 1
+                                  }
+                                }
+                              },
+                              "runAfter": {
+                                "Incrementar_varTotal": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "else": {
+                                "actions": {
+                                  "Eh_nao_conforme": {
+                                    "actions": {
+                                      "Incrementar_varPend": {
+                                        "metadata": {
+                                          "operationMetadataId": "d54a47ae-f1ea-4523-a6ae-ba2259716806"
+                                        },
+                                        "type": "IncrementVariable",
+                                        "inputs": {
+                                          "name": "varPend",
+                                          "value": 1
+                                        }
+                                      }
+                                    },
+                                    "else": {
+                                      "actions": {}
+                                    },
+                                    "expression": {
+                                      "or": [
+                                        {
+                                          "equals": [
+                                            "@outputs('RespostaNorm')",
+                                            "não conforme"
+                                          ]
+                                        },
+                                        {
+                                          "equals": [
+                                            "@outputs('RespostaNorm')",
+                                            "nao conforme"
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    "metadata": {
+                                      "operationMetadataId": "0ea40b1a-8e38-4055-b631-c2a19c853269"
+                                    },
+                                    "type": "If"
+                                  }
+                                }
+                              },
+                              "expression": {
+                                "and": [
+                                  {
+                                    "equals": [
+                                      "@outputs('RespostaNorm')",
+                                      "conforme"
+                                    ]
+                                  }
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "82c8ce09-f39a-4d20-8d56-17dd24130a7d"
+                              },
+                              "type": "If"
+                            },
+                            "Eh_nao_se_aplica": {
+                              "actions": {
+                                "Incrementar_varNA": {
+                                  "metadata": {
+                                    "operationMetadataId": "209ace1c-121f-48d4-a3bc-19f49efc442e"
+                                  },
+                                  "type": "IncrementVariable",
+                                  "inputs": {
+                                    "name": "varNA",
+                                    "value": 1
+                                  }
+                                }
+                              },
+                              "runAfter": {
+                                "Eh_conforme": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "else": {
+                                "actions": {}
+                              },
+                              "expression": {
+                                "or": [
+                                  {
+                                    "equals": [
+                                      "@outputs('RespostaNorm')",
+                                      "não se aplica"
+                                    ]
+                                  },
+                                  {
+                                    "equals": [
+                                      "@outputs('RespostaNorm')",
+                                      "nao se aplica"
+                                    ]
+                                  }
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "cabe3ba9-2f4b-48e8-8de9-c01e1e1ed9af"
+                              },
+                              "type": "If"
+                            }
+                          },
+                          "runAfter": {
+                            "RespostaNorm": [
+                              "Succeeded"
+                            ]
+                          },
+                          "else": {
+                            "actions": {}
+                          },
+                          "expression": {
+                            "and": [
+                              {
+                                "not": {
+                                  "equals": [
+                                    "@outputs('RespostaNorm')",
+                                    ""
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "53d717af-77d4-4593-9073-1c243132eb40"
+                          },
+                          "type": "If"
+                        }
+                      },
+                      "else": {
+                        "actions": {}
+                      },
+                      "expression": {
+                        "or": [
+                          {
+                            "and": [
+                              {
+                                "greaterOrEquals": [
+                                  "@items('Loop_Perguntas')?['Ordem']",
+                                  2010
+                                ]
+                              },
+                              {
+                                "lessOrEquals": [
+                                  "@items('Loop_Perguntas')?['Ordem']",
+                                  2030
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "and": [
+                              {
+                                "or": [
+                                  {
+                                    "equals": [
+                                      "@coalesce(outputs('Compose_ItemAtual')?['Sala0']?['Value'], outputs('Compose_ItemAtual')?['Sala0'], '')",
+                                      "Sala de Físico-Químico 1"
+                                    ]
+                                  },
+                                  {
+                                    "equals": [
+                                      "@coalesce(outputs('Compose_ItemAtual')?['Sala0']?['Value'], outputs('Compose_ItemAtual')?['Sala0'], '')",
+                                      "Sala de Físico-Químico 2"
+                                    ]
+                                  },
+                                  {
+                                    "equals": [
+                                      "@coalesce(outputs('Compose_ItemAtual')?['Sala0']?['Value'], outputs('Compose_ItemAtual')?['Sala0'], '')",
+                                      "Sala de Cromatografia 1"
+                                    ]
+                                  },
+                                  {
+                                    "equals": [
+                                      "@coalesce(outputs('Compose_ItemAtual')?['Sala0']?['Value'], outputs('Compose_ItemAtual')?['Sala0'], '')",
+                                      "Sala de Cromatografia 2"
+                                    ]
+                                  },
+                                  {
+                                    "equals": [
+                                      "@coalesce(outputs('Compose_ItemAtual')?['Sala0']?['Value'], outputs('Compose_ItemAtual')?['Sala0'], '')",
+                                      "Sala de Físico-Químico 3"
+                                    ]
+                                  },
+                                  {
+                                    "equals": [
+                                      "@coalesce(outputs('Compose_ItemAtual')?['Sala0']?['Value'], outputs('Compose_ItemAtual')?['Sala0'], '')",
+                                      "Sala de Físico-Químico 4"
+                                    ]
+                                  },
+                                  {
+                                    "equals": [
+                                      "@coalesce(outputs('Compose_ItemAtual')?['Sala0']?['Value'], outputs('Compose_ItemAtual')?['Sala0'], '')",
+                                      "Sala de Processamento de Resinas"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "and": [
+                                  {
+                                    "greaterOrEquals": [
+                                      "@items('Loop_Perguntas')?['Ordem']",
+                                      110
+                                    ]
+                                  },
+                                  {
+                                    "lessOrEquals": [
+                                      "@items('Loop_Perguntas')?['Ordem']",
+                                      190
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "and": [
+                              {
+                                "or": [
+                                  {
+                                    "equals": [
+                                      "@coalesce(outputs('Compose_ItemAtual')?['Sala0']?['Value'], outputs('Compose_ItemAtual')?['Sala0'], '')",
+                                      "Sala de Físico-Químico 3"
+                                    ]
+                                  },
+                                  {
+                                    "equals": [
+                                      "@coalesce(outputs('Compose_ItemAtual')?['Sala0']?['Value'], outputs('Compose_ItemAtual')?['Sala0'], '')",
+                                      "Sala de Físico-Químico 4"
+                                    ]
+                                  },
+                                  {
+                                    "equals": [
+                                      "@coalesce(outputs('Compose_ItemAtual')?['Sala0']?['Value'], outputs('Compose_ItemAtual')?['Sala0'], '')",
+                                      "Sala de Processamento de Resinas"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "and": [
+                                  {
+                                    "greaterOrEquals": [
+                                      "@items('Loop_Perguntas')?['Ordem']",
+                                      210
+                                    ]
+                                  },
+                                  {
+                                    "lessOrEquals": [
+                                      "@items('Loop_Perguntas')?['Ordem']",
+                                      300
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "and": [
+                              {
+                                "or": [
+                                  {
+                                    "equals": [
+                                      "@coalesce(outputs('Compose_ItemAtual')?['Sala0']?['Value'], outputs('Compose_ItemAtual')?['Sala0'], '')",
+                                      "Sala de Reserva Técnica"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "and": [
+                                  {
+                                    "greaterOrEquals": [
+                                      "@items('Loop_Perguntas')?['Ordem']",
+                                      410
+                                    ]
+                                  },
+                                  {
+                                    "lessOrEquals": [
+                                      "@items('Loop_Perguntas')?['Ordem']",
+                                      570
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "and": [
+                              {
+                                "or": [
+                                  {
+                                    "equals": [
+                                      "@coalesce(outputs('Compose_ItemAtual')?['Sala0']?['Value'], outputs('Compose_ItemAtual')?['Sala0'], '')",
+                                      "Oficina de Manutenção AOL"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "and": [
+                                  {
+                                    "greaterOrEquals": [
+                                      "@items('Loop_Perguntas')?['Ordem']",
+                                      610
+                                    ]
+                                  },
+                                  {
+                                    "lessOrEquals": [
+                                      "@items('Loop_Perguntas')?['Ordem']",
+                                      670
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "and": [
+                              {
+                                "or": [
+                                  {
+                                    "equals": [
+                                      "@coalesce(outputs('Compose_ItemAtual')?['Sala0']?['Value'], outputs('Compose_ItemAtual')?['Sala0'], '')",
+                                      "Almoxarifado"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "and": [
+                                  {
+                                    "greaterOrEquals": [
+                                      "@items('Loop_Perguntas')?['Ordem']",
+                                      710
+                                    ]
+                                  },
+                                  {
+                                    "lessOrEquals": [
+                                      "@items('Loop_Perguntas')?['Ordem']",
+                                      770
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "and": [
+                              {
+                                "or": [
+                                  {
+                                    "equals": [
+                                      "@coalesce(outputs('Compose_ItemAtual')?['Sala0']?['Value'], outputs('Compose_ItemAtual')?['Sala0'], '')",
+                                      "Sala de Lavagem"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "and": [
+                                  {
+                                    "greaterOrEquals": [
+                                      "@items('Loop_Perguntas')?['Ordem']",
+                                      810
+                                    ]
+                                  },
+                                  {
+                                    "lessOrEquals": [
+                                      "@items('Loop_Perguntas')?['Ordem']",
+                                      890
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "and": [
+                              {
+                                "startsWith": [
+                                  "@coalesce(outputs('Compose_ItemAtual')?['Sala0']?['Value'], outputs('Compose_ItemAtual')?['Sala0'], '')",
+                                  "Shelter"
+                                ]
+                              },
+                              {
+                                "and": [
+                                  {
+                                    "greaterOrEquals": [
+                                      "@items('Loop_Perguntas')?['Ordem']",
+                                      910
+                                    ]
+                                  },
+                                  {
+                                    "lessOrEquals": [
+                                      "@items('Loop_Perguntas')?['Ordem']",
+                                      990
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "and": [
+                              {
+                                "or": [
+                                  {
+                                    "equals": [
+                                      "@coalesce(outputs('Compose_ItemAtual')?['Sala0']?['Value'], outputs('Compose_ItemAtual')?['Sala0'], '')",
+                                      "Depósito 01 AOL"
+                                    ]
+                                  },
+                                  {
+                                    "equals": [
+                                      "@coalesce(outputs('Compose_ItemAtual')?['Sala0']?['Value'], outputs('Compose_ItemAtual')?['Sala0'], '')",
+                                      "Depósito 02 AOL"
+                                    ]
+                                  },
+                                  {
+                                    "equals": [
+                                      "@coalesce(outputs('Compose_ItemAtual')?['Sala0']?['Value'], outputs('Compose_ItemAtual')?['Sala0'], '')",
+                                      "Depósito 02 AOL/Q4"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "and": [
+                                  {
+                                    "greaterOrEquals": [
+                                      "@items('Loop_Perguntas')?['Ordem']",
+                                      1010
+                                    ]
+                                  },
+                                  {
+                                    "lessOrEquals": [
+                                      "@items('Loop_Perguntas')?['Ordem']",
+                                      1070
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "bd7b0342-388e-4352-b43d-4a9909eb3881"
+                      },
+                      "type": "If"
+                    }
+                  },
+                  "runAfter": {
+                    "Compose_ItemAtual": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "68c36ebf-2ea5-438e-812e-204739400d51"
+                  },
+                  "type": "Foreach"
+                }
+              },
+              "runAfter": {
+                "Obter_Checklists": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "59c6f870-dd22-4c1d-bef0-b323386d9d8c"
+              },
+              "type": "Foreach"
+            },
+            "Obter_NCs": {
+              "runAfter": {
+                "Loop_Checklists": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "7683cff6-d856-46d0-be76-097f9420097d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "parameters": {
+                  "dataset": "https://braskemsa.sharepoint.com/teams/LCQDCX",
+                  "table": "e794bd6c-a0e0-44fe-a37e-376174401267",
+                  "$filter": "@{outputs('Build_vFiltroNC')}",
+                  "$top": 5000
+                },
+                "host": {
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                  "connectionName": "shared_sharepointonline",
+                  "operationId": "GetItems"
+                },
+                "authentication": {
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                  "type": "Raw"
+                }
+              }
+            },
+            "Loop_NCs": {
+              "foreach": "@body('Obter_NCs')?['value']",
+              "actions": {
+                "Incrementar_NC": {
+                  "metadata": {
+                    "operationMetadataId": "361345ed-ec16-4c58-92d9-1872b368214d"
+                  },
+                  "type": "IncrementVariable",
+                  "inputs": {
+                    "name": "varQtdNCs",
+                    "value": 1
+                  }
+                },
+                "RespNC_Nome": {
+                  "runAfter": {
+                    "Aplicar_a_cada_Responsavel_NC": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "98c8cf27-1cad-411a-afc8-cc7d6a45d662"
+                  },
+                  "type": "Compose",
+                  "inputs": "@if(empty(variables('varRespNC_Nomes')), '—', if(greater(length(variables('varRespNC_Nomes')), 2), substring(variables('varRespNC_Nomes'), 0, sub(length(variables('varRespNC_Nomes')), 2)), variables('varRespNC_Nomes')))"
+                },
+                "StatusNCStyle": {
+                  "runAfter": {
+                    "RespNC_Nome": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "48dfe8cc-dc42-4e61-a596-a55634400096"
+                  },
+                  "type": "Compose",
+                  "inputs": "@if(\n  or(\n    equals(toLower(coalesce(item()?['StatusNC']?['Value'], item()?['StatusNCResponsavel']?['Value'], item()?['StatusNC'], '')), 'encerrada'),\n    equals(toLower(coalesce(item()?['StatusNC']?['Value'], item()?['StatusNCResponsavel']?['Value'], item()?['StatusNC'], '')), 'concluído'),\n    equals(toLower(coalesce(item()?['StatusNC']?['Value'], item()?['StatusNCResponsavel']?['Value'], item()?['StatusNC'], '')), 'concluido')\n  ),\n  'background-color:#e6f4ea;color:#137333;font-weight:600;',\n  if(\n    equals(toLower(coalesce(item()?['StatusNC']?['Value'], item()?['StatusNCResponsavel']?['Value'], item()?['StatusNC'], '')), 'em tratamento'),\n    'background-color:#fff4ce;color:#8a6d00;font-weight:600;',\n    'background-color:#fce8e6;color:#c5221f;font-weight:600;'\n  )\n)"
+                },
+                "Acrescentar_varNCRows": {
+                  "runAfter": {
+                    "StatusNCStyle": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "86b76f05-8c57-47e3-a350-e5985594638e"
+                  },
+                  "type": "AppendToStringVariable",
+                  "inputs": {
+                    "name": "varNCRows",
+                    "value": "@concat(\n  '<tr>',\n  '<td style=\"padding:5px 8px;border:1px solid #ddd;font-size:8.5pt;\">',\n    coalesce(item()?['Sala']?['Value'], item()?['SalaNC']?['Value'], item()?['Sala'], item()?['SalaNC'], '—'),\n  '</td>',\n  '<td style=\"padding:5px 8px;border:1px solid #ddd;font-size:8.5pt;\">',\n    if(equals(item()?['DataCriacao'], null), '—', formatDateTime(item()?['DataCriacao'], 'dd/MM/yyyy')),\n  '</td>',\n  '<td style=\"padding:5px 8px;border:1px solid #ddd;font-size:8.5pt;\">',\n    coalesce(item()?['DescricaoNC'], '—'),\n  '</td>',\n  '<td style=\"padding:5px 8px;border:1px solid #ddd;font-size:8.5pt;\">',\n    outputs('RespNC_Nome'),\n  '</td>',\n  '<td style=\"padding:5px 8px;border:1px solid #ddd;font-size:8.5pt;text-align:center;', outputs('StatusNCStyle'), '\">',\n    coalesce(item()?['StatusNC']?['Value'], item()?['StatusNCResponsavel']?['Value'], item()?['StatusNC'], '—'),\n  '</td>',\n  '<td style=\"padding:5px 8px;border:1px solid #ddd;font-size:8.5pt;text-align:center;\">',\n    if(equals(item()?['DataFinalCorretiva'], null), '—', formatDateTime(item()?['DataFinalCorretiva'], 'dd/MM/yyyy')),\n  '</td>',\n  '</tr>'\n)"
+                  }
+                },
+                "Setar_varRespNC_Nomes_Vazio": {
+                  "runAfter": {
+                    "Incrementar_NC": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "patched-set-varRespNC-Nomes"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "varRespNC_Nomes",
+                    "value": "@{substring('x',0,0)}"
+                  }
+                },
+                "Aplicar_a_cada_Responsavel_NC": {
+                  "foreach": "@coalesce(items('Loop_NCs')?['ResponsavelSala'], json('[]'))",
+                  "actions": {
+                    "Acrescentar_varRespNC_Nomes": {
+                      "metadata": {
+                        "operationMetadataId": "patched-append-varRespNC-Nomes"
+                      },
+                      "type": "AppendToStringVariable",
+                      "inputs": {
+                        "name": "varRespNC_Nomes",
+                        "value": "@concat(coalesce(items('Aplicar_a_cada_Responsavel_NC')?['DisplayName'], items('Aplicar_a_cada_Responsavel_NC')?['Email'], items('Aplicar_a_cada_Responsavel_NC')?['EMail'], items('Aplicar_a_cada_Responsavel_NC')?['email'], 'Responsável sem nome'), '; ')"
+                      }
+                    }
+                  },
+                  "runAfter": {
+                    "Setar_varRespNC_Nomes_Vazio": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "patched-loop-responsavel-nc"
+                  },
+                  "type": "Foreach",
+                  "runtimeConfiguration": {
+                    "concurrency": {
+                      "repetitions": 1
+                    }
+                  }
+                }
+              },
+              "runAfter": {
+                "Obter_NCs": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "cd964349-0b8e-44c4-b77a-adabc9e388b7"
+              },
+              "type": "Foreach",
+              "runtimeConfiguration": {
+                "concurrency": {
+                  "repetitions": 1
+                }
+              }
+            },
+            "Validar_Sem_Dados": {
+              "actions": {
+                "Responder_Sem_Dados_PowerApp": {
+                  "metadata": {
+                    "operationMetadataId": "9b22d086-af2f-4090-92e5-8089515c1c80"
+                  },
+                  "type": "Response",
+                  "kind": "PowerApp",
+                  "inputs": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "title": "status",
+                          "x-ms-dynamically-added": true,
+                          "type": "string"
+                        },
+                        "mensagem": {
+                          "title": "mensagem",
+                          "x-ms-dynamically-added": true,
+                          "type": "string"
+                        },
+                        "urlrelatorio": {
+                          "title": "urlrelatorio",
+                          "x-ms-dynamically-added": true,
+                          "type": "string"
+                        },
+                        "qtdchecklists": {
+                          "title": "qtdchecklists",
+                          "x-ms-dynamically-added": true,
+                          "type": "number"
+                        },
+                        "qtdncs": {
+                          "title": "qtdncs",
+                          "x-ms-dynamically-added": true,
+                          "type": "number"
+                        },
+                        "errotecnico": {
+                          "title": "errotecnico",
+                          "x-ms-dynamically-added": true,
+                          "type": "string"
+                        }
+                      },
+                      "additionalProperties": {}
+                    },
+                    "statusCode": 200,
+                    "body": {
+                      "status": "sem_dados",
+                      "mensagem": "Nenhum registro encontrado para os filtros informados.",
+                      "qtdchecklists": "@variables('varQtdRegistros')",
+                      "qtdncs": "@variables('varQtdNCs')"
+                    }
+                  }
+                }
+              },
+              "runAfter": {
+                "Loop_NCs": [
+                  "Succeeded"
+                ]
+              },
+              "else": {
+                "actions": {
+                  "Build_HtmlFinal": {
+                    "metadata": {
+                      "operationMetadataId": "cfd7f945-6a1f-49ca-93a3-cba705f0a6a0"
+                    },
+                    "type": "Compose",
+                    "inputs": "<html>\n<head>\n  <meta charset=\"utf-8\" />\n  <style>\n    body { font-family: \"Segoe UI\", Arial, sans-serif; font-size: 11pt; color: #323130; margin: 0; padding: 0; background-color: #f3f2f1; }\n    .page { max-width: 960px; margin: 24px auto; background-color: #ffffff; padding: 20px; border-radius: 8px; border: 1px solid #e1dfdd; }\n    h1, h2, h3, h4, p { margin: 0; }\n    .header { padding: 14px; border-radius: 8px; background: linear-gradient(90deg, #0078D7 0%, #005A9E 60%, #004578 100%); color: #ffffff; margin-bottom: 16px; }\n    .title-block h1 { font-size: 18pt; font-weight: 700; }\n    .title-block h2 { font-size: 10pt; font-weight: 500; margin-top: 4px; opacity: 0.95; text-transform: uppercase; letter-spacing: 0.03em; }\n    .meta-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }\n    .meta-pill { background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.22); border-radius: 6px; padding: 5px 8px; font-size: 8.5pt; white-space: nowrap; }\n    .meta-pill strong { font-weight: 700; }\n    .periodo { font-size: 8.5pt; margin-top: 8px; opacity: 0.9; }\n    .resumo { background-color: #fafafa; border: 1px solid #e1dfdd; border-radius: 6px; padding: 10px 12px; margin-bottom: 14px; }\n    .resumo-title { font-weight: 600; color: #004578; margin-bottom: 8px; font-size: 10pt; }\n    .kpi-grid { display: flex; flex-wrap: wrap; gap: 10px; }\n    .kpi-box { flex: 1; min-width: 100px; background: #f3f6fc; border: 1px solid #d0d7e2; border-radius: 6px; padding: 8px 10px; text-align: center; }\n    .kpi-value { font-size: 22pt; font-weight: 700; color: #0078D7; }\n    .kpi-label { font-size: 8pt; color: #605e5c; margin-top: 2px; }\n    .section-title { font-weight: 700; font-size: 11pt; color: #004578; margin: 16px 0 6px 0; padding-bottom: 4px; border-bottom: 2px solid #0078D7; }\n    table { width: 100%; border-collapse: collapse; margin-top: 6px; table-layout: fixed; }\n    th { background-color: #0078D7; color: #ffffff; padding: 6px 5px; text-align: left; font-size: 8.5pt; border: 1px solid #005a9e; white-space: normal; line-height: 1.2; }\n    td { border: 1px solid #e1dfdd; padding: 5px 6px; font-size: 8.5pt; vertical-align: top; word-wrap: break-word; word-break: break-word; }\n    tr:nth-child(even) td { background-color: #f8fafc; }\n    tr:nth-child(odd) td { background-color: #ffffff; }\n    .rodape { margin-top: 20px; font-size: 8pt; color: #8a8886; text-align: center; border-top: 1px solid #e1dfdd; padding-top: 8px; }\n    .rodape span { font-weight: 600; color: #004578; text-transform: uppercase; letter-spacing: 0.04em; }\n  </style>\n</head>\n<body>\n  <div class=\"page\">\n\n    <div class=\"header\">\n      <div class=\"title-block\">\n        <h1>Braskem | LCQ - RJ</h1>\n        <h2>Relatório Consolidado de Inspeções — Programa de Segurança, Organização Física e Pellet Zero</h2>\n        <div class=\"meta-grid\">\n          <div class=\"meta-pill\"><strong>Solicitado por:</strong> @{variables('vSolicitadoPor')}</div>\n          <div class=\"meta-pill\"><strong>Sala:</strong> @{if(empty(variables('vSala')), 'Todas', variables('vSala'))}</div>\n          <div class=\"meta-pill\"><strong>Período:</strong> @{if(or(empty(variables('vDataIni')), empty(variables('vDataFim'))), '(sem filtro de data)', concat(formatDateTime(variables('vDataIni'), 'dd/MM/yyyy'), ' a ', formatDateTime(variables('vDataFim'), 'dd/MM/yyyy')))}</div>\n        </div>\n        <div class=\"periodo\">Gerado em: @{formatDateTime(convertTimeZone(utcNow(),'UTC','E. South America Standard Time'),'dd/MM/yyyy HH:mm')} (horário de Brasília)</div>\n      </div>\n    </div>\n\n    <div class=\"resumo\">\n      <div class=\"resumo-title\">Resumo do Relatório</div>\n      <div class=\"kpi-grid\">\n        <div class=\"kpi-box\"><div class=\"kpi-value\">@{string(variables('varQtdRegistros'))}</div><div class=\"kpi-label\">Inspeções</div></div>\n        <div class=\"kpi-box\"><div class=\"kpi-value\">@{string(variables('varTotal'))}</div><div class=\"kpi-label\">Itens Avaliados</div></div>\n        <div class=\"kpi-box\" style=\"border-color:#137333;\"><div class=\"kpi-value\" style=\"color:#137333;\">@{string(variables('varConforme'))}</div><div class=\"kpi-label\">Conformes</div></div>\n        <div class=\"kpi-box\" style=\"border-color:#c5221f;\"><div class=\"kpi-value\" style=\"color:#c5221f;\">@{string(variables('varPend'))}</div><div class=\"kpi-label\">Não Conformes</div></div>\n        <div class=\"kpi-box\"><div class=\"kpi-value\" style=\"color:#5f6368;\">@{string(variables('varNA'))}</div><div class=\"kpi-label\">Não se Aplica</div></div>\n        <div class=\"kpi-box\" style=\"border-color:#e65100;\"><div class=\"kpi-value\" style=\"color:#e65100;\">@{string(variables('varQtdNCs'))}</div><div class=\"kpi-label\">NCs Registradas</div></div>\n      </div>\n    </div>\n\n    <div class=\"section-title\">Tabela 1 — Itens Inspecionados por Checklist</div>\n    <table>\n      <thead>\n        <tr>\n          <th style=\"width:9%\">Data</th>\n          <th style=\"width:13%\">Sala</th>\n          <th style=\"width:9%\">Turno</th>\n          <th style=\"width:55%\">Item Inspecionado</th>\n          <th style=\"width:14%;text-align:center\">Status</th>\n        </tr>\n      </thead>\n      <tbody>\n        @{if(empty(variables('varRows')), '<tr><td colspan=\"5\" style=\"text-align:center;color:#888;padding:14px;font-style:italic;\">Nenhum item registrado para os filtros selecionados.</td></tr>', variables('varRows'))}\n      </tbody>\n    </table>\n\n    <div class=\"section-title\" style=\"margin-top:24px\">Tabela 2 — Não Conformidades Registradas</div>\n    <p style=\"font-size:8.5pt;margin-bottom:6px;color:#605e5c;\">Total de NCs formais no período: <strong>@{string(variables('varQtdNCs'))}</strong></p>\n    <table>\n      <thead>\n        <tr>\n          <th style=\"width:12%\">Sala</th>\n          <th style=\"width:9%\">Data Criação</th>\n          <th style=\"width:38%\">Descrição</th>\n          <th style=\"width:17%\">Responsável</th>\n          <th style=\"width:12%\">Status</th>\n          <th style=\"width:12%\">Data Final</th>\n        </tr>\n      </thead>\n      <tbody>\n        @{if(empty(variables('varNCRows')), '<tr><td colspan=\"6\" style=\"text-align:center;color:#888;padding:14px;font-style:italic;\">Nenhuma NC registrada para os filtros selecionados.</td></tr>', variables('varNCRows'))}\n      </tbody>\n    </table>\n\n    <div class=\"rodape\">\n      <span>Braskem | LCQ - RJ</span>\n      &nbsp;·&nbsp;Relatório Consolidado de Inspeções do Programa de Segurança, Organização Física e Sustentação do Programa Pellet Zero\n      &nbsp;·&nbsp;Gerado em @{formatDateTime(convertTimeZone(utcNow(),'UTC','E. South America Standard Time'),'dd/MM/yyyy HH:mm')}\n    </div>\n\n  </div>\n</body>\n</html>"
+                  },
+                  "Criar_arquivo_HTML": {
+                    "runAfter": {
+                      "Build_HtmlFinal": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "5e44fc63-8baf-4253-82b5-36342c389646"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "parameters": {
+                        "folderPath": "/Documentos",
+                        "name": "@{concat('RelConsolidado_', replace(replace(replace(replace(replace(if(empty(variables('vSala')), 'TodasSalas', variables('vSala')), '/', '-'), '\\\\', '-'), ':', '-'), '*', '-'), '?', ''), '_', if(empty(variables('vDataIni')), formatDateTime(utcNow(), 'yyyy-MM-dd'), variables('vDataIni')), '_', if(empty(variables('vDataFim')), formatDateTime(utcNow(), 'yyyy-MM-dd'), variables('vDataFim')), '.html')}",
+                        "body": "@{outputs('Build_HtmlFinal')}"
+                      },
+                      "host": {
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness",
+                        "connectionName": "shared_onedriveforbusiness",
+                        "operationId": "CreateFile"
+                      },
+                      "authentication": {
+                        "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                        "type": "Raw"
+                      }
+                    },
+                    "runtimeConfiguration": {
+                      "contentTransfer": {
+                        "transferMode": "Chunked"
+                      }
+                    }
+                  },
+                  "Converter_PDF": {
+                    "runAfter": {
+                      "Criar_arquivo_HTML": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "132164df-3d93-465f-b15a-cd387604933f"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "parameters": {
+                        "id": "@body('Criar_arquivo_HTML')?['id']",
+                        "type": "PDF"
+                      },
+                      "host": {
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness",
+                        "connectionName": "shared_onedriveforbusiness",
+                        "operationId": "ConvertFile"
+                      },
+                      "authentication": {
+                        "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                        "type": "Raw"
+                      }
+                    }
+                  },
+                  "DBG_Converter": {
+                    "runAfter": {
+                      "Converter_PDF": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "014ddc40-a97b-42d9-a916-96177f474043"
+                    },
+                    "type": "Compose",
+                    "inputs": "@outputs('Converter_PDF')"
+                  },
+                  "Criar_arquivo_SP": {
+                    "runAfter": {
+                      "DBG_Converter": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "ec8cdead-94ad-47c8-99e5-aee21fedda93"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "parameters": {
+                        "dataset": "https://braskemsa.sharepoint.com/teams/LCQDCX",
+                        "folderPath": "/Documentos Compartilhados/General/03. Gestão de SSMA/Programa Segurança, Organização Física e Programa Pellet Zero/01. Relatórios/01. Relatórios sob Demanda - App",
+                        "name": "@{concat('RelConsolidado_', replace(replace(replace(replace(replace(if(empty(variables('vSala')), 'TodasSalas', variables('vSala')), '/', '-'), '\\\\', '-'), ':', '-'), '*', '-'), '?', ''), '_', if(empty(variables('vDataIni')), formatDateTime(utcNow(), 'yyyy-MM-dd'), variables('vDataIni')), '_', if(empty(variables('vDataFim')), formatDateTime(utcNow(), 'yyyy-MM-dd'), variables('vDataFim')), '.pdf')}",
+                        "body": "@base64ToBinary(outputs('Converter_PDF')?['body']?['$content'])"
+                      },
+                      "host": {
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                        "connectionName": "shared_sharepointonline",
+                        "operationId": "CreateFile"
+                      },
+                      "authentication": {
+                        "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                        "type": "Raw"
+                      }
+                    },
+                    "runtimeConfiguration": {
+                      "contentTransfer": {
+                        "transferMode": "Chunked"
+                      }
+                    }
+                  },
+                  "Deletar_HTML_Temporario": {
+                    "runAfter": {
+                      "Criar_arquivo_SP": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "d8a9904c-1935-4d0d-9e06-ded97a30c411"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "parameters": {
+                        "id": "@body('Criar_arquivo_HTML')?['id']"
+                      },
+                      "host": {
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness",
+                        "connectionName": "shared_onedriveforbusiness",
+                        "operationId": "DeleteFile"
+                      },
+                      "authentication": {
+                        "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                        "type": "Raw"
+                      }
+                    }
+                  },
+                  "Criar_link_compartilhamento": {
+                    "runAfter": {
+                      "Deletar_HTML_Temporario": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "9267264b-36ed-4f10-a459-9b2515475355"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "parameters": {
+                        "dataset": "https://braskemsa.sharepoint.com/teams/LCQDCX",
+                        "table": "20d4451f-6fa9-4db6-8282-bd6260a055a8",
+                        "id": "@outputs('Criar_arquivo_SP')?['body/ItemId']",
+                        "permission/type": "view",
+                        "permission/scope": "organization"
+                      },
+                      "host": {
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+                        "connectionName": "shared_sharepointonline",
+                        "operationId": "CreateSharingLink"
+                      },
+                      "authentication": {
+                        "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']",
+                        "type": "Raw"
+                      }
+                    }
+                  },
+                  "Responder_PowerApp": {
+                    "runAfter": {
+                      "Criar_link_compartilhamento": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "83a55d47-65dc-4f20-bf81-3dabd0d788bc"
+                    },
+                    "type": "Response",
+                    "kind": "PowerApp",
+                    "inputs": {
+                      "schema": {
+                        "type": "object",
+                        "properties": {
+                          "status": {
+                            "title": "status",
+                            "x-ms-dynamically-added": true,
+                            "type": "string"
+                          },
+                          "mensagem": {
+                            "title": "mensagem",
+                            "x-ms-dynamically-added": true,
+                            "type": "string"
+                          },
+                          "urlrelatorio": {
+                            "title": "urlrelatorio",
+                            "x-ms-dynamically-added": true,
+                            "type": "string"
+                          },
+                          "qtdchecklists": {
+                            "title": "qtdchecklists",
+                            "x-ms-dynamically-added": true,
+                            "type": "number"
+                          },
+                          "qtdncs": {
+                            "title": "qtdncs",
+                            "x-ms-dynamically-added": true,
+                            "type": "number"
+                          },
+                          "errotecnico": {
+                            "title": "errotecnico",
+                            "x-ms-dynamically-added": true,
+                            "type": "string"
+                          }
+                        },
+                        "additionalProperties": {}
+                      },
+                      "statusCode": 200,
+                      "body": {
+                        "status": "sucesso",
+                        "mensagem": "Relatório gerado com sucesso.",
+                        "urlrelatorio": "@{outputs('Criar_link_compartilhamento')?['body/link/webUrl']}",
+                        "qtdchecklists": "@variables('varQtdRegistros')",
+                        "qtdncs": "@variables('varQtdNCs')"
+                      }
+                    }
+                  }
+                }
+              },
+              "expression": {
+                "and": [
+                  {
+                    "equals": [
+                      "@variables('varQtdRegistros')",
+                      0
+                    ]
+                  },
+                  {
+                    "equals": [
+                      "@variables('varQtdNCs')",
+                      0
+                    ]
+                  }
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "9cd0c9f9-41e3-4dac-aa2a-9dcf48d3600a"
+              },
+              "type": "If"
+            }
+          },
+          "runAfter": {
+            "Build_vFiltroNC": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "321ad76c-7a32-4268-a749-2fea15965f47"
+          },
+          "type": "Scope"
+        },
+        "CATCH": {
+          "actions": {
+            "Compose_Erro_Detalhado": {
+              "metadata": {
+                "operationMetadataId": "5a640f4f-e22f-4023-8652-cbbce98218c7"
+              },
+              "type": "Compose",
+              "inputs": "@{concat(\n  '=== ERRO PZ_RelatorioConsolidado_App ===',\n  ' | RunID: ', workflow()['run']['id'],\n  ' | Timestamp: ', formatDateTime(convertTimeZone(utcNow(),'UTC','E. South America Standard Time'),'dd/MM/yyyy HH:mm:ss'),\n  ' | SolicitadoPor: ', variables('vSolicitadoPor'),\n  ' | Sala: ', if(empty(variables('vSala')), '(todas)', variables('vSala')),\n  ' | DataIni: ', if(empty(variables('vDataIni')), '(sem filtro)', variables('vDataIni')),\n  ' | DataFim: ', if(empty(variables('vDataFim')), '(sem filtro)', variables('vDataFim')),\n  ' | RegistrosParciais: ', string(variables('varQtdRegistros')),\n  ' | ItensProcessados: ', string(variables('varTotal'))\n)}"
+            },
+            "Responder_Erro_PowerApp": {
+              "runAfter": {
+                "Compose_Erro_Detalhado": [
+                  "Succeeded",
+                  "Failed",
+                  "Skipped",
+                  "TimedOut"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "579cb7a0-2397-47fe-8cf2-d66e6a1750ea"
+              },
+              "type": "Response",
+              "kind": "PowerApp",
+              "inputs": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "title": "status",
+                      "x-ms-dynamically-added": true,
+                      "type": "string"
+                    },
+                    "mensagem": {
+                      "title": "mensagem",
+                      "x-ms-dynamically-added": true,
+                      "type": "string"
+                    },
+                    "urlrelatorio": {
+                      "title": "urlrelatorio",
+                      "x-ms-dynamically-added": true,
+                      "type": "string"
+                    },
+                    "qtdchecklists": {
+                      "title": "qtdchecklists",
+                      "x-ms-dynamically-added": true,
+                      "type": "number"
+                    },
+                    "qtdncs": {
+                      "title": "qtdncs",
+                      "x-ms-dynamically-added": true,
+                      "type": "number"
+                    },
+                    "errotecnico": {
+                      "title": "errotecnico",
+                      "x-ms-dynamically-added": true,
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": {}
+                },
+                "statusCode": 200,
+                "body": {
+                  "status": "erro",
+                  "mensagem": "Falha ao gerar o relatório consolidado.",
+                  "qtdchecklists": 0,
+                  "qtdncs": 0,
+                  "errotecnico": "@{outputs('Compose_Erro_Detalhado')}"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "TRY": [
+              "Failed",
+              "TimedOut",
+              "Skipped"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "b0193708-add5-441c-bffb-81c2c4a2e4bb"
+          },
+          "type": "Scope"
+        },
+        "FINALLY": {
+          "actions": {},
+          "runAfter": {
+            "CATCH": [
+              "Succeeded",
+              "Failed",
+              "TimedOut",
+              "Skipped"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6e01f36e-0800-4680-919b-c0d469d7587a"
+          },
+          "type": "Scope"
+        },
+        "Sala_Normalizada": {
+          "runAfter": {
+            "vDataFim": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "52099f50-d39f-4689-9620-c35f75ebc5ba"
+          },
+          "type": "Compose",
+          "inputs": "@if(or(equals(variables('vSala'), 'TODAS'), empty(variables('vSala'))), '', variables('vSala'))"
+        },
+        "DataIni_Normalizada": {
+          "runAfter": {
+            "Sala_Normalizada": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "63da0ea0-9654-4f6e-85fd-61a59e66803c"
+          },
+          "type": "Compose",
+          "inputs": "@if(or(equals(variables('vDataIni'), 'SEM_DATA'), empty(variables('vDataIni'))), '', variables('vDataIni'))"
+        },
+        "DataFim_Normalizada": {
+          "runAfter": {
+            "DataIni_Normalizada": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "3f34210f-6d67-496b-a13e-a0fe67393a2e"
+          },
+          "type": "Compose",
+          "inputs": "@if(or(equals(variables('vDataFim'), 'SEM_DATA'), empty(variables('vDataFim'))), '', variables('vDataFim'))"
+        },
+        "SolicitadoPor_Normalizado": {
+          "runAfter": {
+            "DataFim_Normalizada": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "00e37b24-5efb-432d-ac01-f79d9152579b"
+          },
+          "type": "Compose",
+          "inputs": "@if(empty(variables('vSolicitadoPor')), 'Usuário', variables('vSolicitadoPor'))"
+        },
+        "varRespNC_Nomes": {
+          "runAfter": {
+            "varNCRows": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "patched-varRespNC-Nomes"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varRespNC_Nomes",
+                "type": "string",
+                "value": "@{substring('x',0,0)}"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "connectionReferences": {
+      "shared_sharepointonline": {
+        "connectionName": "c7df6ea403294c7e9ec524f5797d9ad8",
+        "source": "Invoker",
+        "id": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline",
+        "tier": "NotSpecified",
+        "apiName": "sharepointonline",
+        "isProcessSimpleApiReferenceConversionAlreadyDone": false
+      },
+      "shared_onedriveforbusiness": {
+        "connectionName": "c028b5b41b324d8b944151ee6704be33",
+        "source": "Invoker",
+        "id": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness",
+        "tier": "NotSpecified",
+        "apiName": "onedriveforbusiness",
+        "isProcessSimpleApiReferenceConversionAlreadyDone": false
+      }
+    },
+    "flowFailureAlertSubscribed": false,
+    "isManaged": false
+  }
+}

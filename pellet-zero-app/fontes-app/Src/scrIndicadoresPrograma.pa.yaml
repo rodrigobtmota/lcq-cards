@@ -1,0 +1,2398 @@
+# ************************************************************************************************
+# Warning: YAML source code for Canvas Apps should only be used to review changes made within Power Apps Studio and for minor edits (Preview).
+# Use the maker portal to create and edit your Power Apps.
+# 
+# The schema file for Canvas Apps is available at https://go.microsoft.com/fwlink/?linkid=2304907
+# 
+# For more information, visit https://go.microsoft.com/fwlink/?linkid=2292623
+# ************************************************************************************************
+Screens:
+  scrIndicadoresPrograma:
+    Properties:
+      Fill: =RGBA(245, 245, 245, 1)
+      LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+      OnVisible: |-
+        =If(
+            varBusyIndicadores,
+
+            Notify(
+                "⏳ Aguarde, os indicadores já estão sendo atualizados.",
+                NotificationType.Information
+            ),
+
+            If(
+                !IsBlank(dtIniFiltroInd.SelectedDate) &&
+                !IsBlank(dtFimFiltroInd.SelectedDate) &&
+                dtIniFiltroInd.SelectedDate > dtFimFiltroInd.SelectedDate,
+
+                Notify(
+                    "❌ A data inicial não pode ser maior que a data final.",
+                    NotificationType.Error
+                ),
+
+                Set(varBusyIndicadores, true);
+
+                IfError(
+                    Refresh(Checklist_OrganizacaoPellet2025);
+                    Refresh(NaoConformidadesPorSala);
+
+                    Set(
+                        varSalaFiltroIndAtual,
+                        If(
+                            IsBlank(ddSalaFiltroInd.Selected.Value),
+                            "TODAS",
+                            ddSalaFiltroInd.Selected.Value
+                        )
+                    );
+
+                    Clear(colSalas);
+
+                    Collect(
+                        colSalas,
+                        {Value: "TODAS"}
+                    );
+
+                    IfError(
+                        Collect(
+                            colSalas,
+                            SortByColumns(
+                                Filter(
+                                    Choices([@Checklist_OrganizacaoPellet2025].Sala),
+                                    !IsBlank(Value)
+                                ),
+                                "Value",
+                                SortOrder.Ascending
+                            )
+                        ),
+
+                        Notify(
+                            "⚠️ Não foi possível carregar as salas da lista Checklist_OrganizacaoPellet2025.",
+                            NotificationType.Warning
+                        )
+                    );
+
+                    Set(
+                        varDataInicioInd,
+                        If(
+                            IsBlank(dtIniFiltroInd.SelectedDate),
+                            Date(
+                                Year(Today()),
+                                1,
+                                1
+                            ),
+                            dtIniFiltroInd.SelectedDate
+                        )
+                    );
+
+                    Set(
+                        varDataFimInd,
+                        If(
+                            IsBlank(dtFimFiltroInd.SelectedDate),
+                            Today(),
+                            dtFimFiltroInd.SelectedDate
+                        )
+                    );
+
+                    Set(varPercChecklistsConformes, Blank());
+                    Set(varPercSalasConformes, Blank());
+                    Set(varAderenciaChecklist, Blank());
+                    Set(varAderenciaChecklistAdm, Blank());
+                    Set(varTempoMedioTratamentoNC, Blank());
+                    Set(varConformidadeSustentada, Blank());
+
+                    Set(varTotalChecklists, 0);
+                    Set(varChecklistsConformes, 0);
+                    Set(varChecklistsNaoConformes, 0);
+
+                    Set(varTotalSalasEscopo, 0);
+                    Set(varSalasConformes, 0);
+                    Set(varSemInspecaoEscopo, false);
+
+                    Set(varPrevistoChecklist, 0);
+                    Set(varExecutadoChecklist, 0);
+
+                    Set(varPrevistoChecklistAdm, 0);
+                    Set(varExecutadoChecklistAdm, 0);
+
+                    Set(varTotalNCsPeriodo, 0);
+                    Set(varNCsEncerradasPeriodo, 0);
+                    Set(varNCsNaoEncerradasPeriodo, 0);
+                    Set(varNCsVencidas, 0);
+                    Set(varNCsCriticasPeriodo, 0);
+                    Set(varSalasComReincidencia, 0);
+
+                    Set(varDiasPeriodoIndicador, 0);
+                    Set(varSemanasPeriodoIndicador, 0);
+                    Set(varDiasPeriodoAdm, 0);
+                    Set(varQuinzenasPeriodoAdm, 0);
+
+                    Set(varQtdSalasAdministrativas, 6);
+                    Set(varMetaAderenciaAdm, 90);
+                    Set(varPeriodicidadeAdmDias, 15);
+
+                    Set(
+                        varDiasPeriodoIndicador,
+                        DateDiff(
+                            varDataInicioInd,
+                            DateAdd(
+                                varDataFimInd,
+                                1,
+                                TimeUnit.Days
+                            ),
+                            TimeUnit.Days
+                        )
+                    );
+
+                    Set(
+                        varSemanasPeriodoIndicador,
+                        Max(
+                            1,
+                            RoundUp(
+                                varDiasPeriodoIndicador / 7,
+                                0
+                            )
+                        )
+                    );
+
+                    Set(
+                        varPrevistoChecklist,
+                        varSemanasPeriodoIndicador * 3
+                    );
+
+                    Set(
+                        varDiasPeriodoAdm,
+                        DateDiff(
+                            varDataInicioInd,
+                            DateAdd(
+                                varDataFimInd,
+                                1,
+                                TimeUnit.Days
+                            ),
+                            TimeUnit.Days
+                        )
+                    );
+
+                    Set(
+                        varQuinzenasPeriodoAdm,
+                        Max(
+                            1,
+                            RoundUp(
+                                varDiasPeriodoAdm / varPeriodicidadeAdmDias,
+                                0
+                            )
+                        )
+                    );
+
+                    Set(
+                        varPrevistoChecklistAdm,
+                        If(
+                            varSalaFiltroIndAtual = "TODAS",
+                            varQtdSalasAdministrativas * varQuinzenasPeriodoAdm,
+                            varQuinzenasPeriodoAdm
+                        )
+                    );
+
+                    Set(
+                        varNCsVencidas,
+                        CountRows(
+                            Filter(
+                                colNCIndicadoresBase,
+                                StatusNCTexto <> "Encerrada" &&
+                                StatusNCTexto <> "Cancelada" &&
+                                !IsBlank(DataLimiteCorrecao) &&
+                                DataLimiteCorrecao < Today()
+                            )
+                        )
+                    );
+
+                    Set(
+                        varNCsCriticasPeriodo,
+                        CountRows(
+                            Filter(
+                                colNCIndicadoresBase,
+                                ClassificacaoNC.Value = "Crítica / Segurança"
+                            )
+                        )
+                    );
+
+                    Clear(colNCReincidencia);
+
+                    ForAll(
+                        Filter(
+                            colNCIndicadoresBase,
+                            !IsBlank(SalaTexto) &&
+                            !IsBlank(ItemChecklistOrigem)
+                        ) As NcRow,
+                        Collect(
+                            colNCReincidencia,
+                            {
+                                Sala: NcRow.SalaTexto,
+                                Chave: NcRow.SalaTexto & "|" & NcRow.ItemChecklistOrigem
+                            }
+                        )
+                    );
+
+                    Set(
+                        varSalasComReincidencia,
+                        CountRows(
+                            Distinct(
+                                Filter(
+                                    colNCReincidencia As RowRe,
+                                    CountIf(
+                                        colNCReincidencia,
+                                        Chave = RowRe.Chave
+                                    ) > 1 &&
+                                    !IsBlank(
+                                        LookUp(
+                                            colUltimoChecklistSala,
+                                            Sala = RowRe.Sala
+                                        )
+                                    )
+                                ),
+                                Sala
+                            )
+                        )
+                    );
+
+                    Set(
+                        varConformidadeSustentada,
+                        If(
+                            varTotalSalasEscopo = 0,
+                            Blank(),
+                            Round(
+                                (varTotalSalasEscopo - varSalasComReincidencia) / varTotalSalasEscopo * 100,
+                                0
+                            )
+                        )
+                    );
+
+                    ClearCollect(
+                        colChecklistIndicadoresBase,
+                        AddColumns(
+                            Filter(
+                                Checklist_OrganizacaoPellet2025,
+                                (
+                                    varSalaFiltroIndAtual = "TODAS" ||
+                                    Sala.Value = varSalaFiltroIndAtual
+                                ) &&
+                                (
+                                    IsBlank(varDataInicioInd) ||
+                                    DataInspecao >= varDataInicioInd
+                                ) &&
+                                (
+                                    IsBlank(varDataFimInd) ||
+                                    DataInspecao < DateAdd(
+                                        varDataFimInd,
+                                        1,
+                                        TimeUnit.Days
+                                    )
+                                )
+                            ),
+                            SalaTexto,
+                            Sala.Value,
+                            TurnoTexto,
+                            Turno.Value,
+                            StatusGeralTexto,
+                            StatusGeral.Value,
+                            StatusNCTexto,
+                            StatusNC.Value
+                        )
+                    );
+
+                    ClearCollect(
+                        colChecklistTurnoGeral,
+                        AddColumns(
+                            Filter(
+                                Checklist_OrganizacaoPellet2025,
+                                (
+                                    IsBlank(varDataInicioInd) ||
+                                    DataInspecao >= varDataInicioInd
+                                ) &&
+                                (
+                                    IsBlank(varDataFimInd) ||
+                                    DataInspecao < DateAdd(
+                                        varDataFimInd,
+                                        1,
+                                        TimeUnit.Days
+                                    )
+                                ) &&
+                                (
+                                    Turno.Value = "Turno A" ||
+                                    Turno.Value = "Turno B" ||
+                                    Turno.Value = "Turno C" ||
+                                    Turno.Value = "Turno D" ||
+                                    Turno.Value = "Turno E"
+                                )
+                            ),
+                            SalaTexto,
+                            Sala.Value,
+                            TurnoTexto,
+                            Turno.Value,
+                            StatusGeralTexto,
+                            StatusGeral.Value,
+                            StatusNCTexto,
+                            StatusNC.Value
+                        )
+                    );
+
+                    ClearCollect(
+                        colChecklistAdministrativo,
+                        AddColumns(
+                            Filter(
+                                Checklist_OrganizacaoPellet2025,
+                                (
+                                    varSalaFiltroIndAtual = "TODAS" ||
+                                    Sala.Value = varSalaFiltroIndAtual
+                                ) &&
+                                (
+                                    IsBlank(varDataInicioInd) ||
+                                    DataInspecao >= varDataInicioInd
+                                ) &&
+                                (
+                                    IsBlank(varDataFimInd) ||
+                                    DataInspecao < DateAdd(
+                                        varDataFimInd,
+                                        1,
+                                        TimeUnit.Days
+                                    )
+                                ) &&
+                                Turno.Value = "Equipe ADM"
+                            ),
+                            SalaTexto,
+                            Sala.Value,
+                            TurnoTexto,
+                            Turno.Value,
+                            StatusGeralTexto,
+                            StatusGeral.Value,
+                            StatusNCTexto,
+                            StatusNC.Value,
+                            QuinzenaAdm,
+                            Max(
+                                1,
+                                RoundUp(
+                                    DateDiff(
+                                        varDataInicioInd,
+                                        DataInspecao,
+                                        TimeUnit.Days
+                                    ) / varPeriodicidadeAdmDias,
+                                    0
+                                )
+                            )
+                        )
+                    );
+
+                    ClearCollect(
+                        colNCIndicadoresBase,
+                        AddColumns(
+                            Filter(
+                                NaoConformidadesPorSala,
+                                (
+                                    varSalaFiltroIndAtual = "TODAS" ||
+                                    SalaNC.Value = varSalaFiltroIndAtual
+                                ) &&
+                                (
+                                    IsBlank(varDataInicioInd) ||
+                                    'DataCriacao ' >= varDataInicioInd
+                                ) &&
+                                (
+                                    IsBlank(varDataFimInd) ||
+                                    'DataCriacao ' < DateAdd(
+                                        varDataFimInd,
+                                        1,
+                                        TimeUnit.Days
+                                    )
+                                )
+                            ),
+                            SalaTexto,
+                            SalaNC.Value,
+                            StatusNCTexto,
+                            StatusNC.Value,
+                            DiasTratamento,
+                            If(
+                                !IsBlank('DataCriacao ') &&
+                                !IsBlank(DataFinalCorretiva),
+                                DateDiff(
+                                    'DataCriacao ',
+                                    DataFinalCorretiva,
+                                    TimeUnit.Days
+                                ),
+                                Blank()
+                            )
+                        )
+                    );
+
+                    Set(
+                        varTotalChecklists,
+                        CountRows(colChecklistIndicadoresBase)
+                    );
+
+                    Set(
+                        varChecklistsConformes,
+                        CountRows(
+                            Filter(
+                                colChecklistIndicadoresBase,
+                                StatusGeralTexto = "Conforme"
+                            )
+                        )
+                    );
+
+                    Set(
+                        varChecklistsNaoConformes,
+                        Max(
+                            0,
+                            varTotalChecklists - varChecklistsConformes
+                        )
+                    );
+
+                    Set(
+                        varPercChecklistsConformes,
+                        If(
+                            varTotalChecklists = 0,
+                            Blank(),
+                            Round(
+                                varChecklistsConformes / varTotalChecklists * 100,
+                                0
+                            )
+                        )
+                    );
+
+                    Clear(colUltimoChecklistSala);
+
+                    ForAll(
+                        Sort(
+                            Filter(
+                                colChecklistIndicadoresBase,
+                                !IsBlank(SalaTexto) &&
+                                !IsBlank(StatusGeralTexto)
+                            ),
+                            DataInspecao,
+                            SortOrder.Descending
+                        ) As CkRow,
+
+                        If(
+                            IsEmpty(
+                                Filter(
+                                    colUltimoChecklistSala,
+                                    Sala = CkRow.SalaTexto
+                                )
+                            ),
+
+                            Collect(
+                                colUltimoChecklistSala,
+                                {
+                                    Sala: CkRow.SalaTexto,
+                                    UltimoStatusGeral: CkRow.StatusGeralTexto
+                                }
+                            )
+                        )
+                    );
+
+                    Set(
+                        varTotalSalasEscopo,
+                        CountRows(colUltimoChecklistSala)
+                    );
+
+                    Set(
+                        varSemInspecaoEscopo,
+                        varTotalSalasEscopo = 0
+                    );
+
+                    Set(
+                        varSalasConformes,
+                        CountRows(
+                            Filter(
+                                colUltimoChecklistSala,
+                                UltimoStatusGeral = "Conforme"
+                            )
+                        )
+                    );
+
+                    Set(
+                        varPercSalasConformes,
+                        If(
+                            varTotalSalasEscopo = 0,
+                            Blank(),
+                            Round(
+                                varSalasConformes / varTotalSalasEscopo * 100,
+                                0
+                            )
+                        )
+                    );
+
+                    Set(
+                        varExecutadoChecklist,
+                        CountRows(colChecklistTurnoGeral)
+                    );
+
+                    Set(
+                        varAderenciaChecklist,
+                        If(
+                            varPrevistoChecklist = 0,
+                            Blank(),
+                            Round(
+                                Min(
+                                    100,
+                                    varExecutadoChecklist / varPrevistoChecklist * 100
+                                ),
+                                0
+                            )
+                        )
+                    );
+
+                    Clear(colChecklistAdmUnico);
+
+                    ForAll(
+                        colChecklistAdministrativo As CkAdm,
+
+                        If(
+                            !IsBlank(CkAdm.SalaTexto) &&
+                            IsEmpty(
+                                Filter(
+                                    colChecklistAdmUnico,
+                                    ChaveAdm = CkAdm.SalaTexto & "_" & Text(CkAdm.QuinzenaAdm)
+                                )
+                            ),
+
+                            Collect(
+                                colChecklistAdmUnico,
+                                {
+                                    Sala: CkAdm.SalaTexto,
+                                    Quinzena: CkAdm.QuinzenaAdm,
+                                    ChaveAdm: CkAdm.SalaTexto & "_" & Text(CkAdm.QuinzenaAdm),
+                                    StatusGeral: CkAdm.StatusGeralTexto
+                                }
+                            )
+                        )
+                    );
+
+                    Set(
+                        varExecutadoChecklistAdm,
+                        CountRows(colChecklistAdmUnico)
+                    );
+
+                    Set(
+                        varAderenciaChecklistAdm,
+                        If(
+                            varPrevistoChecklistAdm = 0,
+                            Blank(),
+                            Round(
+                                Min(
+                                    100,
+                                    varExecutadoChecklistAdm / varPrevistoChecklistAdm * 100
+                                ),
+                                0
+                            )
+                        )
+                    );
+
+                    Set(
+                        varTotalNCsPeriodo,
+                        CountRows(colNCIndicadoresBase)
+                    );
+
+                    Set(
+                        varNCsEncerradasPeriodo,
+                        CountRows(
+                            Filter(
+                                colNCIndicadoresBase,
+                                StatusNCTexto = "Encerrada" &&
+                                !IsBlank(DiasTratamento)
+                            )
+                        )
+                    );
+
+                    Set(
+                        varNCsNaoEncerradasPeriodo,
+                        Max(
+                            0,
+                            varTotalNCsPeriodo - varNCsEncerradasPeriodo
+                        )
+                    );
+
+                    Set(
+                        varTempoMedioTratamentoNC,
+                        If(
+                            varTotalNCsPeriodo = 0,
+                            Blank(),
+                            If(
+                                varNCsEncerradasPeriodo = 0,
+                                Blank(),
+                                Round(
+                                    Average(
+                                        Filter(
+                                            colNCIndicadoresBase,
+                                            StatusNCTexto = "Encerrada" &&
+                                            !IsBlank(DiasTratamento)
+                                        ),
+                                        DiasTratamento
+                                    ),
+                                    1
+                                )
+                            )
+                        )
+                    );
+
+                    ClearCollect(
+                        colGraficoConformidade,
+                        {
+                            Categoria: "Conformes",
+                            Valor: varChecklistsConformes,
+                            RotuloLegenda: "Conformes " &
+                                If(
+                                    varTotalChecklists = 0,
+                                    "0%",
+                                    Text(
+                                        Round(
+                                            varChecklistsConformes / varTotalChecklists * 100,
+                                            0
+                                        ),
+                                        "[$-pt-BR]0"
+                                    ) & "%"
+                                ) &
+                                " (" &
+                                Text(
+                                    varChecklistsConformes,
+                                    "[$-pt-BR]0"
+                                ) &
+                                ")"
+                        },
+                        {
+                            Categoria: "Não conformes",
+                            Valor: varChecklistsNaoConformes,
+                            RotuloLegenda: "Não conformes " &
+                                If(
+                                    varTotalChecklists = 0,
+                                    "0%",
+                                    Text(
+                                        Round(
+                                            varChecklistsNaoConformes / varTotalChecklists * 100,
+                                            0
+                                        ),
+                                        "[$-pt-BR]0"
+                                    ) & "%"
+                                ) &
+                                " (" &
+                                Text(
+                                    varChecklistsNaoConformes,
+                                    "[$-pt-BR]0"
+                                ) &
+                                ")"
+                        }
+                    );
+
+                    Set(varBusyIndicadores, false);
+
+                    Notify(
+                        "✅ Indicadores atualizados com sucesso.",
+                        NotificationType.Success
+                    ),
+
+                    Set(varBusyIndicadores, false);
+
+                    Notify(
+                        "❌ Erro ao atualizar indicadores. Verifique os campos 'DataCriacao ', StatusNC, SalaNC ou a conexão das listas.",
+                        NotificationType.Error
+                    )
+                )
+            )
+        )
+    Children:
+      - Container12:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =Color.White
+            Height: =514
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Horizontal
+            PaddingBottom: =8
+            PaddingLeft: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Width: =549
+            X: =761
+            Y: =205
+      - lblSubtituloRelatorioFlex_1:
+          Control: Label@2.5.1
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(0,56,168,1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Text: |-
+              =If(
+                  IsBlank(varDataInicioInd) || IsBlank(varDataFimInd),
+                  " Selecione sala e período para consultar os indicadores do programa.",
+                  " Período analisado: " &
+                  Text(varDataInicioInd, "[$-pt-BR]dd/mm/yyyy") &
+                  " a " &
+                  Text(varDataFimInd, "[$-pt-BR]dd/mm/yyyy") &
+                  " | Sala: " &
+                  Coalesce(varSalaFiltroIndAtual, "TODAS")
+              )
+            Width: =1280
+            X: =40
+            Y: =78
+      - cardFiltros_1:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(255,255,255,1)
+            Height: =73
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Horizontal
+            PaddingBottom: =8
+            PaddingLeft: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            RadiusBottomLeft: =12
+            RadiusBottomRight: =12
+            RadiusTopLeft: =12
+            RadiusTopRight: =12
+            Width: =1271
+            X: =48
+            Y: =118
+      - dtIniFiltroInd:
+          Control: Classic/DatePicker@2.6.0
+          Properties:
+            AccessibleLabel: ="Data inicial do período dos indicadores"
+            BorderColor: =RGBA(218,225,235,1)
+            Color: =RGBA(45,55,72,1)
+            DefaultDate: |-
+              =Date(
+                  Year(Today()),
+                  1,
+                  1
+              )
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            DisabledFill: =RGBA(242, 242, 241, 0)
+            Fill: =RGBA(250,251,253,1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =48
+            IconBackground: =RGBA(0,56,168,1)
+            IconFill: =Color.White
+            PaddingTop: =5
+            Size: =15
+            Width: =220
+            X: =450
+            Y: |+
+              =127
+      - dtFimFiltroInd:
+          Control: Classic/DatePicker@2.6.0
+          Properties:
+            AccessibleLabel: ="Data final do período dos indicadores"
+            BorderColor: =RGBA(218,225,235,1)
+            Color: =RGBA(45,55,72,1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            DisabledFill: =RGBA(242, 242, 241, 0)
+            Fill: =RGBA(250,251,253,1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =48
+            IconBackground: =RGBA(0,56,168,1)
+            IconFill: =Color.White
+            PaddingTop: =5
+            Size: =15
+            Width: =220
+            X: =700
+            Y: |+
+              =127
+      - btnAtualizarIndicadores:
+          Control: Classic/Button@2.2.0
+          Properties:
+            AccessibleLabel: ="Buscar e atualizar indicadores"
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            Color: =Color.White
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            DisabledFill: =RGBA(242, 242, 241, 0)
+            DisplayMode: |-
+              =If(
+                  varBusyIndicadores,
+                  DisplayMode.Disabled,
+                  DisplayMode.Edit
+              )
+            Fill: =RGBA(3, 52, 162, 1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Height: =48
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =RGBA(0,95,180,1)
+            OnSelect: |-
+              =If(
+                  varBusyIndicadores,
+
+                  Notify(
+                      "⏳ Aguarde, os indicadores já estão sendo atualizados.",
+                      NotificationType.Information
+                  ),
+
+                  If(
+                      !IsBlank(dtIniFiltroInd.SelectedDate) &&
+                      !IsBlank(dtFimFiltroInd.SelectedDate) &&
+                      dtIniFiltroInd.SelectedDate > dtFimFiltroInd.SelectedDate,
+
+                      Notify(
+                          "❌ A data inicial não pode ser maior que a data final.",
+                          NotificationType.Error
+                      ),
+
+                      Set(varBusyIndicadores, true);
+
+                      IfError(
+                          Refresh(Checklist_OrganizacaoPellet2025);
+                          Refresh(NaoConformidadesPorSala);
+
+                          Set(
+                              varSalaFiltroIndAtual,
+                              If(
+                                  IsBlank(ddSalaFiltroInd.Selected.Value),
+                                  "TODAS",
+                                  ddSalaFiltroInd.Selected.Value
+                              )
+                          );
+
+                          Clear(colSalas);
+
+                          Collect(
+                              colSalas,
+                              {Value: "TODAS"}
+                          );
+
+                          IfError(
+                              Collect(
+                                  colSalas,
+                                  SortByColumns(
+                                      Filter(
+                                          Choices([@Checklist_OrganizacaoPellet2025].Sala),
+                                          !IsBlank(Value)
+                                      ),
+                                      "Value",
+                                      SortOrder.Ascending
+                                  )
+                              ),
+
+                              Notify(
+                                  "⚠️ Não foi possível carregar as salas da lista Checklist_OrganizacaoPellet2025.",
+                                  NotificationType.Warning
+                              )
+                          );
+
+                          Set(
+                              varDataInicioInd,
+                              If(
+                                  IsBlank(dtIniFiltroInd.SelectedDate),
+                                  Date(
+                                      Year(Today()),
+                                      1,
+                                      1
+                                  ),
+                                  dtIniFiltroInd.SelectedDate
+                              )
+                          );
+
+                          Set(
+                              varDataFimInd,
+                              If(
+                                  IsBlank(dtFimFiltroInd.SelectedDate),
+                                  Today(),
+                                  dtFimFiltroInd.SelectedDate
+                              )
+                          );
+
+                          Set(varPercChecklistsConformes, Blank());
+                          Set(varPercSalasConformes, Blank());
+                          Set(varAderenciaChecklist, Blank());
+                          Set(varAderenciaChecklistAdm, Blank());
+                          Set(varTempoMedioTratamentoNC, Blank());
+                          Set(varConformidadeSustentada, Blank());
+
+                          Set(varTotalChecklists, 0);
+                          Set(varChecklistsConformes, 0);
+                          Set(varChecklistsNaoConformes, 0);
+
+                          Set(varTotalSalasEscopo, 0);
+                          Set(varSalasConformes, 0);
+                          Set(varSemInspecaoEscopo, false);
+
+                          Set(varPrevistoChecklist, 0);
+                          Set(varExecutadoChecklist, 0);
+
+                          Set(varPrevistoChecklistAdm, 0);
+                          Set(varExecutadoChecklistAdm, 0);
+
+                          Set(varTotalNCsPeriodo, 0);
+                          Set(varNCsEncerradasPeriodo, 0);
+                          Set(varNCsNaoEncerradasPeriodo, 0);
+                          Set(varNCsVencidas, 0);
+                          Set(varNCsCriticasPeriodo, 0);
+                          Set(varSalasComReincidencia, 0);
+
+                          Set(varDiasPeriodoIndicador, 0);
+                          Set(varSemanasPeriodoIndicador, 0);
+                          Set(varDiasPeriodoAdm, 0);
+                          Set(varQuinzenasPeriodoAdm, 0);
+
+                          Set(varQtdSalasAdministrativas, 6);
+                          Set(varMetaAderenciaAdm, 90);
+                          Set(varPeriodicidadeAdmDias, 15);
+
+                          Set(
+                              varDiasPeriodoIndicador,
+                              DateDiff(
+                                  varDataInicioInd,
+                                  DateAdd(
+                                      varDataFimInd,
+                                      1,
+                                      TimeUnit.Days
+                                  ),
+                                  TimeUnit.Days
+                              )
+                          );
+
+                          Set(
+                              varSemanasPeriodoIndicador,
+                              Max(
+                                  1,
+                                  RoundUp(
+                                      varDiasPeriodoIndicador / 7,
+                                      0
+                                  )
+                              )
+                          );
+
+                          Set(
+                              varPrevistoChecklist,
+                              varSemanasPeriodoIndicador * 3
+                          );
+
+                          Set(
+                              varDiasPeriodoAdm,
+                              DateDiff(
+                                  varDataInicioInd,
+                                  DateAdd(
+                                      varDataFimInd,
+                                      1,
+                                      TimeUnit.Days
+                                  ),
+                                  TimeUnit.Days
+                              )
+                          );
+
+                          Set(
+                              varQuinzenasPeriodoAdm,
+                              Max(
+                                  1,
+                                  RoundUp(
+                                      varDiasPeriodoAdm / varPeriodicidadeAdmDias,
+                                      0
+                                  )
+                              )
+                          );
+
+                          Set(
+                              varPrevistoChecklistAdm,
+                              If(
+                                  varSalaFiltroIndAtual = "TODAS",
+                                  varQtdSalasAdministrativas * varQuinzenasPeriodoAdm,
+                                  varQuinzenasPeriodoAdm
+                              )
+                          );
+
+                          Set(
+                              varNCsVencidas,
+                              CountRows(
+                                  Filter(
+                                      colNCIndicadoresBase,
+                                      StatusNCTexto <> "Encerrada" &&
+                                      StatusNCTexto <> "Cancelada" &&
+                                      !IsBlank(DataLimiteCorrecao) &&
+                                      DataLimiteCorrecao < Today()
+                                  )
+                              )
+                          );
+
+                          Set(
+                              varNCsCriticasPeriodo,
+                              CountRows(
+                                  Filter(
+                                      colNCIndicadoresBase,
+                                      ClassificacaoNC.Value = "Crítica / Segurança"
+                                  )
+                              )
+                          );
+
+                          Clear(colNCReincidencia);
+
+                          ForAll(
+                              Filter(
+                                  colNCIndicadoresBase,
+                                  !IsBlank(SalaTexto) &&
+                                  !IsBlank(ItemChecklistOrigem)
+                              ) As NcRow,
+                              Collect(
+                                  colNCReincidencia,
+                                  {
+                                      Sala: NcRow.SalaTexto,
+                                      Chave: NcRow.SalaTexto & "|" & NcRow.ItemChecklistOrigem
+                                  }
+                              )
+                          );
+
+                          Set(
+                              varSalasComReincidencia,
+                              CountRows(
+                                  Distinct(
+                                      Filter(
+                                          colNCReincidencia As RowRe,
+                                          CountIf(
+                                              colNCReincidencia,
+                                              Chave = RowRe.Chave
+                                          ) > 1 &&
+                                          !IsBlank(
+                                              LookUp(
+                                                  colUltimoChecklistSala,
+                                                  Sala = RowRe.Sala
+                                              )
+                                          )
+                                      ),
+                                      Sala
+                                  )
+                              )
+                          );
+
+                          Set(
+                              varConformidadeSustentada,
+                              If(
+                                  varTotalSalasEscopo = 0,
+                                  Blank(),
+                                  Round(
+                                      (varTotalSalasEscopo - varSalasComReincidencia) / varTotalSalasEscopo * 100,
+                                      0
+                                  )
+                              )
+                          );
+
+                          ClearCollect(
+                              colChecklistIndicadoresBase,
+                              AddColumns(
+                                  Filter(
+                                      Checklist_OrganizacaoPellet2025,
+                                      (
+                                          varSalaFiltroIndAtual = "TODAS" ||
+                                          Sala.Value = varSalaFiltroIndAtual
+                                      ) &&
+                                      (
+                                          IsBlank(varDataInicioInd) ||
+                                          DataInspecao >= varDataInicioInd
+                                      ) &&
+                                      (
+                                          IsBlank(varDataFimInd) ||
+                                          DataInspecao < DateAdd(
+                                              varDataFimInd,
+                                              1,
+                                              TimeUnit.Days
+                                          )
+                                      )
+                                  ),
+                                  SalaTexto,
+                                  Sala.Value,
+                                  TurnoTexto,
+                                  Turno.Value,
+                                  StatusGeralTexto,
+                                  StatusGeral.Value,
+                                  StatusNCTexto,
+                                  StatusNC.Value
+                              )
+                          );
+
+                          ClearCollect(
+                              colChecklistTurnoGeral,
+                              AddColumns(
+                                  Filter(
+                                      Checklist_OrganizacaoPellet2025,
+                                      (
+                                          IsBlank(varDataInicioInd) ||
+                                          DataInspecao >= varDataInicioInd
+                                      ) &&
+                                      (
+                                          IsBlank(varDataFimInd) ||
+                                          DataInspecao < DateAdd(
+                                              varDataFimInd,
+                                              1,
+                                              TimeUnit.Days
+                                          )
+                                      ) &&
+                                      (
+                                          Turno.Value = "Turno A" ||
+                                          Turno.Value = "Turno B" ||
+                                          Turno.Value = "Turno C" ||
+                                          Turno.Value = "Turno D" ||
+                                          Turno.Value = "Turno E"
+                                      )
+                                  ),
+                                  SalaTexto,
+                                  Sala.Value,
+                                  TurnoTexto,
+                                  Turno.Value,
+                                  StatusGeralTexto,
+                                  StatusGeral.Value,
+                                  StatusNCTexto,
+                                  StatusNC.Value
+                              )
+                          );
+
+                          ClearCollect(
+                              colChecklistAdministrativo,
+                              AddColumns(
+                                  Filter(
+                                      Checklist_OrganizacaoPellet2025,
+                                      (
+                                          varSalaFiltroIndAtual = "TODAS" ||
+                                          Sala.Value = varSalaFiltroIndAtual
+                                      ) &&
+                                      (
+                                          IsBlank(varDataInicioInd) ||
+                                          DataInspecao >= varDataInicioInd
+                                      ) &&
+                                      (
+                                          IsBlank(varDataFimInd) ||
+                                          DataInspecao < DateAdd(
+                                              varDataFimInd,
+                                              1,
+                                              TimeUnit.Days
+                                          )
+                                      ) &&
+                                      Turno.Value = "Equipe ADM"
+                                  ),
+                                  SalaTexto,
+                                  Sala.Value,
+                                  TurnoTexto,
+                                  Turno.Value,
+                                  StatusGeralTexto,
+                                  StatusGeral.Value,
+                                  StatusNCTexto,
+                                  StatusNC.Value,
+                                  QuinzenaAdm,
+                                  Max(
+                                      1,
+                                      RoundUp(
+                                          DateDiff(
+                                              varDataInicioInd,
+                                              DataInspecao,
+                                              TimeUnit.Days
+                                          ) / varPeriodicidadeAdmDias,
+                                          0
+                                      )
+                                  )
+                              )
+                          );
+
+                          ClearCollect(
+                              colNCIndicadoresBase,
+                              AddColumns(
+                                  Filter(
+                                      NaoConformidadesPorSala,
+                                      (
+                                          varSalaFiltroIndAtual = "TODAS" ||
+                                          SalaNC.Value = varSalaFiltroIndAtual
+                                      ) &&
+                                      (
+                                          IsBlank(varDataInicioInd) ||
+                                          'DataCriacao ' >= varDataInicioInd
+                                      ) &&
+                                      (
+                                          IsBlank(varDataFimInd) ||
+                                          'DataCriacao ' < DateAdd(
+                                              varDataFimInd,
+                                              1,
+                                              TimeUnit.Days
+                                          )
+                                      )
+                                  ),
+                                  SalaTexto,
+                                  SalaNC.Value,
+                                  StatusNCTexto,
+                                  StatusNC.Value,
+                                  DiasTratamento,
+                                  If(
+                                      !IsBlank('DataCriacao ') &&
+                                      !IsBlank(DataFinalCorretiva),
+                                      DateDiff(
+                                          'DataCriacao ',
+                                          DataFinalCorretiva,
+                                          TimeUnit.Days
+                                      ),
+                                      Blank()
+                                  )
+                              )
+                          );
+
+                          Set(
+                              varTotalChecklists,
+                              CountRows(colChecklistIndicadoresBase)
+                          );
+
+                          Set(
+                              varChecklistsConformes,
+                              CountRows(
+                                  Filter(
+                                      colChecklistIndicadoresBase,
+                                      StatusGeralTexto = "Conforme"
+                                  )
+                              )
+                          );
+
+                          Set(
+                              varChecklistsNaoConformes,
+                              Max(
+                                  0,
+                                  varTotalChecklists - varChecklistsConformes
+                              )
+                          );
+
+                          Set(
+                              varPercChecklistsConformes,
+                              If(
+                                  varTotalChecklists = 0,
+                                  Blank(),
+                                  Round(
+                                      varChecklistsConformes / varTotalChecklists * 100,
+                                      0
+                                  )
+                              )
+                          );
+
+                          Clear(colUltimoChecklistSala);
+
+                          ForAll(
+                              Sort(
+                                  Filter(
+                                      colChecklistIndicadoresBase,
+                                      !IsBlank(SalaTexto) &&
+                                      !IsBlank(StatusGeralTexto)
+                                  ),
+                                  DataInspecao,
+                                  SortOrder.Descending
+                              ) As CkRow,
+
+                              If(
+                                  IsEmpty(
+                                      Filter(
+                                          colUltimoChecklistSala,
+                                          Sala = CkRow.SalaTexto
+                                      )
+                                  ),
+
+                                  Collect(
+                                      colUltimoChecklistSala,
+                                      {
+                                          Sala: CkRow.SalaTexto,
+                                          UltimoStatusGeral: CkRow.StatusGeralTexto
+                                      }
+                                  )
+                              )
+                          );
+
+                          Set(
+                              varTotalSalasEscopo,
+                              CountRows(colUltimoChecklistSala)
+                          );
+
+                          Set(
+                              varSemInspecaoEscopo,
+                              varTotalSalasEscopo = 0
+                          );
+
+                          Set(
+                              varSalasConformes,
+                              CountRows(
+                                  Filter(
+                                      colUltimoChecklistSala,
+                                      UltimoStatusGeral = "Conforme"
+                                  )
+                              )
+                          );
+
+                          Set(
+                              varPercSalasConformes,
+                              If(
+                                  varTotalSalasEscopo = 0,
+                                  Blank(),
+                                  Round(
+                                      varSalasConformes / varTotalSalasEscopo * 100,
+                                      0
+                                  )
+                              )
+                          );
+
+                          Set(
+                              varExecutadoChecklist,
+                              CountRows(colChecklistTurnoGeral)
+                          );
+
+                          Set(
+                              varAderenciaChecklist,
+                              If(
+                                  varPrevistoChecklist = 0,
+                                  Blank(),
+                                  Round(
+                                      Min(
+                                          100,
+                                          varExecutadoChecklist / varPrevistoChecklist * 100
+                                      ),
+                                      0
+                                  )
+                              )
+                          );
+
+                          Clear(colChecklistAdmUnico);
+
+                          ForAll(
+                              colChecklistAdministrativo As CkAdm,
+
+                              If(
+                                  !IsBlank(CkAdm.SalaTexto) &&
+                                  IsEmpty(
+                                      Filter(
+                                          colChecklistAdmUnico,
+                                          ChaveAdm = CkAdm.SalaTexto & "_" & Text(CkAdm.QuinzenaAdm)
+                                      )
+                                  ),
+
+                                  Collect(
+                                      colChecklistAdmUnico,
+                                      {
+                                          Sala: CkAdm.SalaTexto,
+                                          Quinzena: CkAdm.QuinzenaAdm,
+                                          ChaveAdm: CkAdm.SalaTexto & "_" & Text(CkAdm.QuinzenaAdm),
+                                          StatusGeral: CkAdm.StatusGeralTexto
+                                      }
+                                  )
+                              )
+                          );
+
+                          Set(
+                              varExecutadoChecklistAdm,
+                              CountRows(colChecklistAdmUnico)
+                          );
+
+                          Set(
+                              varAderenciaChecklistAdm,
+                              If(
+                                  varPrevistoChecklistAdm = 0,
+                                  Blank(),
+                                  Round(
+                                      Min(
+                                          100,
+                                          varExecutadoChecklistAdm / varPrevistoChecklistAdm * 100
+                                      ),
+                                      0
+                                  )
+                              )
+                          );
+
+                          Set(
+                              varTotalNCsPeriodo,
+                              CountRows(colNCIndicadoresBase)
+                          );
+
+                          Set(
+                              varNCsEncerradasPeriodo,
+                              CountRows(
+                                  Filter(
+                                      colNCIndicadoresBase,
+                                      StatusNCTexto = "Encerrada" &&
+                                      !IsBlank(DiasTratamento)
+                                  )
+                              )
+                          );
+
+                          Set(
+                              varNCsNaoEncerradasPeriodo,
+                              Max(
+                                  0,
+                                  varTotalNCsPeriodo - varNCsEncerradasPeriodo
+                              )
+                          );
+
+                          Set(
+                              varTempoMedioTratamentoNC,
+                              If(
+                                  varTotalNCsPeriodo = 0,
+                                  Blank(),
+                                  If(
+                                      varNCsEncerradasPeriodo = 0,
+                                      Blank(),
+                                      Round(
+                                          Average(
+                                              Filter(
+                                                  colNCIndicadoresBase,
+                                                  StatusNCTexto = "Encerrada" &&
+                                                  !IsBlank(DiasTratamento)
+                                              ),
+                                              DiasTratamento
+                                          ),
+                                          1
+                                      )
+                                  )
+                              )
+                          );
+
+                          ClearCollect(
+                              colGraficoConformidade,
+                              {
+                                  Categoria: "Conformes",
+                                  Valor: varChecklistsConformes,
+                                  RotuloLegenda: "Conformes " &
+                                      If(
+                                          varTotalChecklists = 0,
+                                          "0%",
+                                          Text(
+                                              Round(
+                                                  varChecklistsConformes / varTotalChecklists * 100,
+                                                  0
+                                              ),
+                                              "[$-pt-BR]0"
+                                          ) & "%"
+                                      ) &
+                                      " (" &
+                                      Text(
+                                          varChecklistsConformes,
+                                          "[$-pt-BR]0"
+                                      ) &
+                                      ")"
+                              },
+                              {
+                                  Categoria: "Não conformes",
+                                  Valor: varChecklistsNaoConformes,
+                                  RotuloLegenda: "Não conformes " &
+                                      If(
+                                          varTotalChecklists = 0,
+                                          "0%",
+                                          Text(
+                                              Round(
+                                                  varChecklistsNaoConformes / varTotalChecklists * 100,
+                                                  0
+                                              ),
+                                              "[$-pt-BR]0"
+                                          ) & "%"
+                                      ) &
+                                      " (" &
+                                      Text(
+                                          varChecklistsNaoConformes,
+                                          "[$-pt-BR]0"
+                                      ) &
+                                      ")"
+                              }
+                          );
+
+                          Set(varBusyIndicadores, false);
+
+                          Notify(
+                              "✅ Indicadores atualizados com sucesso.",
+                              NotificationType.Success
+                          ),
+
+                          Set(varBusyIndicadores, false);
+
+                          Notify(
+                              "❌ Erro ao atualizar indicadores. Verifique os campos 'DataCriacao ', StatusNC, SalaNC ou a conexão das listas.",
+                              NotificationType.Error
+                          )
+                      )
+                  )
+              )
+            PressedBorderColor: =RGBA(0, 69, 120, 1)
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =RGBA(16, 110, 190, 1)
+            Size: =18
+            Text: |-
+              =If(
+                  varBusyIndicadores,
+                  "BUSCANDO...",
+                  "🔍 Buscar"
+              )
+            Width: =242
+            X: =1008
+            Y: =125
+      - TempoMedioTratamentoNC:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            BorderColor: =RGBA(225,230,236,1)
+            BorderThickness: =1
+            Fill: |-
+              =If(
+                  varTotalNCsPeriodo = 0,
+                  RGBA(223, 246, 221, 1),
+                  If(
+                      varNCsEncerradasPeriodo = 0,
+                      RGBA(255, 244, 206, 1),
+                      If(
+                          varTempoMedioTratamentoNC <= 10,
+                          RGBA(223, 246, 221, 1),
+                          If(
+                              varTempoMedioTratamentoNC <= 15,
+                              RGBA(255, 244, 206, 1),
+                              RGBA(253, 231, 233, 1)
+                          )
+                      )
+                  )
+              )
+            Height: =160
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            PaddingBottom: =8
+            PaddingLeft: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            RadiusBottomLeft: =18
+            RadiusBottomRight: =18
+            RadiusTopLeft: =18
+            RadiusTopRight: =18
+            Width: =340
+            X: =49
+            Y: =562
+          Children:
+            - lbl_tituloNC:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  BorderStyle: =BorderStyle.None
+                  BorderThickness: =2
+                  Color: =RGBA(70,70,70,1)
+                  DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                  DisabledColor: =RGBA(161, 159, 157, 1)
+                  FocusedBorderThickness: =4
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  Text: ="Tempo Médio de Tratamento de NC"
+                  Width: =350
+            - lbl_tempoNC:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  BorderStyle: =BorderStyle.None
+                  BorderThickness: =2
+                  Color: =RGBA(20,20,20,1)
+                  DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                  DisabledColor: =RGBA(161, 159, 157, 1)
+                  Fill: |-
+                    =If(
+                        varTotalNCsPeriodo = 0,
+                        RGBA(223, 246, 221, 1),
+                        If(
+                            varNCsEncerradasPeriodo = 0,
+                            RGBA(255, 244, 206, 1),
+                            If(
+                                varTempoMedioTratamentoNC <= 10,
+                                RGBA(223, 246, 221, 1),
+                                If(
+                                    varTempoMedioTratamentoNC <= 15,
+                                    RGBA(255, 244, 206, 1),
+                                    RGBA(253, 231, 233, 1)
+                                )
+                            )
+                        )
+                    )
+                  FocusedBorderThickness: =4
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Bold
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  Size: =26
+                  Text: |-
+                    =If(
+                        varTotalNCsPeriodo = 0,
+                        "Sem NC no Período",
+                        If(
+                            varNCsEncerradasPeriodo = 0,
+                            "NC Pendente",
+                            Text(varTempoMedioTratamentoNC, "[$-pt-BR]0.0") & " Dias"
+                        )
+                    )
+                  Width: =350
+            - lbl_metaNC:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  BorderStyle: =BorderStyle.None
+                  BorderThickness: =2
+                  Color: =RGBA(110,110,110,1)
+                  DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                  DisabledColor: =RGBA(161, 159, 157, 1)
+                  FocusedBorderThickness: =4
+                  Font: =Font.'Segoe UI'
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  Size: =12
+                  Text: |-
+                    =If(
+                        varTotalNCsPeriodo = 0,
+                        "Nenhuma Não Conformidade Registrada",
+                        If(
+                            varNCsEncerradasPeriodo = 0,
+                            Text(varTotalNCsPeriodo, "[$-pt-BR]0") &
+                            " NC(s) Aberta(s) ou em Tratamento",
+                            "Meta Operacional: ≤ 10 dias | " &
+                            Text(varNCsEncerradasPeriodo, "[$-pt-BR]0") &
+                            " Encerrada(s)"
+                        )
+                    )
+                  Width: =350
+      - PercSalasConformes:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            BorderColor: =RGBA(225,230,236,1)
+            BorderThickness: =1
+            Fill: |-
+              =If(
+                  varTotalNCsPeriodo = 0,
+                  RGBA(223, 246, 221, 1),
+                  RGBA(255, 244, 206, 1)
+              )
+            Height: =160
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            PaddingBottom: =8
+            PaddingLeft: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            RadiusBottomLeft: =18
+            RadiusBottomRight: =18
+            RadiusTopLeft: =18
+            RadiusTopRight: =18
+            Width: =340
+            X: =403
+            Y: =562
+          Children:
+            - lbl_percentual:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  BorderStyle: =BorderStyle.None
+                  BorderThickness: =2
+                  Color: =RGBA(70,70,70,1)
+                  DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                  DisabledColor: =RGBA(161, 159, 157, 1)
+                  FocusedBorderThickness: =4
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  Text: ="Não Conformidades no Período"
+                  Width: =350
+            - lbl_valor:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  BorderStyle: =BorderStyle.None
+                  BorderThickness: =2
+                  Color: =RGBA(20,20,20,1)
+                  DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                  DisabledColor: =RGBA(161, 159, 157, 1)
+                  Fill: =RGBA(0,0,0,0)
+                  FocusedBorderThickness: =4
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Bold
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  Size: =28
+                  Text: =Text(varTotalNCsPeriodo, "[$-pt-BR]0")
+                  Width: =400
+            - lbl_meta:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  BorderStyle: =BorderStyle.None
+                  BorderThickness: =2
+                  Color: =RGBA(110,110,110,1)
+                  DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                  DisabledColor: =RGBA(161, 159, 157, 1)
+                  FocusedBorderThickness: =4
+                  Font: =Font.'Segoe UI'
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  Size: =12
+                  Text: |-
+                    =Text(varNCsEncerradasPeriodo, "[$-pt-BR]0") &
+                    " Encerrada(s) | " &
+                    Text(varTotalNCsPeriodo - varNCsEncerradasPeriodo, "[$-pt-BR]0") &
+                    " Pendente(s) | " &
+                    Text(varNCsVencidas, "[$-pt-BR]0") &
+                    " Vencida(s) | " &
+                    Text(varNCsCriticasPeriodo, "[$-pt-BR]0") &
+                    " Crítica(s)"
+                  Width: =350
+      - AderenciaChecklist:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            BorderColor: =RGBA(225,230,236,1)
+            BorderThickness: =1
+            Fill: |-
+              =If(
+                  IsBlank(varAderenciaChecklist),
+                  RGBA(245, 245, 245, 1),
+                  If(
+                      varAderenciaChecklist >= 90,
+                      RGBA(223, 246, 221, 1),
+                      If(
+                          varAderenciaChecklist >= 70,
+                          RGBA(255, 244, 206, 1),
+                          RGBA(253, 231, 233, 1)
+                      )
+                  )
+              )
+            Height: =160
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            PaddingBottom: =8
+            PaddingLeft: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            RadiusBottomLeft: =18
+            RadiusBottomRight: =18
+            RadiusTopLeft: =18
+            RadiusTopRight: =18
+            Width: =340
+            X: =49
+            Y: =385
+          Children:
+            - lbl_tituloaderencia:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  BorderStyle: =BorderStyle.None
+                  BorderThickness: =2
+                  Color: =RGBA(70,70,70,1)
+                  DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                  DisabledColor: =RGBA(161, 159, 157, 1)
+                  FocusedBorderThickness: =4
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  Text: ="Aderência da Equipe de Turno"
+                  Width: =350
+            - lbl_aderencia:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  BorderStyle: =BorderStyle.None
+                  BorderThickness: =2
+                  Color: =RGBA(20,20,20,1)
+                  DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                  DisabledColor: =RGBA(161, 159, 157, 1)
+                  FocusedBorderThickness: =4
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Bold
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  Size: =28
+                  Text: |-
+                    =If(
+                        IsBlank(varAderenciaChecklist),
+                        "Sem base",
+                        Text(varAderenciaChecklist, "[$-pt-BR]0") & "%"
+                    )
+                  Width: =350
+            - lbl_metaaderencia:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  BorderStyle: =BorderStyle.None
+                  BorderThickness: =2
+                  Color: =RGBA(110,110,110,1)
+                  DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                  DisabledColor: =RGBA(161, 159, 157, 1)
+                  FocusedBorderThickness: =4
+                  Font: =Font.'Segoe UI'
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  Size: =11
+                  Text: |-
+                    ="Meta: ≥ 90% | Base: 3/semana | " &
+                    Text(varExecutadoChecklist, "[$-pt-BR]0") &
+                    " de " &
+                    Text(varPrevistoChecklist, "[$-pt-BR]0") &
+                    " previstos"
+                  Width: =350
+      - lbl_tituloGrafico:
+          Control: Label@2.5.1
+          Group: CompositePieChart1
+          Properties:
+            Align: =Align.Center
+            BorderColor: =RGBA(0, 0, 0, 1)
+            Color: =RGBA(50, 49, 48, 1)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Height: =87
+            Size: =20
+            Text: |-
+              =If(
+                  varTotalChecklists = 0,
+                  "Checklists Conformes x Não Conformes — Sem Dados no Período",
+                  "Checklists Conformes x Não Conformes"
+              )
+            Width: =522
+            X: =776
+            Y: =205
+      - pieGraficoIndicadores:
+          Control: PieChart@2.3.0
+          Group: CompositePieChart1
+          Properties:
+            BorderColor: =RGBA(225,230,236,1)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =1
+            Color: =RGBA(255, 255, 255, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            Font: =Font.'Segoe UI'
+            Height: =330
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            ItemColorSet: =[RGBA(17, 141, 255, 1),RGBA(18,35,158, 1), RGBA(230,108,55,1), RGBA(107,0,123,1), RGBA(224,68,167,1), RGBA(116,78,194,1), RGBA(217,179,0,1), RGBA(214,69,80,1), RGBA(25, 114, 120, 1), RGBA(26, 171, 64, 1), RGBA(21, 198, 244, 1)]
+            Items: =colGraficoConformidade
+            Items.Labels: =Categoria
+            Items.Series: =Valor
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            Visible: =varTotalChecklists > 0
+            Width: =522
+            X: =776
+            Y: =321
+      - Legenda:
+          Control: Legend@2.1.0
+          Group: CompositePieChart1
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =RGBA(50, 49, 48, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            DisabledFill: =RGBA(225, 223, 221, 1)
+            Font: =Font.'Segoe UI'
+            Height: =94
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            ItemColorSet: =pieGraficoIndicadores.ItemColorSet
+            Items: =colGraficoConformidade
+            Items.Value: =Categoria
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            Size: =16
+            Width: =283
+            X: =776
+            Y: =295
+      - Container14_28:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Group: Group10_9
+          Properties:
+            Fill: =RGBA(3, 52, 162, 1)
+            Height: =95
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            PaddingBottom: =8
+            PaddingLeft: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Width: =1271
+            X: =48
+            Y: =20
+      - Icone_home_14:
+          Control: Classic/Icon@2.5.0
+          Group: Group10_9
+          Properties:
+            AccessibleLabel: ="Voltar para a tela inicial"
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: =Color.White
+            DisabledBorderColor: =RGBA(245, 245, 245, 1)
+            DisabledColor: =RGBA(225, 223, 221, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =65
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(16, 110, 190, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.Home
+            OnSelect: =Navigate(TelaInicio, ScreenTransition.Fade)
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =RGBA(16, 110, 190, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =45
+            X: =1253
+            Y: =35
+      - Label1_21:
+          Control: Label@2.5.1
+          Group: Group10_9
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =2
+            Color: =Color.White
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            FocusedBorderThickness: =4
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =52
+            Size: =24
+            Text: ="Indicadores do Programa"
+            Width: =472
+            X: =61
+            Y: =49
+      - Icon10_15:
+          Control: Classic/Icon@2.5.0
+          Group: Group10_9
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 0)
+            Color: =RGBA(255, 200, 0, 1)
+            DisabledBorderColor: =RGBA(245, 245, 245, 1)
+            DisabledColor: =RGBA(225, 223, 221, 1)
+            DisabledFill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =4
+            Height: =21
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(16, 110, 190, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            Icon: =Icon.HorizontalLine
+            PressedBorderColor: =RGBA(0, 0, 0, 0)
+            PressedColor: =RGBA(16, 110, 190, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            Width: =100
+            X: =72
+            Y: =28
+      - Container14_29:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Group: Group10_9
+          Properties:
+            Fill: =RGBA(3, 52, 162, 1)
+            Height: =29
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            PaddingBottom: =8
+            PaddingLeft: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            RadiusBottomLeft: =20
+            RadiusBottomRight: =20
+            RadiusTopLeft: =20
+            RadiusTopRight: =20
+            Width: =1271
+            X: =48
+            Y: =739
+      - ConformidadeChecklist:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            BorderColor: =RGBA(225,230,236,1)
+            BorderThickness: =1
+            Fill: |-
+              =If(
+                  IsBlank(varPercSalasConformes),
+                  RGBA(245, 245, 245, 1),
+                  If(
+                      varPercSalasConformes >= 85,
+                      RGBA(223, 246, 221, 1),
+                      RGBA(253, 231, 233, 1)
+                  )
+              )
+            Height: =160
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            PaddingBottom: =8
+            PaddingLeft: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            RadiusBottomLeft: =18
+            RadiusBottomRight: =18
+            RadiusTopLeft: =18
+            RadiusTopRight: =18
+            Width: =340
+            X: =403
+            Y: =208
+          Children:
+            - lbl_tituloaderencia_2:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  BorderStyle: =BorderStyle.None
+                  BorderThickness: =2
+                  Color: =RGBA(70,70,70,1)
+                  DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                  DisabledColor: =RGBA(161, 159, 157, 1)
+                  FocusedBorderThickness: =4
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  Text: ="Percentual de Salas Conformes"
+                  Width: =350
+            - lbl_aderencia_2:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  BorderStyle: =BorderStyle.None
+                  BorderThickness: =2
+                  Color: =RGBA(20,20,20,1)
+                  DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                  DisabledColor: =RGBA(161, 159, 157, 1)
+                  FocusedBorderThickness: =4
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Bold
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  Size: =28
+                  Text: |-
+                    =If(
+                        IsBlank(varPercSalasConformes),
+                        "Sem Inspeção",
+                        Text(varPercSalasConformes, "[$-pt-BR]0") & "%"
+                    )
+                  Width: =350
+            - lbl_metaaderencia_2:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  BorderStyle: =BorderStyle.None
+                  BorderThickness: =2
+                  Color: =RGBA(110,110,110,1)
+                  DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                  DisabledColor: =RGBA(161, 159, 157, 1)
+                  FocusedBorderThickness: =4
+                  Font: =Font.'Segoe UI'
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  Size: =12
+                  Text: |-
+                    ="Meta: ≥ 85% | " &
+                    Text(varSalasConformes, "[$-pt-BR]0") &
+                    " de " &
+                    Text(varTotalSalasEscopo, "[$-pt-BR]0") &
+                    " Salas Conformes"
+                  Width: =350
+      - TotalChecklistGlobal:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            BorderColor: =RGBA(225,230,236,1)
+            BorderThickness: =1
+            Fill: =RGBA(239, 246, 255, 1)
+            Height: =160
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            PaddingBottom: =8
+            PaddingLeft: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            RadiusBottomLeft: =18
+            RadiusBottomRight: =18
+            RadiusTopLeft: =18
+            RadiusTopRight: =18
+            Width: =340
+            X: =49
+            Y: =208
+          Children:
+            - lbl_percentual_1:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  BorderStyle: =BorderStyle.None
+                  BorderThickness: =2
+                  Color: =RGBA(70,70,70,1)
+                  DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                  DisabledColor: =RGBA(161, 159, 157, 1)
+                  FocusedBorderThickness: =4
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  Text: ="Total Checklists Realizados LCQ"
+                  Width: =350
+            - lbl_valor_1:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  BorderStyle: =BorderStyle.None
+                  BorderThickness: =2
+                  Color: =RGBA(20,20,20,1)
+                  DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                  DisabledColor: =RGBA(161, 159, 157, 1)
+                  Fill: =RGBA(0,0,0,0)
+                  FocusedBorderThickness: =4
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Bold
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  Size: =28
+                  Text: =Text(varTotalChecklists, "[$-pt-BR]0")
+                  Width: =400
+            - lbl_meta_1:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  BorderStyle: =BorderStyle.None
+                  BorderThickness: =2
+                  Color: =RGBA(110,110,110,1)
+                  DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                  DisabledColor: =RGBA(161, 159, 157, 1)
+                  FocusedBorderThickness: =4
+                  Font: =Font.'Segoe UI'
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  Size: =12
+                  Text: |-
+                    =Text(varChecklistsConformes, "[$-pt-BR]0") &
+                    " Conforme(s) | " &
+                    Text(varChecklistsNaoConformes, "[$-pt-BR]0") &
+                    " Não Conforme(s)"
+                  Width: =350
+      - AderenciaChecklist_ADM:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            BorderColor: =RGBA(225,230,236,1)
+            BorderThickness: =1
+            Fill: |-
+              =If(
+                  IsBlank(varAderenciaChecklistAdm),
+                  RGBA(245, 245, 245, 1),
+                  If(
+                      varAderenciaChecklistAdm >= 90,
+                      RGBA(223, 246, 221, 1),
+                      If(
+                          varAderenciaChecklistAdm >= 70,
+                          RGBA(255, 244, 206, 1),
+                          RGBA(253, 231, 233, 1)
+                      )
+                  )
+              )
+            Height: =160
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            PaddingBottom: =8
+            PaddingLeft: =8
+            PaddingRight: =8
+            PaddingTop: =8
+            RadiusBottomLeft: =18
+            RadiusBottomRight: =18
+            RadiusTopLeft: =18
+            RadiusTopRight: =18
+            Width: =340
+            X: =403
+            Y: =385
+          Children:
+            - lbl_tituloaderencia_1:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  BorderStyle: =BorderStyle.None
+                  BorderThickness: =2
+                  Color: =RGBA(70,70,70,1)
+                  DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                  DisabledColor: =RGBA(161, 159, 157, 1)
+                  FocusedBorderThickness: =4
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Semibold
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  Text: ="Aderência da Equipe Administrativa"
+                  Width: =350
+            - lbl_aderencia_1:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  BorderStyle: =BorderStyle.None
+                  BorderThickness: =2
+                  Color: =RGBA(20,20,20,1)
+                  DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                  DisabledColor: =RGBA(161, 159, 157, 1)
+                  FocusedBorderThickness: =4
+                  Font: =Font.'Segoe UI'
+                  FontWeight: =FontWeight.Bold
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  Size: =28
+                  Text: |-
+                    =If(
+                        IsBlank(varAderenciaChecklistAdm),
+                        "Sem Base",
+                        Text(varAderenciaChecklistAdm, "[$-pt-BR]0") & "%"
+                    )
+                  Width: =350
+            - lbl_metaaderencia_1:
+                Control: Label@2.5.1
+                Properties:
+                  Align: =Align.Center
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  BorderStyle: =BorderStyle.None
+                  BorderThickness: =2
+                  Color: =RGBA(110,110,110,1)
+                  DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                  DisabledColor: =RGBA(161, 159, 157, 1)
+                  FocusedBorderThickness: =4
+                  Font: =Font.'Segoe UI'
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  Size: =10
+                  Text: |-
+                    ="Meta: ≥ 90% | Base: 6 salas/15 dias | " &
+                    Text(varExecutadoChecklistAdm, "[$-pt-BR]0") &
+                    " de " &
+                    Text(varPrevistoChecklistAdm, "[$-pt-BR]0") &
+                    " Previstos"
+                  Width: =370
+      - ddSalaFiltroInd:
+          Control: Classic/DropDown@2.3.1
+          Properties:
+            AccessibleLabel: ="Filtro de sala dos indicadores"
+            BorderColor: =RGBA(218,225,235,1)
+            ChevronBackground: =RGBA(250,251,253,1)
+            ChevronDisabledBackground: =RGBA(242, 242, 241, 0)
+            ChevronDisabledFill: =RGBA(161, 159, 157, 1)
+            ChevronFill: =RGBA(0,56,168,1)
+            ChevronHoverBackground: =RGBA(245, 245, 245, 1)
+            ChevronHoverFill: =RGBA(50, 49, 48, 1)
+            Color: =RGBA(45,55,72,1)
+            Default: ="TODAS"
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            DisabledFill: =RGBA(242, 242, 241, 0)
+            Fill: =RGBA(250,251,253,1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =46
+            HoverBorderColor: =RGBA(16, 110, 190, 1)
+            HoverColor: =RGBA(50, 49, 48, 1)
+            HoverFill: =RGBA(245, 245, 245, 1)
+            Items: =colSalas
+            Items.Value: =Value
+            PaddingBottom: =5
+            PaddingLeft: =12
+            PaddingRight: =5
+            PaddingTop: =5
+            PressedBorderColor: =RGBA(16, 110, 190, 1)
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =RGBA(0, 120, 212, 1)
+            SelectionColor: =RGBA(50, 49, 48, 1)
+            SelectionFill: =RGBA(0, 120, 212, 1)
+            Size: =15
+            Width: =350
+            X: =60
+            Y: |+
+              =127
+      - btnLimparFiltrosInd:
+          Control: Classic/Button@2.2.0
+          Properties:
+            AccessibleLabel: ="Limpar filtros dos indicadores"
+            BorderColor: =RGBA(0, 0, 0, 0)
+            BorderStyle: =BorderStyle.None
+            Color: =Color.White
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            DisabledFill: =RGBA(242, 242, 241, 0)
+            DisplayMode: |-
+              =If(
+                  varBusyIndicadores,
+                  DisplayMode.Disabled,
+                  DisplayMode.Edit
+              )
+            Fill: =RGBA(96, 94, 92, 1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Height: =48
+            HoverBorderColor: =RGBA(0, 0, 0, 0)
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =RGBA(70, 70, 70, 1)
+            OnSelect: |-
+              =Reset(ddSalaFiltroInd);
+              Reset(dtIniFiltroInd);
+              Reset(dtFimFiltroInd);
+              Notify(
+                  "Filtros restaurados para o padrão. Clique em Buscar para atualizar os indicadores.",
+                  NotificationType.Information
+              )
+            PressedBorderColor: =RGBA(0, 69, 120, 1)
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =RGBA(16, 110, 190, 1)
+            Size: =14
+            Text: ="Limpar"
+            Width: =72
+            X: =928
+            Y: =125
+      - lblTituloSustentada:
+          Control: Label@2.5.1
+          Properties:
+            Align: =Align.Center
+            BorderColor: =RGBA(0, 0, 0, 1)
+            Color: =RGBA(70, 70, 70, 1)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Semibold
+            Height: =22
+            Size: =13
+            Text: ="Conformidade Sustentada das Salas (sem reincidência no período)"
+            Width: =522
+            X: =776
+            Y: =652
+      - lblValorSustentada:
+          Control: Label@2.5.1
+          Properties:
+            Align: =Align.Center
+            BorderColor: =RGBA(0, 0, 0, 1)
+            Color: =RGBA(20, 20, 20, 1)
+            DisabledColor: =RGBA(161, 159, 157, 1)
+            Font: =Font.'Segoe UI'
+            FontWeight: =FontWeight.Bold
+            Height: =40
+            Size: =16
+            Text: |-
+              =If(
+                  IsBlank(varConformidadeSustentada),
+                  "Sem base de cálculo no período",
+                  Text(varConformidadeSustentada, "[$-pt-BR]0") & "% (" &
+                  Text(varTotalSalasEscopo - varSalasComReincidencia, "[$-pt-BR]0") & " de " &
+                  Text(varTotalSalasEscopo, "[$-pt-BR]0") & " salas avaliadas sem reincidência)"
+              )
+            Width: =522
+            X: =776
+            Y: =674
