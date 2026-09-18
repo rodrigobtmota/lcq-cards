@@ -161,10 +161,14 @@ def build_shell(sc, cfg, chave):
     sc.move_to_start(cfg['faixa'])
     sc.delete(cfg['marca'])
     sc.delete(cfg['div'])
+    sc.add_image('imgNav' + suf,
+                 {'Image': 'Nav', 'X': '0', 'Y': '0', 'Width': 'Parent.Width',
+                  'Height': str(HEADER_H), 'AccessibleLabel': '"Faixa institucional Braskem"'},
+                 index=1)
     sc.add_html('htmlCabecalho' + suf,
                 {'HtmlText': D.header_html('Sistema de Gest&#227;o de Compet&#234;ncias'),
                  'X': '0', 'Y': '0', 'Width': 'Parent.Width', 'Height': str(HEADER_H)},
-                index=1)
+                index=2)
 
     # --- identificacao do usuario
     sc.set(cfg['user'], {'Height': str(HEADER_H), 'Y': '0', 'Size': '12',
@@ -187,9 +191,9 @@ def build_shell(sc, cfg, chave):
                             'RadiusTopLeft': '10', 'RadiusTopRight': '10',
                             'RadiusBottomLeft': '10', 'RadiusBottomRight': '10'})
     sc.set(cfg['ajuda'], {'Y': '27', 'Height': '36', 'Width': '92', 'X': 'Parent.Width - 116',
-                          'Fill': 'RGBA(255, 255, 255, 0.12)', 'Color': 'RGBA(255, 255, 255, 1)',
-                          'HoverFill': 'RGBA(255, 255, 255, 0.22)',
-                          'PressedFill': 'RGBA(255, 255, 255, 0.28)',
+                          'Fill': 'RGBA(14, 42, 74, 0.55)', 'Color': 'RGBA(255, 255, 255, 1)',
+                          'HoverFill': 'RGBA(14, 42, 74, 0.75)',
+                          'PressedFill': 'RGBA(14, 42, 74, 0.85)',
                           'BorderColor': 'RGBA(255, 255, 255, 0.55)', 'BorderThickness': '1',
                           'Font': D.FONTE, 'FontWeight': 'FontWeight.Semibold', 'Size': '12',
                           'RadiusTopLeft': '10', 'RadiusTopRight': '10',
@@ -445,6 +449,30 @@ def add_htmlviewer_template():
     return False
 
 
+TOOLS = os.path.dirname(os.path.abspath(__file__))
+
+
+def add_image_resource():
+    """Porta o recurso Nav (faixa institucional Braskem) para o SGC."""
+    res_p = os.path.join(OUT, 'References', 'Resources.json')
+    res = json.load(open(res_p, encoding='utf-8'))
+    nav = json.load(open(os.path.join(TOOLS, 'resource_nav.json'), encoding='utf-8'))
+    if not any(r['Name'] == 'Nav' for r in res['Resources']):
+        res['Resources'].append(nav)
+        json.dump(res, open(res_p, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
+    destino = os.path.join(OUT, 'Assets', 'Images')
+    os.makedirs(destino, exist_ok=True)
+    shutil.copy(os.path.join(BASE, 'radar', 'Assets', 'Images', nav['FileName']),
+                os.path.join(destino, nav['FileName']))
+    tpl_p = os.path.join(OUT, 'References', 'Templates.json')
+    d = json.load(open(tpl_p, encoding='utf-8'))
+    if not any(t['Name'] == 'image' for t in d['UsedTemplates']):
+        d['UsedTemplates'].append(json.load(open(os.path.join(TOOLS, 'proto_template_image.json'),
+                                                 encoding='utf-8')))
+        json.dump(d, open(tpl_p, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
+    return nav['FileName']
+
+
 def write_packed():
     p = os.path.join(OUT, 'packed.json')
     json.dump({"PackedStructureVersion": "0.1",
@@ -466,6 +494,7 @@ def main():
     patch_app()
     print('tokens aplicados em', apply_tokens(), 'arquivos')
     print('template htmlViewer:', add_htmlviewer_template())
+    print('recurso Nav:', add_image_resource())
     write_packed()
 
 

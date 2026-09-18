@@ -73,8 +73,8 @@ CORES = {
 def header_html(titulo):
     """Cabecalho institucional 90px, mesmo tratamento grafico do Nav_bg do Radar."""
     return ('"<div style=\'width:100%;height:100%;box-sizing:border-box;display:flex;'
-            "align-items:center;padding:0 28px;background:#0E2A4A url(" + NAVBG + ") "
-            "no-repeat center/cover;font-family:Segoe UI,Arial,sans-serif;color:#FFFFFF;'>"
+            "align-items:center;padding:0 52px;background:transparent;"
+            "font-family:Segoe UI,Arial,sans-serif;color:#FFFFFF;'>"
             "<div style='display:flex;flex-direction:column;justify-content:center;min-width:0;'>"
             "<div style='font-size:31px;line-height:34px;font-weight:800;letter-spacing:-0.4px;"
             "color:#FFFFFF;white-space:nowrap;text-shadow:0 2px 5px rgba(0,0,0,0.20);'>"

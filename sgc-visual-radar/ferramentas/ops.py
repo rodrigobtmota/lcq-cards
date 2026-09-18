@@ -5,6 +5,14 @@ import json, copy, os
 import payaml, jsonctl as J
 
 PROTO_HTML = json.load(open(os.path.join(os.path.dirname(__file__), 'proto_htmlviewer.json'), encoding='utf-8'))
+PROTO_IMG = json.load(open(os.path.join(os.path.dirname(__file__), 'proto_image.json'), encoding='utf-8'))
+
+IMG_DEFAULTS = {
+    'BorderStyle': 'BorderStyle.None', 'BorderThickness': '0',
+    'BorderColor': 'RGBA(0, 0, 0, 0)', 'Fill': 'RGBA(0, 0, 0, 0)',
+    'ImagePosition': 'ImagePosition.Stretch', 'Transparency': '0',
+    'PaddingTop': '0', 'PaddingBottom': '0', 'PaddingLeft': '0', 'PaddingRight': '0',
+}
 
 HTML_DEFAULTS = {
     'AutoHeight': 'false', 'BorderStyle': 'BorderStyle.None', 'BorderThickness': '0',
@@ -80,6 +88,24 @@ class Screen:
             pj.setdefault('Children', []).append(cj)
         else:
             pj.setdefault('Children', []).insert(index, cj)
+        return cy
+
+    def add_image(self, name, props, parent=None, index=None):
+        full = dict(IMG_DEFAULTS)
+        full.update(props)
+        cy = payaml.Ctrl(name)
+        cy.meta.append(('Control', 'Image@2.2.3'))
+        for p, v in full.items():
+            cy.set(p, self._y(v))
+        py = self.y if parent is None else self.y.find(parent)
+        (py.children.append(cy) if index is None else py.children.insert(index, cy))
+        pj = self.j if parent is None else J.find(self.j, parent)
+        cj = J.clone(PROTO_IMG, name, pj['Name'])
+        for p, v in full.items():
+            J.set_rule(cj, p, self._s(v))
+        cj['ControlPropertyState'] = [r['Property'] for r in cj['Rules']]
+        (pj.setdefault('Children', []).append(cj) if index is None
+         else pj.setdefault('Children', []).insert(index, cj))
         return cy
 
     def clone_ctrl(self, src_name, new_name, props, parent=None, index=None):

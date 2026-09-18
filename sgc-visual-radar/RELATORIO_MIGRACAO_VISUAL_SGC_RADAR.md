@@ -23,12 +23,13 @@ A edição foi feita diretamente no código-fonte do aplicativo (`Src/*.pa.yaml`
 
 ## 3. Componentes criados (por tela, 4 controles novos)
 
-- `htmlCabecalho<Suf>` — `HtmlViewer` com o cabeçalho institucional de 90 px, incluindo o tratamento gráfico do `Nav_bg` do Radar, o título **Sistema de Gestão de Competências** e a subidentificação **LCQ-RJ**.
+- `imgNav<Suf>` — `Image` com o recurso **`Nav`** do Radar (faixa institucional Braskem 1440×90, com a marca), sobre base `#0E2A4A`.
+- `htmlCabecalho<Suf>` — `HtmlViewer` transparente sobre a faixa, com o título **Sistema de Gestão de Competências** e a subidentificação **LCQ-RJ** (31 px/800 e 16 px/700, como no Radar).
 - `htmlMenu<Suf>` — `HtmlViewer` dentro da galeria de navegação, reproduzindo item a item o `galMenuLateralNovo` (estado selecionado, barra lateral, caixa de sigla, tipografia e raios).
 - `htmlTitulo<Suf>` — bloco de título executivo (26 px / peso 800) com barra vertical `#1C5582` e subtítulo 16 px. Onde o subtítulo era dinâmico, a fórmula original foi preservada e apenas embutida na concatenação.
 - `htmlRodape<Suf>` — rodapé "Idealizado e implementado por Rodrigo Barbosa Tavares da Mota | LCQ RJ — Braskem", com o mesmo tratamento tipográfico do Radar.
 
-Controles removidos (apenas decoração antiga, sem fórmula): `lblMarca*`, `recDivisorHeader*`, `recNavAtivo*`, `lblTitulo*`/`lblSub*` (substituídos pelo bloco HTML). Saldo: −1 controle por tela.
+Controles removidos (apenas decoração antiga, sem fórmula): `lblMarca*`, `recDivisorHeader*`, `recNavAtivo*`, `lblTitulo*`/`lblSub*` (substituídos pelo bloco HTML). Saldo: neutro (5 removidos, 5 criados por tela).
 
 ## 4. Shell principal
 
@@ -57,9 +58,9 @@ Outros ajustes: tipografia `Font.Lato` → `Font.'Open Sans'` em todo o app (Seg
 
 ## 6. Assets
 
-- O tratamento gráfico do `Nav_bg` foi portado como **SVG vetorial embutido (data URI)** dentro do HTML do cabeçalho. Isso reproduz o gráfico real do Radar sem criar dependência de recurso importado nem risco de asset quebrado.
+- A faixa institucional **`Nav`** (PNG 1440×90 com a marca Braskem, byte a byte o mesmo recurso do Radar) foi portada como recurso real do app: arquivo em `Assets/Images/`, entrada em `References/Resources.json` e controle `Image` no cabeçalho de cada tela.
 - Nenhuma foto, imagem de conteúdo, lista, conexão ou fonte de dados do Radar foi copiada.
-- O template `htmlViewer` foi adicionado a `References/Templates.json` (o estilo `defaultHtmlViewerStyle` já existia no tema do SGC).
+- Os templates `htmlViewer` e `image` foram adicionados a `References/Templates.json` (o estilo `defaultHtmlViewerStyle` já existia no tema do SGC).
 
 ## 7. Canvas
 
@@ -84,7 +85,7 @@ Resultados (script `ferramentas/verify.py`, execução final — **0 erros, 0 av
 
 1. **Importação no ambiente não foi testada.** Não há `pac CLI` neste ambiente; o `.msapp` foi gerado com empacotamento equivalente ao do `pac canvas pack` (inclui `packed.json` com `LoadConfiguration.LoadFromYaml = true`, exatamente como o arquivo do Radar fornecido). A validação feita é estrutural e de round-trip, não uma importação real no Power Apps. **Teste em ambiente de desenvolvimento antes de atualizar o app de produção.**
 2. **App Checker não foi executado** (depende do Studio). O `AppCheckerResult.sarif` do pacote é o do arquivo original e está desatualizado — será regravado no próximo salvamento no Studio.
-3. **Logomarca Braskem não foi portada.** O recurso do Radar é um SVG de 188 KB com PNG embutido; embuti-lo no HTML degradaria o desempenho, e importá-lo como recurso criaria dependência de asset. O cabeçalho usa o tratamento gráfico institucional (`Nav_bg`) sem a marca. Se desejar, a logo pode ser adicionada no Studio em dois minutos (Inserir → Imagem, sobre o cabeçalho, X≈16 Y≈30, 21×31).
+3. **Recurso de imagem novo.** O cabeçalho passou a depender do recurso `Nav` (83 KB), incluído no pacote. Confirme no Studio, após a importação, que a imagem aparece nas 8 telas — é o único asset importado e o único ponto do pacote que depende do mecanismo de recursos do Power Apps.
 4. **Os KPIs e os cards permanecem em controles nativos**, com o acabamento do Radar (fundo branco, raio 14, borda #D8E1EA, barra de situação 5 px, tipografia e paleta). A conversão dos números para HTML foi evitada de propósito: manteria a estética, mas reescreveria fórmulas de cálculo — risco desnecessário frente ao ganho.
 5. O rótulo decorativo antigo do cabeçalho (`lblFaixa*`/`recHeader*`) foi mantido atrás do bloco HTML como fundo de segurança; é inerte.
 
