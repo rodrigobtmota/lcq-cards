@@ -21,7 +21,7 @@ A edição foi feita diretamente no código-fonte do aplicativo (`Src/*.pa.yaml`
 | `scrAvaliacao` | Telas operacionais | Seções em cards, barra de ações inferior, badges de estado |
 | `scrDetalheQualificacao` | Detalhamento executivo | Resumo, progresso e módulos com o mesmo acabamento |
 
-## 3. Componentes criados (por tela, 4 controles novos)
+## 3. Componentes criados (por tela, 5 controles novos)
 
 - `imgNav<Suf>` — `Image` com o recurso **`Nav`** do Radar (faixa institucional Braskem 1440×90, com a marca), sobre base `#0E2A4A`.
 - `htmlCabecalho<Suf>` — `HtmlViewer` transparente sobre a faixa, com o título **Sistema de Gestão de Competências** e a subidentificação **LCQ-RJ** (31 px/800 e 16 px/700, como no Radar).
@@ -33,7 +33,7 @@ Controles removidos (apenas decoração antiga, sem fórmula): `lblMarca*`, `rec
 
 ## 4. Shell principal
 
-- **Cabeçalho**: 90 px, fundo institucional, gráfico equivalente ao `Nav_bg`, usuário conectado à direita, CTA **+ Nova avaliação** em pill branco e botão **Ajuda** em pill outline.
+- **Cabeçalho**: 90 px, faixa institucional `Nav` (com a marca Braskem) sobre base `#0E2A4A`, usuário conectado à direita, CTA **+ Nova avaliação** em pill branco e botão **Ajuda** em pill com fundo sólido para contraste sobre a área laranja.
 - **Menu lateral**: faixa de 260 px (galeria `X=8`, largura 252, `TemplateSize=68`, `TemplatePadding=3`), itens `IN / QL / HI / MD / CB`, item ativo com fundo `#E5EEF9`, barra `#143A66`, borda `#D7E3F1`, raio 13 px; hover `RGBA(14,42,74,0.06)` sobre botão transparente — apresentação em HTML, interação em controle real.
 - **Conteúdo**: deslocado 260 px à direita; larguras e alturas relativas recalculadas (`Parent.Width - 64` → `- 324`, etc.).
 - **Rodapé**: 30 px, largura total.
