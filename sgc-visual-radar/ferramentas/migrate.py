@@ -2,7 +2,7 @@
 """Migracao do padrao visual do Radar de Liderancas para o SGC LCQ RJ."""
 import os, re, sys, json, glob, shutil
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import payaml, jsonctl as J, design as D
+import payaml, jsonctl as J, design as D, rev02
 from ops import Screen
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -162,8 +162,9 @@ def build_shell(sc, cfg, chave):
     sc.delete(cfg['marca'])
     sc.delete(cfg['div'])
     sc.add_image('imgNav' + suf,
-                 {'Image': 'Nav', 'X': '0', 'Y': '0', 'Width': 'Parent.Width',
-                  'Height': str(HEADER_H), 'AccessibleLabel': '"Faixa institucional Braskem"'},
+                 {'Image': rev02.RECURSO, 'X': '0', 'Y': '0', 'Width': 'Parent.Width',
+                  'Height': str(HEADER_H), 'ImagePosition': 'ImagePosition.Stretch',
+                  'AccessibleLabel': '"Faixa institucional do cabecalho"'},
                  index=1)
     sc.add_html('htmlCabecalho' + suf,
                 {'HtmlText': D.header_html('Sistema de Gest&#227;o de Compet&#234;ncias'),
@@ -189,7 +190,8 @@ def build_shell(sc, cfg, chave):
                             'BorderThickness': '1', 'Font': D.FONTE,
                             'FontWeight': 'FontWeight.Bold', 'Size': '12',
                             'RadiusTopLeft': '10', 'RadiusTopRight': '10',
-                            'RadiusBottomLeft': '10', 'RadiusBottomRight': '10'})
+                            'RadiusBottomLeft': '10', 'RadiusBottomRight': '10',
+                            'AccessibleLabel': '"Iniciar nova avalia\u00e7\u00e3o"'})
     sc.set(cfg['ajuda'], {'Y': '27', 'Height': '36', 'Width': '92', 'X': 'Parent.Width - 116',
                           'Fill': 'RGBA(14, 42, 74, 0.55)', 'Color': 'RGBA(255, 255, 255, 1)',
                           'HoverFill': 'RGBA(14, 42, 74, 0.75)',
@@ -197,7 +199,8 @@ def build_shell(sc, cfg, chave):
                           'BorderColor': 'RGBA(255, 255, 255, 0.55)', 'BorderThickness': '1',
                           'Font': D.FONTE, 'FontWeight': 'FontWeight.Semibold', 'Size': '12',
                           'RadiusTopLeft': '10', 'RadiusTopRight': '10',
-                          'RadiusBottomLeft': '10', 'RadiusBottomRight': '10'})
+                          'RadiusBottomLeft': '10', 'RadiusBottomRight': '10',
+                          'AccessibleLabel': '"Abrir a ajuda desta tela"'})
 
     # --- menu lateral (260 px), no padrao galMenuLateralNovo do Radar
     sc.set(cfg['gal'], {'X': '8', 'Y': str(HEADER_H + 8), 'Width': '252',
@@ -346,6 +349,8 @@ def polish(sc):
 SHELL_PREFIX = ('recAjudaOverlay', 'grpAjuda')
 
 
+REV02 = {'accessible': 0, 'raios': 0, 'vars': 0, 'colunas': 0}
+
 # ajustes finos por tela (evita sobreposicao com rodape/barra de acoes)
 OVERRIDES = {
     'scrNovaAvaliacao': {'grpFormNovaAvaliacao': {'Y': '138', 'Height': '600'}},
@@ -378,6 +383,10 @@ def migrate_screen(name, cfg):
     polish(sc)
     for nm, props in OVERRIDES.get(name, {}).items():
         sc.set(nm, props)
+    # ---- REV02 ----
+    REV02['accessible'] += rev02.accessible_menu(sc, cfg['btn'])
+    REV02['raios'] += len(rev02.padronizar_raios(sc))
+    REV02['colunas'] += len(rev02.corrigir_colunas(sc))
     sc.save()
     return chave, titulo_txt, conteudo
 
@@ -453,33 +462,29 @@ TOOLS = os.path.dirname(os.path.abspath(__file__))
 
 
 def add_image_resource():
-    """Porta o recurso Nav (faixa institucional Braskem) para o SGC."""
-    res_p = os.path.join(OUT, 'References', 'Resources.json')
-    res = json.load(open(res_p, encoding='utf-8'))
-    nav = json.load(open(os.path.join(TOOLS, 'resource_nav.json'), encoding='utf-8'))
-    if not any(r['Name'] == 'Nav' for r in res['Resources']):
-        res['Resources'].append(nav)
-        json.dump(res, open(res_p, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
-    destino = os.path.join(OUT, 'Assets', 'Images')
-    os.makedirs(destino, exist_ok=True)
-    shutil.copy(os.path.join(BASE, 'radar', 'Assets', 'Images', nav['FileName']),
-                os.path.join(destino, nav['FileName']))
+    """Registra a faixa institucional do cabecalho como recurso local do SGC."""
+    nome = rev02.registrar_faixa(OUT, TOOLS)
     tpl_p = os.path.join(OUT, 'References', 'Templates.json')
     d = json.load(open(tpl_p, encoding='utf-8'))
     if not any(t['Name'] == 'image' for t in d['UsedTemplates']):
         d['UsedTemplates'].append(json.load(open(os.path.join(TOOLS, 'proto_template_image.json'),
                                                  encoding='utf-8')))
         json.dump(d, open(tpl_p, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
-    return nav['FileName']
+    return nome
+
+
+def aplicar_variaveis_tema():
+    """Executa DEPOIS da normalizacao de paleta, para alcancar todos os literais."""
+    total = 0
+    for name in SCREENS:
+        sc = Screen(os.path.join(OUT, 'Src', name + '.pa.yaml'), SCREEN_JSON[name])
+        total += rev02.usar_variaveis(sc)
+        sc.save()
+    return total
 
 
 def write_packed():
-    p = os.path.join(OUT, 'packed.json')
-    json.dump({"PackedStructureVersion": "0.1",
-               "LastPackedDateTimeUtc": "2026-09-18 12:00:00Z",
-               "PackingClient": {"Name": "Pac CLI", "Version": "2.12.2"},
-               "LoadConfiguration": {"LoadFromYaml": True}},
-              open(p, 'w', encoding='utf-8'), indent=2)
+    rev02.packed_json(OUT, 'REV02')
 
 
 def main():
@@ -494,8 +499,11 @@ def main():
     patch_app()
     print('tokens aplicados em', apply_tokens(), 'arquivos')
     print('template htmlViewer:', add_htmlviewer_template())
-    print('recurso Nav:', add_image_resource())
+    print('recurso da faixa:', add_image_resource())
+    REV02['vars'] = aplicar_variaveis_tema()
     write_packed()
+    print('REV02 -> AccessibleLabel: %(accessible)d botoes | raios ajustados: %(raios)d | '
+          'colunas reescaladas: %(colunas)d | literais trocados por variaveis de tema: %(vars)d' % REV02)
 
 
 if __name__ == '__main__':
