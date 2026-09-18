@@ -8,18 +8,35 @@ import os, re, json, shutil, uuid
 import design as D
 
 # ---------------------------------------------------------------- 1. acessibilidade
+BOTAO_CLASSICO = 'Classic/Button@2.2.0'
+
+
 def accessible_menu(sc, btn):
-    """AccessibleLabel explicito no menu lateral e nos botoes sem rotulo visivel."""
-    sc.set(btn, {'AccessibleLabel': 'ThisItem.Rotulo'})
+    """Acessibilidade compativel com o Source Code schema.
+
+    `AccessibleLabel` nao e propriedade valida de `Classic/Button@2.2.0`
+    (erro PA2108 na importacao real). Nos botoes classicos a identificacao
+    acessivel fica no proprio `Text` e no `Tooltip`; `AccessibleLabel` e usado
+    apenas nos tipos que o aceitam (Image, Gallery).
+    """
+    # menu lateral: texto real (invisivel, pois a cor e transparente) + tooltip
+    sc.set(btn, {'Text': 'ThisItem.Rotulo', 'Tooltip': 'ThisItem.Rotulo'})
     n = 1
     for cy in list(sc.y.walk()):
         if cy.name.startswith('btnAjudaX'):
-            sc.set(cy.name, {'AccessibleLabel': '"Fechar a ajuda"'})
-            n += 1
-        elif cy.name.startswith('btnAjudaFechar'):
-            sc.set(cy.name, {'AccessibleLabel': '"Fechar a janela de ajuda"'})
+            sc.set(cy.name, {'Tooltip': '"Fechar a ajuda"'})
             n += 1
     return n
+
+
+def remover_accessiblelabel_classico(sc):
+    """PA2108: remove AccessibleLabel de todo Classic/Button@2.2.0."""
+    removidos = []
+    for cy in list(sc.y.walk()):
+        if dict(cy.meta).get('Control') == BOTAO_CLASSICO and 'AccessibleLabel' in cy.props:
+            sc.set(cy.name, {'AccessibleLabel': None})
+            removidos.append(cy.name)
+    return removidos
 
 
 # ---------------------------------------------------------------- 2. tokens -> variaveis

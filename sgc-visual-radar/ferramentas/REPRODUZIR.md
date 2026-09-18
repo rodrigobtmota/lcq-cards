@@ -1,4 +1,4 @@
-# Como reproduzir e auditar a REV02.1
+# Como reproduzir e auditar a REV02.2
 
 Tudo o que os comandos abaixo precisam está neste pacote. Requer apenas Python 3
 (sem bibliotecas externas). A partir da raiz da pasta descompactada:
@@ -8,7 +8,8 @@ python3 ferramentas/migrate.py        # regenera build/ a partir de entrada/sgc
 python3 ferramentas/verify.py         # build/ x aplicativo original (entrada/sgc)
 python3 ferramentas/verify_rev02.py   # build/ x REV01 entregue (entrada/build_rev01)
 python3 ferramentas/verify_rev02.py build_rev01_prefaixa   # x REV01 anterior à faixa
-python3 ferramentas/pack_rev021.py    # regera os três artefatos em dist_rev02_1/
+python3 ferramentas/verify_rev022.py  # checagem bloqueante PA2108 (x entrada/build_rev02_1)
+python3 ferramentas/pack_rev022.py    # regera os três artefatos em dist_rev02_2/
 ```
 
 Para regerar as evidências (requer Playwright + Chromium; opcional):
@@ -28,6 +29,7 @@ python3 ferramentas/render_evidencias.py   # gera os .html em evidencias/
 | `entrada/pkg/` | Pacote de importação original (identidade, manifest, logo) |
 | `entrada/build_rev01/` | REV01 entregue — linha de base da comparação |
 | `entrada/build_rev01_prefaixa/` | REV01 anterior à inclusão da faixa institucional |
+| `entrada/build_rev02_1/` | REV02.1 — base desta revisão |
 
 `build/` é recriado do zero por `migrate.py`; a pasta na raiz deste pacote é o
 resultado já gerado, idêntico ao conteúdo do `.msapp` entregue.

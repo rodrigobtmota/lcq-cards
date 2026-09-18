@@ -56,8 +56,16 @@ def diff_rev01_rev02():
                     continue
                 ctrl_mod.add((tela, nome))
                 # 1) AccessibleLabel novo nos botoes do menu
+                # acessibilidade compativel com o Source Code schema
                 if p == 'AccessibleLabel' and va is None and vb is not None and \
-                        nome.startswith(('btnNav', 'btnAjuda')):
+                        dict(cb[nome].meta).get('Control') != 'Classic/Button@2.2.0':
+                    mudancas['AccessibleLabel'] += 1
+                    continue
+                if p == 'Text' and vb == '=ThisItem.Rotulo' and \
+                        nome.startswith('btnNav') and not nome.startswith('btnNavNova'):
+                    mudancas['AccessibleLabel'] += 1
+                    continue
+                if p == 'Tooltip' and nome.startswith('btnAjudaX') and vb == '="Fechar a ajuda"':
                     mudancas['AccessibleLabel'] += 1
                     continue
                 # 2) literal de cor -> variavel de tema (mesma finalidade)
@@ -144,10 +152,16 @@ def formulas_x_original():
 def estrutura():
     # C1 AccessibleLabel em todos os btnNav
     b = mapa(REV2)
-    faltando = [(t, n) for t, cs in b.items() for n, c in cs.items()
-                if n.startswith(('btnNav', 'btnAjuda')) and 'AccessibleLabel' not in c.props]
-    if faltando:
-        erros.append('btnNav sem AccessibleLabel: %s' % faltando)
+    ofensores = [(t, n) for t, cs in b.items() for n, c in cs.items()
+                 if dict(c.meta).get('Control') == 'Classic/Button@2.2.0'
+                 and 'AccessibleLabel' in c.props]
+    if ofensores:
+        erros.append('PA2108: AccessibleLabel em Classic/Button: %s' % ofensores)
+    sem_rotulo = [(t, n) for t, cs in b.items() for n, c in cs.items()
+                  if n.startswith('btnNav') and not n.startswith('btnNavNova')
+                  and '\n'.join(c.props.get('Text', [])) != '=ThisItem.Rotulo']
+    if sem_rotulo:
+        erros.append('botao de menu sem Text = ThisItem.Rotulo: %s' % sem_rotulo)
     # C2 paridade Src x Controls, sem duplicados nem referencias orfas
     jf = J.screen_files(os.path.join(REV2, 'Controls'))
     for tela, cs in b.items():
@@ -294,7 +308,7 @@ if __name__ == '__main__':
     geometria_interna()
     print('Base: %s' % os.path.relpath(REV1, BASE))
     print('base -> REV02')
-    print('  AccessibleLabel adicionados : %d' % mud['AccessibleLabel'])
+    print('  acessibilidade (rotulos)    : %d propriedades' % mud['AccessibleLabel'])
     print('  literais -> variaveis       : %d propriedades' % mud['variaveis'])
     print('  raios padronizados em 14    : %d propriedades' % mud['raio'])
     print('  colunas internas reescaladas: %d propriedades' % mud['colunas'])

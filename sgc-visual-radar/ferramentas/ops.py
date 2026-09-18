@@ -53,6 +53,9 @@ class Screen:
             if v is None:
                 cy.props.pop(p, None)
                 cj['Rules'] = [r for r in cj['Rules'] if r['Property'] != p]
+                if isinstance(cj.get('ControlPropertyState'), list):
+                    cj['ControlPropertyState'] = [x for x in cj['ControlPropertyState']
+                                                  if x != p]
             else:
                 cy.set(p, self._y(v))
                 J.set_rule(cj, p, self._s(v))

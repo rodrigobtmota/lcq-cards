@@ -190,8 +190,7 @@ def build_shell(sc, cfg, chave):
                             'BorderThickness': '1', 'Font': D.FONTE,
                             'FontWeight': 'FontWeight.Bold', 'Size': '12',
                             'RadiusTopLeft': '10', 'RadiusTopRight': '10',
-                            'RadiusBottomLeft': '10', 'RadiusBottomRight': '10',
-                            'AccessibleLabel': '"Iniciar nova avalia\u00e7\u00e3o"'})
+                            'RadiusBottomLeft': '10', 'RadiusBottomRight': '10'})
     sc.set(cfg['ajuda'], {'Y': '27', 'Height': '36', 'Width': '92', 'X': 'Parent.Width - 116',
                           'Fill': 'RGBA(14, 42, 74, 0.55)', 'Color': 'RGBA(255, 255, 255, 1)',
                           'HoverFill': 'RGBA(14, 42, 74, 0.75)',
@@ -199,8 +198,7 @@ def build_shell(sc, cfg, chave):
                           'BorderColor': 'RGBA(255, 255, 255, 0.55)', 'BorderThickness': '1',
                           'Font': D.FONTE, 'FontWeight': 'FontWeight.Semibold', 'Size': '12',
                           'RadiusTopLeft': '10', 'RadiusTopRight': '10',
-                          'RadiusBottomLeft': '10', 'RadiusBottomRight': '10',
-                          'AccessibleLabel': '"Abrir a ajuda desta tela"'})
+                          'RadiusBottomLeft': '10', 'RadiusBottomRight': '10'})
 
     # --- menu lateral (260 px), no padrao galMenuLateralNovo do Radar
     sc.set(cfg['gal'], {'X': '8', 'Y': str(HEADER_H + 8), 'Width': '252',
@@ -349,7 +347,7 @@ def polish(sc):
 SHELL_PREFIX = ('recAjudaOverlay', 'grpAjuda')
 
 
-REV02 = {'accessible': 0, 'raios': 0, 'vars': 0, 'colunas': 0, 'reflow': 0}
+REV02 = {'accessible': 0, 'raios': 0, 'vars': 0, 'colunas': 0, 'reflow': 0, 'pa2108': 0}
 
 # ajustes finos por tela (evita sobreposicao com rodape/barra de acoes)
 OVERRIDES = {
@@ -385,6 +383,7 @@ def migrate_screen(name, cfg):
         sc.set(nm, props)
     # ---- REV02 ----
     REV02['accessible'] += rev02.accessible_menu(sc, cfg['btn'])
+    REV02['pa2108'] += len(rev02.remover_accessiblelabel_classico(sc))
     REV02['raios'] += len(rev02.padronizar_raios(sc))
     REV02['colunas'] += len(rev02.corrigir_colunas(sc))
     if name == 'scrInicio':
@@ -504,7 +503,7 @@ def main():
     print('recurso da faixa:', add_image_resource())
     REV02['vars'] = aplicar_variaveis_tema()
     write_packed()
-    print('REV02 -> AccessibleLabel: %(accessible)d botoes | raios ajustados: %(raios)d | '
+    print('REV02 -> acessibilidade (Text/Tooltip): %(accessible)d | AccessibleLabel removidos de botoes classicos: %(pa2108)d | raios ajustados: %(raios)d | '
           'colunas: %(colunas)d | reflow inicio: %(reflow)d | literais trocados por variaveis de tema: %(vars)d' % REV02)
 
 
