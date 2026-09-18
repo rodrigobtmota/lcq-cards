@@ -6,10 +6,13 @@ Compara REV02 x REV01 (propriedade a propriedade) e REV02 x SGC original
 """
 import os, re, sys, json, glob
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import payaml, jsonctl as J, rev02
+import payaml, jsonctl as J, rev02, caminhos
 
-BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ORIG, REV1, REV2 = (os.path.join(BASE, d) for d in ('sgc', 'build_rev01', 'build'))
+BASE = caminhos.RAIZ
+ORIG = caminhos.entrada('sgc')
+REV2 = caminhos.saida('build')
+# linha de base da comparacao: por padrao a REV01 entregue; aceita outra por argumento
+REV1 = caminhos.entrada(sys.argv[1]) if len(sys.argv) > 1 else caminhos.entrada('build_rev01')
 erros, notas = [], []
 
 
@@ -30,13 +33,21 @@ def diff_rev01_rev02():
     a, b = mapa(REV1), mapa(REV2)
     if set(a) != set(b):
         erros.append('conjunto de telas mudou entre REV01 e REV02')
-    mudancas = {'AccessibleLabel': 0, 'variaveis': 0, 'raio': 0, 'imagem': 0, 'colunas': 0}
+    mudancas = {'AccessibleLabel': 0, 'variaveis': 0, 'raio': 0, 'imagem': 0,
+                'colunas': 0, 'cabecalho': 0, 'ajuda': 0, 'reflow': 0}
     ctrl_mod = set()
     for tela in sorted(a):
         ca, cb = a[tela], b[tela]
-        if set(ca) != set(cb):
-            erros.append('%s: controles diferentes entre REV01 e REV02: %s'
-                         % (tela, sorted(set(ca) ^ set(cb))))
+        novos = set(cb) - set(ca)
+        sumidos = set(ca) - set(cb)
+        # autorizado: 1 controle imgNav* por tela (faixa institucional como recurso local)
+        if novos - {n for n in novos if n.startswith('imgNav')} or sumidos:
+            erros.append('%s: controles diferentes entre a base e a REV02: %s'
+                         % (tela, sorted((novos - {n for n in novos if n.startswith('imgNav')})
+                                         | sumidos)))
+        if len([n for n in novos if n.startswith('imgNav')]) > 1:
+            erros.append('%s: mais de um controle de faixa institucional' % tela)
+        mudancas['imagem'] += len([n for n in novos if n.startswith('imgNav')])
         for nome in set(ca) & set(cb):
             pa, pb = props(ca[nome]), props(cb[nome])
             for p in set(pa) | set(pb):
@@ -72,9 +83,30 @@ def diff_rev01_rev02():
                 if p.startswith('Radius') and vb in ('=14', '=10'):
                     mudancas['raio'] += 1
                     continue
-                # 4) faixa institucional: recurso local + ImagePosition
-                if nome.startswith('imgNav') and p in ('Image', 'ImagePosition', 'AccessibleLabel'):
+                # 5) faixa institucional: recurso local, enquadramento e rotulo acessivel
+                if nome.startswith('imgNav') and p in ('Image', 'ImagePosition', 'AccessibleLabel',
+                                                       'X', 'Y', 'Width', 'Height', 'Fill',
+                                                       'BorderColor', 'BorderStyle',
+                                                       'BorderThickness', 'Transparency',
+                                                       'PaddingTop', 'PaddingBottom',
+                                                       'PaddingLeft', 'PaddingRight'):
                     mudancas['imagem'] += 1
+                    continue
+                # 6) cabecalho: HTML deixa de trazer o fundo (data URI) e fica transparente
+                if nome.startswith('htmlCabecalho') and p == 'HtmlText' and \
+                        'data:image' in (va or '') and 'data:image' not in (vb or ''):
+                    mudancas['cabecalho'] += 1
+                    continue
+                # 7) contraste do botao Ajuda sobre a faixa
+                if nome.startswith('btnAjuda') and p in ('Fill', 'HoverFill', 'PressedFill',
+                                                         'Color', 'HoverColor', 'PressedColor',
+                                                         'BorderColor'):
+                    mudancas['ajuda'] += 1
+                    continue
+                # 8) reflow de rotulos cortados na tela inicial (apenas geometria)
+                if p in ('Y', 'Height', 'Width', 'X') and \
+                        nome.startswith(('lblCard', 'lblQtd', 'lblKpiLegenda', 'lblAcao', 'icoAcao')):
+                    mudancas['reflow'] += 1
                     continue
                 erros.append('ALTERACAO NAO AUTORIZADA %s.%s.%s: %r -> %r'
                              % (tela, nome, p, va, vb))
@@ -260,12 +292,16 @@ if __name__ == '__main__':
     estrutura()
     geometria()
     geometria_interna()
-    print('REV01 -> REV02')
+    print('Base: %s' % os.path.relpath(REV1, BASE))
+    print('base -> REV02')
     print('  AccessibleLabel adicionados : %d' % mud['AccessibleLabel'])
     print('  literais -> variaveis       : %d propriedades' % mud['variaveis'])
     print('  raios padronizados em 14    : %d propriedades' % mud['raio'])
     print('  colunas internas reescaladas: %d propriedades' % mud['colunas'])
-    print('  faixa institucional         : %d propriedades' % mud['imagem'])
+    print('  faixa institucional         : %d propriedades/controles' % mud['imagem'])
+    print('  cabecalho sem data URI      : %d propriedades' % mud['cabecalho'])
+    print('  contraste do botao Ajuda    : %d propriedades' % mud['ajuda'])
+    print('  reflow de rotulos (inicio)  : %d propriedades' % mud['reflow'])
     print('  controles tocados           : %d' % len(ctrl))
     print('  propriedades visuais mudadas: %d' % sum(mud.values()))
     print('formulas funcionais identicas ao SGC original: %d' % intactas)

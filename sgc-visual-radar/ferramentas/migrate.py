@@ -2,12 +2,12 @@
 """Migracao do padrao visual do Radar de Liderancas para o SGC LCQ RJ."""
 import os, re, sys, json, glob, shutil
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import payaml, jsonctl as J, design as D, rev02
+import payaml, jsonctl as J, design as D, rev02, caminhos
 from ops import Screen
 
-BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SRC = os.path.join(BASE, 'sgc')
-OUT = os.path.join(BASE, 'build')
+BASE = caminhos.RAIZ
+SRC = caminhos.entrada('sgc')
+OUT = caminhos.saida('build')
 
 MENU_ITEMS = ('=Table({Chave: "Inicio", Rotulo: "Início", Sigla: "IN"}, '
               '{Chave: "Qualificacoes", Rotulo: "Qualificações", Sigla: "QL"}, '
@@ -349,7 +349,7 @@ def polish(sc):
 SHELL_PREFIX = ('recAjudaOverlay', 'grpAjuda')
 
 
-REV02 = {'accessible': 0, 'raios': 0, 'vars': 0, 'colunas': 0}
+REV02 = {'accessible': 0, 'raios': 0, 'vars': 0, 'colunas': 0, 'reflow': 0}
 
 # ajustes finos por tela (evita sobreposicao com rodape/barra de acoes)
 OVERRIDES = {
@@ -387,6 +387,8 @@ def migrate_screen(name, cfg):
     REV02['accessible'] += rev02.accessible_menu(sc, cfg['btn'])
     REV02['raios'] += len(rev02.padronizar_raios(sc))
     REV02['colunas'] += len(rev02.corrigir_colunas(sc))
+    if name == 'scrInicio':
+        REV02['reflow'] += len(rev02.corrigir_textos_inicio(sc))
     sc.save()
     return chave, titulo_txt, conteudo
 
@@ -503,7 +505,7 @@ def main():
     REV02['vars'] = aplicar_variaveis_tema()
     write_packed()
     print('REV02 -> AccessibleLabel: %(accessible)d botoes | raios ajustados: %(raios)d | '
-          'colunas reescaladas: %(colunas)d | literais trocados por variaveis de tema: %(vars)d' % REV02)
+          'colunas: %(colunas)d | reflow inicio: %(reflow)d | literais trocados por variaveis de tema: %(vars)d' % REV02)
 
 
 if __name__ == '__main__':

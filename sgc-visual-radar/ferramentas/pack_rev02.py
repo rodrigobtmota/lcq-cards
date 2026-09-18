@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """Empacotamento da REV02: msapp, pacote de importacao e fontes auditaveis."""
-import os, zipfile, shutil
+import os, sys, zipfile, shutil
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import caminhos
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BUILD, TOOLS, EVID = (os.path.join(BASE, d) for d in ('build', 'tools', 'evidencias'))
@@ -8,7 +10,7 @@ DIST = os.path.join(BASE, 'dist_rev02')
 MSAPP = os.path.join(DIST, 'SGC_LCQ_RJ_VISUAL_RADAR_REV02.msapp')
 PKG = os.path.join(DIST, 'SGC_LCQ_RJ_VISUAL_RADAR_REV02_IMPORT.zip')
 FONTES = os.path.join(DIST, 'SGC_LCQ_RJ_VISUAL_RADAR_REV02_FONTES.zip')
-ORIG_PKG = os.path.join(BASE, 'pkg')
+ORIG_PKG = caminhos.entrada('pkg')
 DOC = 'Microsoft.PowerApps/apps/11773394310992049878/Nd3ebf7dc-113a-45b6-9474-76e0c65b7319-document.msapp'
 
 SCRIPTS = ['payaml.py', 'jsonctl.py', 'ops.py', 'design.py', 'migrate.py', 'rev02.py',

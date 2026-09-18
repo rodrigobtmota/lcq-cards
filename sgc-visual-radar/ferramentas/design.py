@@ -15,7 +15,7 @@ LARANJA   = 'RGBA(180, 83, 9, 1)'        # #B45309
 VERMELHO  = 'RGBA(185, 28, 28, 1)'       # #B91C1C
 FONTE     = "Font.'Open Sans'"
 
-NAVBG = open(__file__.replace('design.py', 'navbg_datauri.txt'), encoding='utf-8').read()
+# A REV02 usa a faixa institucional como recurso local (Image), sem data URI.
 
 # ---- mapa de cores do SGC antigo -> paleta Radar ----
 CORES = {

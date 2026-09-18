@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys, os, re, glob, json
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import payaml, jsonctl as J
+import payaml, jsonctl as J, caminhos
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -143,7 +143,7 @@ def check(orig_dir, new_dir):
 
 
 if __name__ == '__main__':
-    e, a = check(os.path.join(BASE, 'sgc'), os.path.join(BASE, 'build'))
+    e, a = check(caminhos.entrada('sgc'), caminhos.saida('build'))
     print('\nAVISOS (%d):' % len(a))
     for x in sorted(set(a))[:40]:
         print('  -', x)

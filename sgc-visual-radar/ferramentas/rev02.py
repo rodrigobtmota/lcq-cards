@@ -206,6 +206,32 @@ def corrigir_colunas(sc):
     return ajustes
 
 
+# ---------------------------------------------------------------- 3c. rotulos cortados
+def corrigir_textos_inicio(sc):
+    """Reflow dos rotulos da tela inicial que nao cabiam na altura herdada.
+    Apenas geometria: nenhum texto, formula ou altura de card foi alterada."""
+    ajustes = []
+    for cy in list(sc.y.walk()):
+        n = cy.name
+        novo = None
+        if n.startswith('lblCard') and n.endswith('Titulo'):
+            novo = {'Y': '14', 'Height': '36', 'Width': 'Parent.Width - 40'}
+        elif n.startswith('lblQtd'):
+            novo = {'Y': '52', 'Height': '46'}
+        elif n.startswith('lblKpiLegenda'):
+            novo = {'Y': 'Parent.Height - 36', 'Height': '32'}
+        elif n.startswith('lblAcao') and n.endswith('Titulo'):
+            novo = {'Y': '18', 'Height': '28'}
+        elif n.startswith('lblAcao') and n.endswith('Texto'):
+            novo = {'Y': '50', 'Height': '80', 'Width': 'Parent.Width - 40'}
+        elif n.startswith('icoAcao'):
+            novo = {'Y': 'Parent.Height - 32'}
+        if novo:
+            sc.set(n, novo)
+            ajustes.append(n)
+    return ajustes
+
+
 # ---------------------------------------------------------------- 4. faixa institucional local
 RECURSO = 'FaixaCabecalhoLCQ'
 ARQUIVO_FONTE = 'faixa_cabecalho_lcq.png'
