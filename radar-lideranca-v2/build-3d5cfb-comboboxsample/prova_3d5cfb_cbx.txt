@@ -1,0 +1,65 @@
+SHA-256 base : 3d5cfb3a455351cb085df2d6bae86d08a7ab82db8f656cb05964bf17b551a7ce
+SHA-256 nova : 98168d77c5d2fdb036c4e04c57c4f18ba43b6ac07ce4b9882aec02319661fe17
+
+## 1. Src/*.pa.yaml — nova × 3d5cfb (byte a byte)
+   Src/App.pa.yaml                               175ca1091e47608a  IDÊNTICO
+   Src/Components/Header_PT_4.pa.yaml            f91acbda1592508f  IDÊNTICO
+   Src/TelaAdministracao.pa.yaml                 f98d0e4e7092b570  IDÊNTICO
+   Src/TelaAuditoria.pa.yaml                     4f09b797ab46a67a  IDÊNTICO
+   Src/TelaCapacidade.pa.yaml                    15d1e8c361fbbe56  IDÊNTICO
+   Src/TelaCockpit.pa.yaml                       92ca4013f3d9679f  IDÊNTICO
+   Src/TelaDecisoesEncaminhamentos.pa.yaml       135cf4db55454a6c  IDÊNTICO
+   Src/TelaDemandas.pa.yaml                      cc2bb0ad3e471cde  IDÊNTICO
+   Src/TelaEquipamentos.pa.yaml                  827f90ac94bf047f  IDÊNTICO
+   Src/TelaRadarSemanal.pa.yaml                  5aacf2294e0da8df  IDÊNTICO
+   Src/_EditorState.pa.yaml                      8b7a1285b032d2a2  IDÊNTICO
+   Src ausentes/extras na nova: []
+   Após 2º unpack (unpack_fix/Src × unpack da base): idênticos = True (11 arquivos)
+
+## 2. Todos os arquivos do pacote — nova × 3d5cfb
+    References/DataSources.json | base: 222354B | nova: 223550B
+    packed.json | base: ausente | nova: 217B
+   Arquivos idênticos byte a byte: 102 de 103
+   Separador de caminho no ZIP: base usa "\\" = True | nova usa "\\" = False (formato do contêiner gerado pelo PAC; conteúdo dos arquivos inalterado)
+
+## 3. References/DataSources.json — diff semântico
+   Adicionadas: ['ComboBoxSample'] | Removidas: []
+   Demais definições idênticas à base: True
+   ComboBoxSample == definição do .msapp original (59743753…): True
+   ComboBoxSample: Type=StaticDataSourceInfo IsSampleData=True IsWritable=False colunas=['Value1', 'Value2', 'Value3']
+   Linhas removidas do arquivo: 0 | linhas adicionadas: 15
+   Todas as linhas adicionadas pertencem ao bloco ComboBoxSample: True
+
+## 4. Fontes Sample em TODO o .msapp novo (Src, Controls, Components, References, DynamicProperties, Templates)
+   ComboBoxSample: em DataSources=True | ocorrências={'References/DataSources.json': 2, 'Controls/364.json': 3, 'Controls/489.json': 1, 'References/Templates.json': 5}
+   RadioSample: em DataSources=False | ocorrências={}
+   CustomGallerySample: em DataSources=False | ocorrências={'References/Templates.json': 3}
+   DropDownSample: em DataSources=False | ocorrências={'References/Templates.json': 1}
+   Fórmulas autorais (Src) usando ComboBoxSample: 0 | SearchItems: 0
+
+## 5. Regras ativas (Controls/Components) que citam fontes Sample
+   Controls/364.json: DataCardValue3.SearchItems = Search(ComboBoxSample, Self.SearchText, Value1)  -> fonte ComboBoxSample DISPONÍVEL
+   Controls/364.json: DataCardValue12.SearchItems = Search(ComboBoxSample, Self.SearchText, Value1)  -> fonte ComboBoxSample DISPONÍVEL
+   Controls/364.json: DataCardValueCriticidade.SearchItems = Search(ComboBoxSample, Self.SearchText, Value1)  -> fonte ComboBoxSample DISPONÍVEL
+   Controls/489.json: cmbResponsavelEquipamento.SearchItems = Search(ComboBoxSample, Self.SearchText, Value1)  -> fonte ComboBoxSample DISPONÍVEL
+   Regras que citam fonte AUSENTE: nenhuma
+   Controls/*.json idênticos à base: True
+
+## 6. Os 4 ComboBox (regras no Controls/*.json da nova = base)
+   DataCardValue3: Items=Choices([@Radar_Demandas].Responsavel) | DefaultSelectedItems=Parent.Default | SearchFields=["Claims"] | IsSearchable=true
+   DataCardValue12: Items=Choices(Radar_Demandas.Status) | DefaultSelectedItems=If( frmDemanda.Mode = FormMode.New, [ LookUp( Choices(Radar_Demandas.S | SearchFields=["Value"] | IsSearchable=true
+   DataCardValueCriticidade: Items=Choices(Radar_Demandas.Criticidade) | DefaultSelectedItems=If( IsBlank(Parent.Default), Blank(), [Parent.Default] ) | SearchFields=["Value"] | IsSearchable=true
+   cmbResponsavelEquipamento: Items=SortByColumns( Filter( Choices( [@Radar_EquipamentosOperacionais].Resp | DefaultSelectedItems=With( { vEmailResponsavel: Lower( If( varModoEquipamento = "Novo", var | SearchFields=["DisplayName","Email"] | IsSearchable=true
+
+## 7. Não reversão para 6062bd…
+   Src da 3d5cfb que DIFEREM da 6062bd: 11 ['Src/App.pa.yaml', 'Src/Components/Header_PT_4.pa.yaml', 'Src/TelaAdministracao.pa.yaml', 'Src/TelaAuditoria.pa.yaml', 'Src/TelaCapacidade.pa.yaml', 'Src/TelaCockpit.pa.yaml', 'Src/TelaDecisoesEncaminhamentos.pa.yaml', 'Src/TelaDemandas.pa.yaml', 'Src/TelaEquipamentos.pa.yaml', 'Src/TelaRadarSemanal.pa.yaml', 'Src/_EditorState.pa.yaml']
+   Desses, quantos na nova build são iguais à 6062bd: 0 | iguais à 3d5cfb: 11
+
+## 8. checksum.json (metadado do empacotador que gerou a 3d5cfb)
+   checksum.json inalterado em relação à base: True | contém entrada p/ DataSources.json: True
+## 9. Validadores (unpack da nova build)
+FORMULAS=6348 SYNTAX_ERRORS=0
+SCHEMA_ERRORS= 0
+Mesmos validadores na base 3d5cfb (referência):
+FORMULAS=6348 SYNTAX_ERRORS=0
+SCHEMA_ERRORS= 0
