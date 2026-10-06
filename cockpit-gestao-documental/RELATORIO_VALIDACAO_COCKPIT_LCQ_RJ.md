@@ -200,3 +200,26 @@ Não há problema crítico introduzido por este trabalho, e os números foram va
    - o código "Não encontrado" (016228);
    - a instrução vencida (010133);
    - as 3 linhas repetidas na aba AOL.
+
+---
+
+## 12. Revisão 2 — usabilidade e acabamento visual (pedido de ajuste)
+
+| Aba | O que mudou |
+|---|---|
+| **INÍCIO** | Redesenhada como página de entrada: faixa com data de referência, 5 indicadores do dia, 6 cartões "O que você quer fazer?" (cada um com botão), cartões por área com contagem, guia "Como usar em 3 passos" e legenda de cores |
+| **DASHBOARD EXECUTIVO** | Barra de botões na faixa superior, blocos em painéis brancos com título e ícone, cabeçalhos de tabela destacados, nomes curtos na carteira por responsável (sem texto cortado), gráficos ajustados aos painéis |
+| **BASE CONSOLIDADA** | Faixa de título com botões, separação visual entre dado original e camada analítica, linhas de altura fixa sem quebra, cores de status discretas, colunas técnicas (W–Z) agrupadas e ocultas (botão "+" acima da coluna para exibir) |
+| **QUALIDADE BASE** | Faixa e botões, KPIs em cartões, tabelas em fundo branco |
+| **OUTROS CONTROLES** | Grade de cartões por família com contagem, situação da base e botão "Abrir aba" |
+| **PESQUISA** | Faixa, botões e caixa de busca maior |
+| **Abas de origem** (Q4, PE_PP, AOL, COMUNS, FMG/ANX, Transversais, LPP, AST, RT, MO, históricas) | Faixa superior com logo reposicionado, botões **Início / Dashboard / Pesquisa (ou Outros)** visíveis na primeira tela e fixos ao rolar, resumo automático (registros · vencidos · vencem em 12 meses), cabeçalho azul, linhas zebradas, status e validade destacados só nas exceções |
+
+**Correção:** o Início exibia "06/10/yyyy" no Excel em português, porque a função TEXTO não reconhece "yyyy" nessa configuração. Agora a data usa formato de célula e não depende do idioma.
+
+**Validação da revisão 2:**
+- Recálculo completo: 2.281 fórmulas, sem erros novos. Continuam apenas os 26 `#REF!` legados.
+- KPIs iguais aos da versão anterior: 125 / 117 / 3 / 1 / 12 / 95,1%.
+- Dados das abas de origem a partir da linha 2: 6.968 células comparadas, 0 alteradas.
+- Linha 1 das abas de origem: o título foi mantido, só sem os espaços iniciais, e o texto antigo de navegação foi trocado por botões.
+- Inspeção visual (LibreOffice) de Início, Dashboard, Pesquisa, Qualidade, Outros e NDocs Q4.
