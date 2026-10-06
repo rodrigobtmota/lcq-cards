@@ -1,0 +1,760 @@
+[
+ {
+  "name": "Menu visível perfil SemAcesso",
+  "expr": "Concat(SortByColumns(Filter(Table(\n        {\n            Chave: \"Cockpit\",\n            Titulo: \"Cockpit Executivo\",\n            Sigla: \"CK\",\n            Ordem: 1,\n            Visivel: true\n        },\n\n        {\n            Chave: \"Demandas\",\n            Titulo: \"Demandas\",\n            Sigla: \"DM\",\n            Ordem: 2,\n            Visivel: varUsuarioCadastrado\n        },\n\n        {\n            Chave: \"Capacidade\",\n            Titulo: \"Capacidade Operacional\",\n            Sigla: \"CP\",\n            Ordem: 3,\n            Visivel:\n                varEhLideranca ||\n                varEhAdmin\n        },\n\n        {\n            Chave: \"Equipamentos\",\n            Titulo: \"Ocorrências Operacionais\",\n            Sigla: \"OC\",\n            Ordem: 4,\n            Visivel: varUsuarioCadastrado\n        },\n\n        {\n            Chave: \"Rotina\",\n            Titulo: \"Radar Semanal\",\n            Sigla: \"RS\",\n            Ordem: 5,\n            Visivel: varUsuarioCadastrado\n        },\n\n        {\n            Chave: \"Auditoria\",\n            Titulo: \"Auditoria LCQ\",\n            Sigla: \"AU\",\n            Ordem: 6,\n            Visivel:\n                varEhLideranca ||\n                varEhAdmin\n        },\n\n        {\n            Chave: \"Decisoes\",\n            Titulo: \"Decisões e Encaminhamentos\",\n            Sigla: \"DE\",\n            Ordem: 7,\n            Visivel: varUsuarioCadastrado\n        },\n\n        {\n            Chave: \"Guia\",\n            Titulo: \"Guia do Radar\",\n            Sigla: \"GR\",\n            Ordem: 8,\n            Visivel: true\n        },\n\n        {\n            Chave: \"Administracao\",\n            Titulo: \"Administração\",\n            Sigla: \"AD\",\n            Ordem: 9,\n            Visivel:\n                varEhLideranca ||\n                varEhAdmin\n        }\n    ), Visivel), \"Ordem\", SortOrder.Ascending), Chave, \",\")",
+  "expected": "Cockpit,Guia",
+  "vars": {
+   "varUsuarioCadastrado": "false",
+   "varEhLideranca": "false",
+   "varEhAdmin": "false"
+  }
+ },
+ {
+  "name": "Menu visível perfil Integrante",
+  "expr": "Concat(SortByColumns(Filter(Table(\n        {\n            Chave: \"Cockpit\",\n            Titulo: \"Cockpit Executivo\",\n            Sigla: \"CK\",\n            Ordem: 1,\n            Visivel: true\n        },\n\n        {\n            Chave: \"Demandas\",\n            Titulo: \"Demandas\",\n            Sigla: \"DM\",\n            Ordem: 2,\n            Visivel: varUsuarioCadastrado\n        },\n\n        {\n            Chave: \"Capacidade\",\n            Titulo: \"Capacidade Operacional\",\n            Sigla: \"CP\",\n            Ordem: 3,\n            Visivel:\n                varEhLideranca ||\n                varEhAdmin\n        },\n\n        {\n            Chave: \"Equipamentos\",\n            Titulo: \"Ocorrências Operacionais\",\n            Sigla: \"OC\",\n            Ordem: 4,\n            Visivel: varUsuarioCadastrado\n        },\n\n        {\n            Chave: \"Rotina\",\n            Titulo: \"Radar Semanal\",\n            Sigla: \"RS\",\n            Ordem: 5,\n            Visivel: varUsuarioCadastrado\n        },\n\n        {\n            Chave: \"Auditoria\",\n            Titulo: \"Auditoria LCQ\",\n            Sigla: \"AU\",\n            Ordem: 6,\n            Visivel:\n                varEhLideranca ||\n                varEhAdmin\n        },\n\n        {\n            Chave: \"Decisoes\",\n            Titulo: \"Decisões e Encaminhamentos\",\n            Sigla: \"DE\",\n            Ordem: 7,\n            Visivel: varUsuarioCadastrado\n        },\n\n        {\n            Chave: \"Guia\",\n            Titulo: \"Guia do Radar\",\n            Sigla: \"GR\",\n            Ordem: 8,\n            Visivel: true\n        },\n\n        {\n            Chave: \"Administracao\",\n            Titulo: \"Administração\",\n            Sigla: \"AD\",\n            Ordem: 9,\n            Visivel:\n                varEhLideranca ||\n                varEhAdmin\n        }\n    ), Visivel), \"Ordem\", SortOrder.Ascending), Chave, \",\")",
+  "expected": "Cockpit,Demandas,Equipamentos,Rotina,Decisoes,Guia",
+  "vars": {
+   "varUsuarioCadastrado": "true",
+   "varEhLideranca": "false",
+   "varEhAdmin": "false"
+  }
+ },
+ {
+  "name": "Menu visível perfil Lideranca",
+  "expr": "Concat(SortByColumns(Filter(Table(\n        {\n            Chave: \"Cockpit\",\n            Titulo: \"Cockpit Executivo\",\n            Sigla: \"CK\",\n            Ordem: 1,\n            Visivel: true\n        },\n\n        {\n            Chave: \"Demandas\",\n            Titulo: \"Demandas\",\n            Sigla: \"DM\",\n            Ordem: 2,\n            Visivel: varUsuarioCadastrado\n        },\n\n        {\n            Chave: \"Capacidade\",\n            Titulo: \"Capacidade Operacional\",\n            Sigla: \"CP\",\n            Ordem: 3,\n            Visivel:\n                varEhLideranca ||\n                varEhAdmin\n        },\n\n        {\n            Chave: \"Equipamentos\",\n            Titulo: \"Ocorrências Operacionais\",\n            Sigla: \"OC\",\n            Ordem: 4,\n            Visivel: varUsuarioCadastrado\n        },\n\n        {\n            Chave: \"Rotina\",\n            Titulo: \"Radar Semanal\",\n            Sigla: \"RS\",\n            Ordem: 5,\n            Visivel: varUsuarioCadastrado\n        },\n\n        {\n            Chave: \"Auditoria\",\n            Titulo: \"Auditoria LCQ\",\n            Sigla: \"AU\",\n            Ordem: 6,\n            Visivel:\n                varEhLideranca ||\n                varEhAdmin\n        },\n\n        {\n            Chave: \"Decisoes\",\n            Titulo: \"Decisões e Encaminhamentos\",\n            Sigla: \"DE\",\n            Ordem: 7,\n            Visivel: varUsuarioCadastrado\n        },\n\n        {\n            Chave: \"Guia\",\n            Titulo: \"Guia do Radar\",\n            Sigla: \"GR\",\n            Ordem: 8,\n            Visivel: true\n        },\n\n        {\n            Chave: \"Administracao\",\n            Titulo: \"Administração\",\n            Sigla: \"AD\",\n            Ordem: 9,\n            Visivel:\n                varEhLideranca ||\n                varEhAdmin\n        }\n    ), Visivel), \"Ordem\", SortOrder.Ascending), Chave, \",\")",
+  "expected": "Cockpit,Demandas,Capacidade,Equipamentos,Rotina,Auditoria,Decisoes,Guia,Administracao",
+  "vars": {
+   "varUsuarioCadastrado": "true",
+   "varEhLideranca": "true",
+   "varEhAdmin": "false"
+  }
+ },
+ {
+  "name": "Menu visível perfil Administrador",
+  "expr": "Concat(SortByColumns(Filter(Table(\n        {\n            Chave: \"Cockpit\",\n            Titulo: \"Cockpit Executivo\",\n            Sigla: \"CK\",\n            Ordem: 1,\n            Visivel: true\n        },\n\n        {\n            Chave: \"Demandas\",\n            Titulo: \"Demandas\",\n            Sigla: \"DM\",\n            Ordem: 2,\n            Visivel: varUsuarioCadastrado\n        },\n\n        {\n            Chave: \"Capacidade\",\n            Titulo: \"Capacidade Operacional\",\n            Sigla: \"CP\",\n            Ordem: 3,\n            Visivel:\n                varEhLideranca ||\n                varEhAdmin\n        },\n\n        {\n            Chave: \"Equipamentos\",\n            Titulo: \"Ocorrências Operacionais\",\n            Sigla: \"OC\",\n            Ordem: 4,\n            Visivel: varUsuarioCadastrado\n        },\n\n        {\n            Chave: \"Rotina\",\n            Titulo: \"Radar Semanal\",\n            Sigla: \"RS\",\n            Ordem: 5,\n            Visivel: varUsuarioCadastrado\n        },\n\n        {\n            Chave: \"Auditoria\",\n            Titulo: \"Auditoria LCQ\",\n            Sigla: \"AU\",\n            Ordem: 6,\n            Visivel:\n                varEhLideranca ||\n                varEhAdmin\n        },\n\n        {\n            Chave: \"Decisoes\",\n            Titulo: \"Decisões e Encaminhamentos\",\n            Sigla: \"DE\",\n            Ordem: 7,\n            Visivel: varUsuarioCadastrado\n        },\n\n        {\n            Chave: \"Guia\",\n            Titulo: \"Guia do Radar\",\n            Sigla: \"GR\",\n            Ordem: 8,\n            Visivel: true\n        },\n\n        {\n            Chave: \"Administracao\",\n            Titulo: \"Administração\",\n            Sigla: \"AD\",\n            Ordem: 9,\n            Visivel:\n                varEhLideranca ||\n                varEhAdmin\n        }\n    ), Visivel), \"Ordem\", SortOrder.Ascending), Chave, \",\")",
+  "expected": "Cockpit,Demandas,Capacidade,Equipamentos,Rotina,Auditoria,Decisoes,Guia,Administracao",
+  "vars": {
+   "varUsuarioCadastrado": "true",
+   "varEhLideranca": "true",
+   "varEhAdmin": "true"
+  }
+ },
+ {
+  "name": "Soma pesos 0.4+0.3+0.2+0.1 válida",
+  "expr": "With({varSomaPesosConfig: Round(\n        varPesoEsforco +\n        varPesoImpacto +\n        varPesoUrgencia +\n        varPesoRisco,\n        4\n    )}, Abs(varSomaPesosConfig - 1) <= 0.0001)",
+  "expected": "true",
+  "vars": {
+   "varPesoEsforco": "0.4",
+   "varPesoImpacto": "0.3",
+   "varPesoUrgencia": "0.2",
+   "varPesoRisco": "0.1"
+  }
+ },
+ {
+  "name": "Soma pesos 0.4+0.3+0.2+0.05 válida",
+  "expr": "With({varSomaPesosConfig: Round(\n        varPesoEsforco +\n        varPesoImpacto +\n        varPesoUrgencia +\n        varPesoRisco,\n        4\n    )}, Abs(varSomaPesosConfig - 1) <= 0.0001)",
+  "expected": "false",
+  "vars": {
+   "varPesoEsforco": "0.4",
+   "varPesoImpacto": "0.3",
+   "varPesoUrgencia": "0.2",
+   "varPesoRisco": "0.05"
+  }
+ },
+ {
+  "name": "Soma pesos 0.25+0.25+0.25+0.25 válida",
+  "expr": "With({varSomaPesosConfig: Round(\n        varPesoEsforco +\n        varPesoImpacto +\n        varPesoUrgencia +\n        varPesoRisco,\n        4\n    )}, Abs(varSomaPesosConfig - 1) <= 0.0001)",
+  "expected": "true",
+  "vars": {
+   "varPesoEsforco": "0.25",
+   "varPesoImpacto": "0.25",
+   "varPesoUrgencia": "0.25",
+   "varPesoRisco": "0.25"
+  }
+ },
+ {
+  "name": "IPD E1 I1 U1 R1",
+  "expr": "Text(Round(\n                        vEsforco * varPesoEsforco +\n                        vImpacto * varPesoImpacto +\n                        vUrgencia * varPesoUrgencia +\n                        vRisco * varPesoRisco,\n                        2\n                    ), \"0.00\")",
+  "expected": "1.00",
+  "vars": {
+   "vEsforco": "1",
+   "vImpacto": "1",
+   "vUrgencia": "1",
+   "vRisco": "1",
+   "varPesoEsforco": "0.40",
+   "varPesoImpacto": "0.30",
+   "varPesoUrgencia": "0.20",
+   "varPesoRisco": "0.10"
+  }
+ },
+ {
+  "name": "IPD E4 I4 U4 R4",
+  "expr": "Text(Round(\n                        vEsforco * varPesoEsforco +\n                        vImpacto * varPesoImpacto +\n                        vUrgencia * varPesoUrgencia +\n                        vRisco * varPesoRisco,\n                        2\n                    ), \"0.00\")",
+  "expected": "4.00",
+  "vars": {
+   "vEsforco": "4",
+   "vImpacto": "4",
+   "vUrgencia": "4",
+   "vRisco": "4",
+   "varPesoEsforco": "0.40",
+   "varPesoImpacto": "0.30",
+   "varPesoUrgencia": "0.20",
+   "varPesoRisco": "0.10"
+  }
+ },
+ {
+  "name": "IPD E4 I3 U3 R2",
+  "expr": "Text(Round(\n                        vEsforco * varPesoEsforco +\n                        vImpacto * varPesoImpacto +\n                        vUrgencia * varPesoUrgencia +\n                        vRisco * varPesoRisco,\n                        2\n                    ), \"0.00\")",
+  "expected": "3.30",
+  "vars": {
+   "vEsforco": "4",
+   "vImpacto": "3",
+   "vUrgencia": "3",
+   "vRisco": "2",
+   "varPesoEsforco": "0.40",
+   "varPesoImpacto": "0.30",
+   "varPesoUrgencia": "0.20",
+   "varPesoRisco": "0.10"
+  }
+ },
+ {
+  "name": "IPD E2 I4 U1 R3",
+  "expr": "Text(Round(\n                        vEsforco * varPesoEsforco +\n                        vImpacto * varPesoImpacto +\n                        vUrgencia * varPesoUrgencia +\n                        vRisco * varPesoRisco,\n                        2\n                    ), \"0.00\")",
+  "expected": "2.50",
+  "vars": {
+   "vEsforco": "2",
+   "vImpacto": "4",
+   "vUrgencia": "1",
+   "vRisco": "3",
+   "varPesoEsforco": "0.40",
+   "varPesoImpacto": "0.30",
+   "varPesoUrgencia": "0.20",
+   "varPesoRisco": "0.10"
+  }
+ },
+ {
+  "name": "IPD E3 I2 U4 R1",
+  "expr": "Text(Round(\n                        vEsforco * varPesoEsforco +\n                        vImpacto * varPesoImpacto +\n                        vUrgencia * varPesoUrgencia +\n                        vRisco * varPesoRisco,\n                        2\n                    ), \"0.00\")",
+  "expected": "2.70",
+  "vars": {
+   "vEsforco": "3",
+   "vImpacto": "2",
+   "vUrgencia": "4",
+   "vRisco": "1",
+   "varPesoEsforco": "0.40",
+   "varPesoImpacto": "0.30",
+   "varPesoUrgencia": "0.20",
+   "varPesoRisco": "0.10"
+  }
+ },
+ {
+  "name": "IPD: resposta Impacto nível 4",
+  "expr": "Switch(\n                    pResp,\n                    \"Não afeta a rotina no curto prazo\", 1,\n                    \"Gera retrabalho ou dificuldade operacional\", 2,\n                    \"Afeta entrega, resultado ou rotina do laboratório\", 3,\n                    \"Risco de parada, auditoria, segurança ou não conformidade\", 4,\n                    Blank()\n                )",
+  "expected": "4",
+  "vars": {
+   "pResp": "\"Risco de parada, auditoria, segurança ou não conformidade\""
+  }
+ },
+ {
+  "name": "IPD: pergunta sem resposta -> Blank (bloqueia gravação)",
+  "expr": "IsBlank(Switch(\n                    pResp,\n                    \"Não afeta a rotina no curto prazo\", 1,\n                    \"Gera retrabalho ou dificuldade operacional\", 2,\n                    \"Afeta entrega, resultado ou rotina do laboratório\", 3,\n                    \"Risco de parada, auditoria, segurança ou não conformidade\", 4,\n                    Blank()\n                ))",
+  "expected": "true",
+  "vars": {
+   "pResp": "Blank()"
+  }
+ },
+ {
+  "name": "IPD: resposta fora da escala -> Blank",
+  "expr": "IsBlank(Switch(\n                    pResp,\n                    \"Não afeta a rotina no curto prazo\", 1,\n                    \"Gera retrabalho ou dificuldade operacional\", 2,\n                    \"Afeta entrega, resultado ou rotina do laboratório\", 3,\n                    \"Risco de parada, auditoria, segurança ou não conformidade\", 4,\n                    Blank()\n                ))",
+  "expected": "true",
+  "vars": {
+   "pResp": "\"Valor antigo escala 5\""
+  }
+ },
+ {
+  "name": "Demanda: bloqueio de permissão modo=Nova cadastrado=true podeEditar=false",
+  "expr": "!(\n        (varModoDemanda = \"Nova\" && varUsuarioCadastrado) ||\n        (varModoDemanda = \"Editar\" && varPodeEditarDemanda)\n    )",
+  "expected": "false",
+  "vars": {
+   "varModoDemanda": "\"Nova\"",
+   "varUsuarioCadastrado": "true",
+   "varPodeEditarDemanda": "false"
+  }
+ },
+ {
+  "name": "Demanda: bloqueio de permissão modo=Nova cadastrado=false podeEditar=false",
+  "expr": "!(\n        (varModoDemanda = \"Nova\" && varUsuarioCadastrado) ||\n        (varModoDemanda = \"Editar\" && varPodeEditarDemanda)\n    )",
+  "expected": "true",
+  "vars": {
+   "varModoDemanda": "\"Nova\"",
+   "varUsuarioCadastrado": "false",
+   "varPodeEditarDemanda": "false"
+  }
+ },
+ {
+  "name": "Demanda: bloqueio de permissão modo=Editar cadastrado=true podeEditar=true",
+  "expr": "!(\n        (varModoDemanda = \"Nova\" && varUsuarioCadastrado) ||\n        (varModoDemanda = \"Editar\" && varPodeEditarDemanda)\n    )",
+  "expected": "false",
+  "vars": {
+   "varModoDemanda": "\"Editar\"",
+   "varUsuarioCadastrado": "true",
+   "varPodeEditarDemanda": "true"
+  }
+ },
+ {
+  "name": "Demanda: bloqueio de permissão modo=Editar cadastrado=true podeEditar=false",
+  "expr": "!(\n        (varModoDemanda = \"Nova\" && varUsuarioCadastrado) ||\n        (varModoDemanda = \"Editar\" && varPodeEditarDemanda)\n    )",
+  "expected": "true",
+  "vars": {
+   "varModoDemanda": "\"Editar\"",
+   "varUsuarioCadastrado": "true",
+   "varPodeEditarDemanda": "false"
+  }
+ },
+ {
+  "name": "Demanda: bloqueio de permissão modo=Visualizar cadastrado=true podeEditar=true",
+  "expr": "!(\n        (varModoDemanda = \"Nova\" && varUsuarioCadastrado) ||\n        (varModoDemanda = \"Editar\" && varPodeEditarDemanda)\n    )",
+  "expected": "true",
+  "vars": {
+   "varModoDemanda": "\"Visualizar\"",
+   "varUsuarioCadastrado": "true",
+   "varPodeEditarDemanda": "true"
+  }
+ },
+ {
+  "name": "Admin: Liderança tenta se autoelevar",
+  "expr": "!varEhAdmin &&\n    (\n        pPerfilNovo = \"Administrador\" ||\n        (varModoIntegranteAdmin = \"Editar\" && pPerfilAtual = \"Administrador\")\n    )",
+  "expected": "true",
+  "vars": {
+   "varEhAdmin": "false",
+   "varModoIntegranteAdmin": "\"Editar\"",
+   "pPerfilNovo": "\"Administrador\"",
+   "pPerfilAtual": "\"Lideranca\""
+  }
+ },
+ {
+  "name": "Admin: Liderança promove terceiro a Administrador",
+  "expr": "!varEhAdmin &&\n    (\n        pPerfilNovo = \"Administrador\" ||\n        (varModoIntegranteAdmin = \"Editar\" && pPerfilAtual = \"Administrador\")\n    )",
+  "expected": "true",
+  "vars": {
+   "varEhAdmin": "false",
+   "varModoIntegranteAdmin": "\"Editar\"",
+   "pPerfilNovo": "\"Administrador\"",
+   "pPerfilAtual": "\"Integrante\""
+  }
+ },
+ {
+  "name": "Admin: Liderança cria integrante Administrador",
+  "expr": "!varEhAdmin &&\n    (\n        pPerfilNovo = \"Administrador\" ||\n        (varModoIntegranteAdmin = \"Editar\" && pPerfilAtual = \"Administrador\")\n    )",
+  "expected": "true",
+  "vars": {
+   "varEhAdmin": "false",
+   "varModoIntegranteAdmin": "\"Novo\"",
+   "pPerfilNovo": "\"Administrador\"",
+   "pPerfilAtual": "\"\""
+  }
+ },
+ {
+  "name": "Admin: Liderança rebaixa/edita Administrador",
+  "expr": "!varEhAdmin &&\n    (\n        pPerfilNovo = \"Administrador\" ||\n        (varModoIntegranteAdmin = \"Editar\" && pPerfilAtual = \"Administrador\")\n    )",
+  "expected": "true",
+  "vars": {
+   "varEhAdmin": "false",
+   "varModoIntegranteAdmin": "\"Editar\"",
+   "pPerfilNovo": "\"Lideranca\"",
+   "pPerfilAtual": "\"Administrador\""
+  }
+ },
+ {
+  "name": "Admin: Liderança promove Integrante a Liderança (permitido)",
+  "expr": "!varEhAdmin &&\n    (\n        pPerfilNovo = \"Administrador\" ||\n        (varModoIntegranteAdmin = \"Editar\" && pPerfilAtual = \"Administrador\")\n    )",
+  "expected": "false",
+  "vars": {
+   "varEhAdmin": "false",
+   "varModoIntegranteAdmin": "\"Editar\"",
+   "pPerfilNovo": "\"Lideranca\"",
+   "pPerfilAtual": "\"Integrante\""
+  }
+ },
+ {
+  "name": "Admin: Liderança cadastra Integrante (permitido)",
+  "expr": "!varEhAdmin &&\n    (\n        pPerfilNovo = \"Administrador\" ||\n        (varModoIntegranteAdmin = \"Editar\" && pPerfilAtual = \"Administrador\")\n    )",
+  "expected": "false",
+  "vars": {
+   "varEhAdmin": "false",
+   "varModoIntegranteAdmin": "\"Novo\"",
+   "pPerfilNovo": "\"Integrante\"",
+   "pPerfilAtual": "\"\""
+  }
+ },
+ {
+  "name": "Admin: Administrador promove a Administrador (permitido)",
+  "expr": "!varEhAdmin &&\n    (\n        pPerfilNovo = \"Administrador\" ||\n        (varModoIntegranteAdmin = \"Editar\" && pPerfilAtual = \"Administrador\")\n    )",
+  "expected": "false",
+  "vars": {
+   "varEhAdmin": "true",
+   "varModoIntegranteAdmin": "\"Editar\"",
+   "pPerfilNovo": "\"Administrador\"",
+   "pPerfilAtual": "\"Integrante\""
+  }
+ },
+ {
+  "name": "Integrante: e-mail duplicado (maiúsculas diferentes)",
+  "expr": "!IsBlank(LookUp(\n            Radar_Integrantes,\n            Lower(Coalesce(Email, \"\")) = Lower(Trim(pEmail)) &&\n            ID <> Coalesce(varIntegranteAdminSelecionado.ID, 0),\n            ID\n        ))",
+  "expected": "true",
+  "vars": {
+   "Radar_Integrantes": "Table({ID: 1, Email: \"Ana.Silva@braskem.com\"}, {ID: 2, Email: \"joao@braskem.com\"})",
+   "pEmail": "\" ana.silva@BRASKEM.com \"",
+   "varIntegranteAdminSelecionado": "If(false, {ID: 0})"
+  }
+ },
+ {
+  "name": "Integrante: edição do próprio registro não acusa duplicidade",
+  "expr": "!IsBlank(LookUp(\n            Radar_Integrantes,\n            Lower(Coalesce(Email, \"\")) = Lower(Trim(pEmail)) &&\n            ID <> Coalesce(varIntegranteAdminSelecionado.ID, 0),\n            ID\n        ))",
+  "expected": "false",
+  "vars": {
+   "Radar_Integrantes": "Table({ID: 1, Email: \"Ana.Silva@braskem.com\"}, {ID: 2, Email: \"joao@braskem.com\"})",
+   "pEmail": "\"ana.silva@braskem.com\"",
+   "varIntegranteAdminSelecionado": "{ID: 1}"
+  }
+ },
+ {
+  "name": "Auditoria duplicidade: Novo com dimensão já avaliada no mês",
+  "expr": "With({vRegistroExistente: If(\n                    vStatusRegistro = \"Cancelado\",\n                    Blank(),\n                    LookUp(\n                        Filter(\n                            Radar_GestaoAuditoria_LCQ,\n                            MesReferencia = vMes &&\n                            DimensaoAvaliada.Value = vDimensao\n                        ),\n                        StatusRegistro.Value <> \"Cancelado\"\n                    )\n                )}, !IsBlank(vRegistroExistente.ID) && (varModoAuditoria = \"Novo\" || vRegistroExistente.ID <> Coalesce(varRegistroAuditoriaSelecionado.ID, 0)))",
+  "expected": "true",
+  "vars": {
+   "Radar_GestaoAuditoria_LCQ": "Table({ID: 10, MesReferencia: \"2026-10\", DimensaoAvaliada: {Value: \"Documentacao\"}, StatusRegistro: {Value: \"Aberto\"}}, {ID: 11, MesReferencia: \"2026-10\", DimensaoAvaliada: {Value: \"Competencia\"}, StatusRegistro: {Value: \"Cancelado\"}})",
+   "vMes": "\"2026-10\"",
+   "vDimensao": "\"Documentacao\"",
+   "vStatusRegistro": "\"Aberto\"",
+   "varModoAuditoria": "\"Novo\"",
+   "varRegistroAuditoriaSelecionado": "If(false, {ID: 0})"
+  }
+ },
+ {
+  "name": "Auditoria duplicidade: Novo quando o único existente está Cancelado",
+  "expr": "With({vRegistroExistente: If(\n                    vStatusRegistro = \"Cancelado\",\n                    Blank(),\n                    LookUp(\n                        Filter(\n                            Radar_GestaoAuditoria_LCQ,\n                            MesReferencia = vMes &&\n                            DimensaoAvaliada.Value = vDimensao\n                        ),\n                        StatusRegistro.Value <> \"Cancelado\"\n                    )\n                )}, !IsBlank(vRegistroExistente.ID) && (varModoAuditoria = \"Novo\" || vRegistroExistente.ID <> Coalesce(varRegistroAuditoriaSelecionado.ID, 0)))",
+  "expected": "false",
+  "vars": {
+   "Radar_GestaoAuditoria_LCQ": "Table({ID: 10, MesReferencia: \"2026-10\", DimensaoAvaliada: {Value: \"Documentacao\"}, StatusRegistro: {Value: \"Aberto\"}}, {ID: 11, MesReferencia: \"2026-10\", DimensaoAvaliada: {Value: \"Competencia\"}, StatusRegistro: {Value: \"Cancelado\"}})",
+   "vMes": "\"2026-10\"",
+   "vDimensao": "\"Competencia\"",
+   "vStatusRegistro": "\"Aberto\"",
+   "varModoAuditoria": "\"Novo\"",
+   "varRegistroAuditoriaSelecionado": "If(false, {ID: 0})"
+  }
+ },
+ {
+  "name": "Auditoria duplicidade: Editar o próprio registro",
+  "expr": "With({vRegistroExistente: If(\n                    vStatusRegistro = \"Cancelado\",\n                    Blank(),\n                    LookUp(\n                        Filter(\n                            Radar_GestaoAuditoria_LCQ,\n                            MesReferencia = vMes &&\n                            DimensaoAvaliada.Value = vDimensao\n                        ),\n                        StatusRegistro.Value <> \"Cancelado\"\n                    )\n                )}, !IsBlank(vRegistroExistente.ID) && (varModoAuditoria = \"Novo\" || vRegistroExistente.ID <> Coalesce(varRegistroAuditoriaSelecionado.ID, 0)))",
+  "expected": "false",
+  "vars": {
+   "Radar_GestaoAuditoria_LCQ": "Table({ID: 10, MesReferencia: \"2026-10\", DimensaoAvaliada: {Value: \"Documentacao\"}, StatusRegistro: {Value: \"Aberto\"}}, {ID: 11, MesReferencia: \"2026-10\", DimensaoAvaliada: {Value: \"Competencia\"}, StatusRegistro: {Value: \"Cancelado\"}})",
+   "vMes": "\"2026-10\"",
+   "vDimensao": "\"Documentacao\"",
+   "vStatusRegistro": "\"Aberto\"",
+   "varModoAuditoria": "\"Editar\"",
+   "varRegistroAuditoriaSelecionado": "{ID: 10}"
+  }
+ },
+ {
+  "name": "Auditoria duplicidade: Editar outro registro para dimensão ocupada",
+  "expr": "With({vRegistroExistente: If(\n                    vStatusRegistro = \"Cancelado\",\n                    Blank(),\n                    LookUp(\n                        Filter(\n                            Radar_GestaoAuditoria_LCQ,\n                            MesReferencia = vMes &&\n                            DimensaoAvaliada.Value = vDimensao\n                        ),\n                        StatusRegistro.Value <> \"Cancelado\"\n                    )\n                )}, !IsBlank(vRegistroExistente.ID) && (varModoAuditoria = \"Novo\" || vRegistroExistente.ID <> Coalesce(varRegistroAuditoriaSelecionado.ID, 0)))",
+  "expected": "true",
+  "vars": {
+   "Radar_GestaoAuditoria_LCQ": "Table({ID: 10, MesReferencia: \"2026-10\", DimensaoAvaliada: {Value: \"Documentacao\"}, StatusRegistro: {Value: \"Aberto\"}}, {ID: 11, MesReferencia: \"2026-10\", DimensaoAvaliada: {Value: \"Competencia\"}, StatusRegistro: {Value: \"Cancelado\"}})",
+   "vMes": "\"2026-10\"",
+   "vDimensao": "\"Documentacao\"",
+   "vStatusRegistro": "\"Aberto\"",
+   "varModoAuditoria": "\"Editar\"",
+   "varRegistroAuditoriaSelecionado": "{ID: 11}"
+  }
+ },
+ {
+  "name": "Auditoria duplicidade: Cancelar registro não sofre bloqueio",
+  "expr": "With({vRegistroExistente: If(\n                    vStatusRegistro = \"Cancelado\",\n                    Blank(),\n                    LookUp(\n                        Filter(\n                            Radar_GestaoAuditoria_LCQ,\n                            MesReferencia = vMes &&\n                            DimensaoAvaliada.Value = vDimensao\n                        ),\n                        StatusRegistro.Value <> \"Cancelado\"\n                    )\n                )}, !IsBlank(vRegistroExistente.ID) && (varModoAuditoria = \"Novo\" || vRegistroExistente.ID <> Coalesce(varRegistroAuditoriaSelecionado.ID, 0)))",
+  "expected": "false",
+  "vars": {
+   "Radar_GestaoAuditoria_LCQ": "Table({ID: 10, MesReferencia: \"2026-10\", DimensaoAvaliada: {Value: \"Documentacao\"}, StatusRegistro: {Value: \"Aberto\"}}, {ID: 11, MesReferencia: \"2026-10\", DimensaoAvaliada: {Value: \"Competencia\"}, StatusRegistro: {Value: \"Cancelado\"}})",
+   "vMes": "\"2026-10\"",
+   "vDimensao": "\"Documentacao\"",
+   "vStatusRegistro": "\"Cancelado\"",
+   "varModoAuditoria": "\"Editar\"",
+   "varRegistroAuditoriaSelecionado": "{ID: 11}"
+  }
+ },
+ {
+  "name": "Auditoria duplicidade: Novo em dimensão livre",
+  "expr": "With({vRegistroExistente: If(\n                    vStatusRegistro = \"Cancelado\",\n                    Blank(),\n                    LookUp(\n                        Filter(\n                            Radar_GestaoAuditoria_LCQ,\n                            MesReferencia = vMes &&\n                            DimensaoAvaliada.Value = vDimensao\n                        ),\n                        StatusRegistro.Value <> \"Cancelado\"\n                    )\n                )}, !IsBlank(vRegistroExistente.ID) && (varModoAuditoria = \"Novo\" || vRegistroExistente.ID <> Coalesce(varRegistroAuditoriaSelecionado.ID, 0)))",
+  "expected": "false",
+  "vars": {
+   "Radar_GestaoAuditoria_LCQ": "Table({ID: 10, MesReferencia: \"2026-10\", DimensaoAvaliada: {Value: \"Documentacao\"}, StatusRegistro: {Value: \"Aberto\"}}, {ID: 11, MesReferencia: \"2026-10\", DimensaoAvaliada: {Value: \"Competencia\"}, StatusRegistro: {Value: \"Cancelado\"}})",
+   "vMes": "\"2026-10\"",
+   "vDimensao": "\"Melhoria Continua\"",
+   "vStatusRegistro": "\"Aberto\"",
+   "varModoAuditoria": "\"Novo\"",
+   "varRegistroAuditoriaSelecionado": "If(false, {ID: 0})"
+  }
+ },
+ {
+  "name": "Auditoria: botão Novo visível lid=false adm=false",
+  "expr": "varEhLideranca || varEhAdmin",
+  "expected": "false",
+  "vars": {
+   "varEhLideranca": "false",
+   "varEhAdmin": "false"
+  }
+ },
+ {
+  "name": "Auditoria: botão Novo visível lid=true adm=false",
+  "expr": "varEhLideranca || varEhAdmin",
+  "expected": "true",
+  "vars": {
+   "varEhLideranca": "true",
+   "varEhAdmin": "false"
+  }
+ },
+ {
+  "name": "Auditoria: botão Novo visível lid=true adm=true",
+  "expr": "varEhLideranca || varEhAdmin",
+  "expected": "true",
+  "vars": {
+   "varEhLideranca": "true",
+   "varEhAdmin": "true"
+  }
+ },
+ {
+  "name": "Rotina limite 6: 3 novos de cada, nada gravado",
+  "expr": "With(\n        {\n            vEmailAutor: Lower(pEmail)\n        },\n        CountIf(colRegistrosRotinaBase, Upper(Trim(Coalesce(SemanaReferencia, \"\"))) = vSemana && Lower(Coalesce(CriadoPor, \"\")) = vEmailAutor && TipoRegistro.Value = \"Highlight\") +\n        CountIf(colHighlightsSemana, !IsBlank(Trim(Texto)) && !Salvo) > 6 ||\n        CountIf(colRegistrosRotinaBase, Upper(Trim(Coalesce(SemanaReferencia, \"\"))) = vSemana && Lower(Coalesce(CriadoPor, \"\")) = vEmailAutor && TipoRegistro.Value = \"Lowlight\") +\n        CountIf(colLowlightsSemana, !IsBlank(Trim(Texto)) && !Salvo) > 6 ||\n        CountIf(colRegistrosRotinaBase, Upper(Trim(Coalesce(SemanaReferencia, \"\"))) = vSemana && Lower(Coalesce(CriadoPor, \"\")) = vEmailAutor && TipoRegistro.Value = \"PontoDePauta\") +\n        CountIf(colPontosPautaSemana, !IsBlank(Trim(Texto)) && !Salvo) > 6\n    )",
+  "expected": "false",
+  "vars": {
+   "pEmail": "\"Eu@Braskem.com\"",
+   "vSemana": "\"2026-S41\"",
+   "colRegistrosRotinaBase": "Filter(Table({SemanaReferencia: \"\", CriadoPor: \"\", TipoRegistro: {Value: \"\"}}), false)",
+   "colHighlightsSemana": "Table({Texto: \"item 0\", Salvo: false}, {Texto: \"item 1\", Salvo: false}, {Texto: \"item 2\", Salvo: false})",
+   "colLowlightsSemana": "Table({Texto: \"item 0\", Salvo: false}, {Texto: \"item 1\", Salvo: false}, {Texto: \"item 2\", Salvo: false})",
+   "colPontosPautaSemana": "Table({Texto: \"item 0\", Salvo: false}, {Texto: \"item 1\", Salvo: false}, {Texto: \"item 2\", Salvo: false})"
+  }
+ },
+ {
+  "name": "Rotina limite 6: 6 novos de cada, nada gravado",
+  "expr": "With(\n        {\n            vEmailAutor: Lower(pEmail)\n        },\n        CountIf(colRegistrosRotinaBase, Upper(Trim(Coalesce(SemanaReferencia, \"\"))) = vSemana && Lower(Coalesce(CriadoPor, \"\")) = vEmailAutor && TipoRegistro.Value = \"Highlight\") +\n        CountIf(colHighlightsSemana, !IsBlank(Trim(Texto)) && !Salvo) > 6 ||\n        CountIf(colRegistrosRotinaBase, Upper(Trim(Coalesce(SemanaReferencia, \"\"))) = vSemana && Lower(Coalesce(CriadoPor, \"\")) = vEmailAutor && TipoRegistro.Value = \"Lowlight\") +\n        CountIf(colLowlightsSemana, !IsBlank(Trim(Texto)) && !Salvo) > 6 ||\n        CountIf(colRegistrosRotinaBase, Upper(Trim(Coalesce(SemanaReferencia, \"\"))) = vSemana && Lower(Coalesce(CriadoPor, \"\")) = vEmailAutor && TipoRegistro.Value = \"PontoDePauta\") +\n        CountIf(colPontosPautaSemana, !IsBlank(Trim(Texto)) && !Salvo) > 6\n    )",
+  "expected": "false",
+  "vars": {
+   "pEmail": "\"Eu@Braskem.com\"",
+   "vSemana": "\"2026-S41\"",
+   "colRegistrosRotinaBase": "Filter(Table({SemanaReferencia: \"\", CriadoPor: \"\", TipoRegistro: {Value: \"\"}}), false)",
+   "colHighlightsSemana": "Table({Texto: \"item 0\", Salvo: false}, {Texto: \"item 1\", Salvo: false}, {Texto: \"item 2\", Salvo: false}, {Texto: \"item 3\", Salvo: false}, {Texto: \"item 4\", Salvo: false}, {Texto: \"item 5\", Salvo: false})",
+   "colLowlightsSemana": "Table({Texto: \"item 0\", Salvo: false}, {Texto: \"item 1\", Salvo: false}, {Texto: \"item 2\", Salvo: false}, {Texto: \"item 3\", Salvo: false}, {Texto: \"item 4\", Salvo: false}, {Texto: \"item 5\", Salvo: false})",
+   "colPontosPautaSemana": "Table({Texto: \"item 0\", Salvo: false}, {Texto: \"item 1\", Salvo: false}, {Texto: \"item 2\", Salvo: false}, {Texto: \"item 3\", Salvo: false}, {Texto: \"item 4\", Salvo: false}, {Texto: \"item 5\", Salvo: false})"
+  }
+ },
+ {
+  "name": "Rotina limite 6: 4 Highlights gravados + 3 novos = 7",
+  "expr": "With(\n        {\n            vEmailAutor: Lower(pEmail)\n        },\n        CountIf(colRegistrosRotinaBase, Upper(Trim(Coalesce(SemanaReferencia, \"\"))) = vSemana && Lower(Coalesce(CriadoPor, \"\")) = vEmailAutor && TipoRegistro.Value = \"Highlight\") +\n        CountIf(colHighlightsSemana, !IsBlank(Trim(Texto)) && !Salvo) > 6 ||\n        CountIf(colRegistrosRotinaBase, Upper(Trim(Coalesce(SemanaReferencia, \"\"))) = vSemana && Lower(Coalesce(CriadoPor, \"\")) = vEmailAutor && TipoRegistro.Value = \"Lowlight\") +\n        CountIf(colLowlightsSemana, !IsBlank(Trim(Texto)) && !Salvo) > 6 ||\n        CountIf(colRegistrosRotinaBase, Upper(Trim(Coalesce(SemanaReferencia, \"\"))) = vSemana && Lower(Coalesce(CriadoPor, \"\")) = vEmailAutor && TipoRegistro.Value = \"PontoDePauta\") +\n        CountIf(colPontosPautaSemana, !IsBlank(Trim(Texto)) && !Salvo) > 6\n    )",
+  "expected": "true",
+  "vars": {
+   "pEmail": "\"Eu@Braskem.com\"",
+   "vSemana": "\"2026-S41\"",
+   "colRegistrosRotinaBase": "Table({SemanaReferencia: \"2026-S41\", CriadoPor: \"eu@braskem.com\", TipoRegistro: {Value: \"Highlight\"}}, {SemanaReferencia: \"2026-S41\", CriadoPor: \"eu@braskem.com\", TipoRegistro: {Value: \"Highlight\"}}, {SemanaReferencia: \"2026-S41\", CriadoPor: \"eu@braskem.com\", TipoRegistro: {Value: \"Highlight\"}}, {SemanaReferencia: \"2026-S41\", CriadoPor: \"eu@braskem.com\", TipoRegistro: {Value: \"Highlight\"}})",
+   "colHighlightsSemana": "Table({Texto: \"item 0\", Salvo: false}, {Texto: \"item 1\", Salvo: false}, {Texto: \"item 2\", Salvo: false})",
+   "colLowlightsSemana": "Table({Texto: \"item 0\", Salvo: false}, {Texto: \"item 1\", Salvo: false}, {Texto: \"item 2\", Salvo: false})",
+   "colPontosPautaSemana": "Table({Texto: \"item 0\", Salvo: false}, {Texto: \"item 1\", Salvo: false}, {Texto: \"item 2\", Salvo: false})"
+  }
+ },
+ {
+  "name": "Rotina limite 6: 3 gravados + 3 novos = 6 (limite exato)",
+  "expr": "With(\n        {\n            vEmailAutor: Lower(pEmail)\n        },\n        CountIf(colRegistrosRotinaBase, Upper(Trim(Coalesce(SemanaReferencia, \"\"))) = vSemana && Lower(Coalesce(CriadoPor, \"\")) = vEmailAutor && TipoRegistro.Value = \"Highlight\") +\n        CountIf(colHighlightsSemana, !IsBlank(Trim(Texto)) && !Salvo) > 6 ||\n        CountIf(colRegistrosRotinaBase, Upper(Trim(Coalesce(SemanaReferencia, \"\"))) = vSemana && Lower(Coalesce(CriadoPor, \"\")) = vEmailAutor && TipoRegistro.Value = \"Lowlight\") +\n        CountIf(colLowlightsSemana, !IsBlank(Trim(Texto)) && !Salvo) > 6 ||\n        CountIf(colRegistrosRotinaBase, Upper(Trim(Coalesce(SemanaReferencia, \"\"))) = vSemana && Lower(Coalesce(CriadoPor, \"\")) = vEmailAutor && TipoRegistro.Value = \"PontoDePauta\") +\n        CountIf(colPontosPautaSemana, !IsBlank(Trim(Texto)) && !Salvo) > 6\n    )",
+  "expected": "false",
+  "vars": {
+   "pEmail": "\"Eu@Braskem.com\"",
+   "vSemana": "\"2026-S41\"",
+   "colRegistrosRotinaBase": "Table({SemanaReferencia: \"2026-S41\", CriadoPor: \"eu@braskem.com\", TipoRegistro: {Value: \"Highlight\"}}, {SemanaReferencia: \"2026-S41\", CriadoPor: \"eu@braskem.com\", TipoRegistro: {Value: \"Highlight\"}}, {SemanaReferencia: \"2026-S41\", CriadoPor: \"eu@braskem.com\", TipoRegistro: {Value: \"Highlight\"}}, {SemanaReferencia: \"2026-S41\", CriadoPor: \"eu@braskem.com\", TipoRegistro: {Value: \"Lowlight\"}}, {SemanaReferencia: \"2026-S41\", CriadoPor: \"eu@braskem.com\", TipoRegistro: {Value: \"Lowlight\"}}, {SemanaReferencia: \"2026-S41\", CriadoPor: \"eu@braskem.com\", TipoRegistro: {Value: \"Lowlight\"}}, {SemanaReferencia: \"2026-S41\", CriadoPor: \"eu@braskem.com\", TipoRegistro: {Value: \"PontoDePauta\"}}, {SemanaReferencia: \"2026-S41\", CriadoPor: \"eu@braskem.com\", TipoRegistro: {Value: \"PontoDePauta\"}}, {SemanaReferencia: \"2026-S41\", CriadoPor: \"eu@braskem.com\", TipoRegistro: {Value: \"PontoDePauta\"}})",
+   "colHighlightsSemana": "Table({Texto: \"item 0\", Salvo: false}, {Texto: \"item 1\", Salvo: false}, {Texto: \"item 2\", Salvo: false})",
+   "colLowlightsSemana": "Table({Texto: \"item 0\", Salvo: false}, {Texto: \"item 1\", Salvo: false}, {Texto: \"item 2\", Salvo: false})",
+   "colPontosPautaSemana": "Table({Texto: \"item 0\", Salvo: false}, {Texto: \"item 1\", Salvo: false}, {Texto: \"item 2\", Salvo: false})"
+  }
+ },
+ {
+  "name": "Rotina limite 6: 6 de outro autor não contam (sem máximo global)",
+  "expr": "With(\n        {\n            vEmailAutor: Lower(pEmail)\n        },\n        CountIf(colRegistrosRotinaBase, Upper(Trim(Coalesce(SemanaReferencia, \"\"))) = vSemana && Lower(Coalesce(CriadoPor, \"\")) = vEmailAutor && TipoRegistro.Value = \"Highlight\") +\n        CountIf(colHighlightsSemana, !IsBlank(Trim(Texto)) && !Salvo) > 6 ||\n        CountIf(colRegistrosRotinaBase, Upper(Trim(Coalesce(SemanaReferencia, \"\"))) = vSemana && Lower(Coalesce(CriadoPor, \"\")) = vEmailAutor && TipoRegistro.Value = \"Lowlight\") +\n        CountIf(colLowlightsSemana, !IsBlank(Trim(Texto)) && !Salvo) > 6 ||\n        CountIf(colRegistrosRotinaBase, Upper(Trim(Coalesce(SemanaReferencia, \"\"))) = vSemana && Lower(Coalesce(CriadoPor, \"\")) = vEmailAutor && TipoRegistro.Value = \"PontoDePauta\") +\n        CountIf(colPontosPautaSemana, !IsBlank(Trim(Texto)) && !Salvo) > 6\n    )",
+  "expected": "false",
+  "vars": {
+   "pEmail": "\"Eu@Braskem.com\"",
+   "vSemana": "\"2026-S41\"",
+   "colRegistrosRotinaBase": "Table({SemanaReferencia: \"2026-S41\", CriadoPor: \"outro@braskem.com\", TipoRegistro: {Value: \"Highlight\"}}, {SemanaReferencia: \"2026-S41\", CriadoPor: \"outro@braskem.com\", TipoRegistro: {Value: \"Highlight\"}}, {SemanaReferencia: \"2026-S41\", CriadoPor: \"outro@braskem.com\", TipoRegistro: {Value: \"Highlight\"}}, {SemanaReferencia: \"2026-S41\", CriadoPor: \"outro@braskem.com\", TipoRegistro: {Value: \"Highlight\"}}, {SemanaReferencia: \"2026-S41\", CriadoPor: \"outro@braskem.com\", TipoRegistro: {Value: \"Highlight\"}}, {SemanaReferencia: \"2026-S41\", CriadoPor: \"outro@braskem.com\", TipoRegistro: {Value: \"Highlight\"}})",
+   "colHighlightsSemana": "Table({Texto: \"item 0\", Salvo: false}, {Texto: \"item 1\", Salvo: false}, {Texto: \"item 2\", Salvo: false})",
+   "colLowlightsSemana": "Table({Texto: \"item 0\", Salvo: false}, {Texto: \"item 1\", Salvo: false}, {Texto: \"item 2\", Salvo: false})",
+   "colPontosPautaSemana": "Table({Texto: \"item 0\", Salvo: false}, {Texto: \"item 1\", Salvo: false}, {Texto: \"item 2\", Salvo: false})"
+  }
+ },
+ {
+  "name": "Rotina limite 6: 6 do mesmo autor em outra semana não contam",
+  "expr": "With(\n        {\n            vEmailAutor: Lower(pEmail)\n        },\n        CountIf(colRegistrosRotinaBase, Upper(Trim(Coalesce(SemanaReferencia, \"\"))) = vSemana && Lower(Coalesce(CriadoPor, \"\")) = vEmailAutor && TipoRegistro.Value = \"Highlight\") +\n        CountIf(colHighlightsSemana, !IsBlank(Trim(Texto)) && !Salvo) > 6 ||\n        CountIf(colRegistrosRotinaBase, Upper(Trim(Coalesce(SemanaReferencia, \"\"))) = vSemana && Lower(Coalesce(CriadoPor, \"\")) = vEmailAutor && TipoRegistro.Value = \"Lowlight\") +\n        CountIf(colLowlightsSemana, !IsBlank(Trim(Texto)) && !Salvo) > 6 ||\n        CountIf(colRegistrosRotinaBase, Upper(Trim(Coalesce(SemanaReferencia, \"\"))) = vSemana && Lower(Coalesce(CriadoPor, \"\")) = vEmailAutor && TipoRegistro.Value = \"PontoDePauta\") +\n        CountIf(colPontosPautaSemana, !IsBlank(Trim(Texto)) && !Salvo) > 6\n    )",
+  "expected": "false",
+  "vars": {
+   "pEmail": "\"Eu@Braskem.com\"",
+   "vSemana": "\"2026-S41\"",
+   "colRegistrosRotinaBase": "Table({SemanaReferencia: \"2026-S40\", CriadoPor: \"eu@braskem.com\", TipoRegistro: {Value: \"Highlight\"}}, {SemanaReferencia: \"2026-S40\", CriadoPor: \"eu@braskem.com\", TipoRegistro: {Value: \"Highlight\"}}, {SemanaReferencia: \"2026-S40\", CriadoPor: \"eu@braskem.com\", TipoRegistro: {Value: \"Highlight\"}}, {SemanaReferencia: \"2026-S40\", CriadoPor: \"eu@braskem.com\", TipoRegistro: {Value: \"Highlight\"}}, {SemanaReferencia: \"2026-S40\", CriadoPor: \"eu@braskem.com\", TipoRegistro: {Value: \"Highlight\"}}, {SemanaReferencia: \"2026-S40\", CriadoPor: \"eu@braskem.com\", TipoRegistro: {Value: \"Highlight\"}})",
+   "colHighlightsSemana": "Table({Texto: \"item 0\", Salvo: false}, {Texto: \"item 1\", Salvo: false}, {Texto: \"item 2\", Salvo: false})",
+   "colLowlightsSemana": "Table({Texto: \"item 0\", Salvo: false}, {Texto: \"item 1\", Salvo: false}, {Texto: \"item 2\", Salvo: false})",
+   "colPontosPautaSemana": "Table({Texto: \"item 0\", Salvo: false}, {Texto: \"item 1\", Salvo: false}, {Texto: \"item 2\", Salvo: false})"
+  }
+ },
+ {
+  "name": "Rotina limite 6: 5 Concentrações gravadas + 3 novas = 8",
+  "expr": "With(\n        {\n            vEmailAutor: Lower(pEmail)\n        },\n        CountIf(colRegistrosRotinaBase, Upper(Trim(Coalesce(SemanaReferencia, \"\"))) = vSemana && Lower(Coalesce(CriadoPor, \"\")) = vEmailAutor && TipoRegistro.Value = \"Highlight\") +\n        CountIf(colHighlightsSemana, !IsBlank(Trim(Texto)) && !Salvo) > 6 ||\n        CountIf(colRegistrosRotinaBase, Upper(Trim(Coalesce(SemanaReferencia, \"\"))) = vSemana && Lower(Coalesce(CriadoPor, \"\")) = vEmailAutor && TipoRegistro.Value = \"Lowlight\") +\n        CountIf(colLowlightsSemana, !IsBlank(Trim(Texto)) && !Salvo) > 6 ||\n        CountIf(colRegistrosRotinaBase, Upper(Trim(Coalesce(SemanaReferencia, \"\"))) = vSemana && Lower(Coalesce(CriadoPor, \"\")) = vEmailAutor && TipoRegistro.Value = \"PontoDePauta\") +\n        CountIf(colPontosPautaSemana, !IsBlank(Trim(Texto)) && !Salvo) > 6\n    )",
+  "expected": "true",
+  "vars": {
+   "pEmail": "\"Eu@Braskem.com\"",
+   "vSemana": "\"2026-S41\"",
+   "colRegistrosRotinaBase": "Table({SemanaReferencia: \"2026-S41\", CriadoPor: \"eu@braskem.com\", TipoRegistro: {Value: \"PontoDePauta\"}}, {SemanaReferencia: \"2026-S41\", CriadoPor: \"eu@braskem.com\", TipoRegistro: {Value: \"PontoDePauta\"}}, {SemanaReferencia: \"2026-S41\", CriadoPor: \"eu@braskem.com\", TipoRegistro: {Value: \"PontoDePauta\"}}, {SemanaReferencia: \"2026-S41\", CriadoPor: \"eu@braskem.com\", TipoRegistro: {Value: \"PontoDePauta\"}}, {SemanaReferencia: \"2026-S41\", CriadoPor: \"eu@braskem.com\", TipoRegistro: {Value: \"PontoDePauta\"}})",
+   "colHighlightsSemana": "Table({Texto: \"item 0\", Salvo: false}, {Texto: \"item 1\", Salvo: false}, {Texto: \"item 2\", Salvo: false})",
+   "colLowlightsSemana": "Table({Texto: \"item 0\", Salvo: false}, {Texto: \"item 1\", Salvo: false}, {Texto: \"item 2\", Salvo: false})",
+   "colPontosPautaSemana": "Table({Texto: \"item 0\", Salvo: false}, {Texto: \"item 1\", Salvo: false}, {Texto: \"item 2\", Salvo: false})"
+  }
+ },
+ {
+  "name": "Rotina mínimo 3: H3 L3 C3 bloqueado",
+  "expr": "vHighlights < 3 || vLowlights < 3 || vPontosPauta < 3",
+  "expected": "false",
+  "vars": {
+   "vHighlights": "3",
+   "vLowlights": "3",
+   "vPontosPauta": "3"
+  }
+ },
+ {
+  "name": "Rotina mínimo 3: H2 L3 C3 bloqueado",
+  "expr": "vHighlights < 3 || vLowlights < 3 || vPontosPauta < 3",
+  "expected": "true",
+  "vars": {
+   "vHighlights": "2",
+   "vLowlights": "3",
+   "vPontosPauta": "3"
+  }
+ },
+ {
+  "name": "Rotina mínimo 3: H3 L3 C2 bloqueado",
+  "expr": "vHighlights < 3 || vLowlights < 3 || vPontosPauta < 3",
+  "expected": "true",
+  "vars": {
+   "vHighlights": "3",
+   "vLowlights": "3",
+   "vPontosPauta": "2"
+  }
+ },
+ {
+  "name": "Rotina mínimo 3: H6 L3 C3 bloqueado",
+  "expr": "vHighlights < 3 || vLowlights < 3 || vPontosPauta < 3",
+  "expected": "false",
+  "vars": {
+   "vHighlights": "6",
+   "vLowlights": "3",
+   "vPontosPauta": "3"
+  }
+ },
+ {
+  "name": "Bloqueio Concluir: opção Resolvido existe",
+  "expr": "Coalesce(LookUp(pChoices, Value = \"Resolvido\"), LookUp(pChoices, Value = \"Resolvida\"), LookUp(pChoices, Value = \"Concluido\"), LookUp(pChoices, Value = \"Concluído\"), LookUp(pChoices, Value = \"Concluida\"), LookUp(pChoices, Value = \"Concluída\")).Value",
+  "expected": "Resolvido",
+  "vars": {
+   "pChoices": "Table({Value: \"Aberto\"}, {Value: \"Resolvido\"}, {Value: \"Cancelado\"})"
+  }
+ },
+ {
+  "name": "Bloqueio Concluir: só \"Concluído\" existe",
+  "expr": "Coalesce(LookUp(pChoices, Value = \"Resolvido\"), LookUp(pChoices, Value = \"Resolvida\"), LookUp(pChoices, Value = \"Concluido\"), LookUp(pChoices, Value = \"Concluído\"), LookUp(pChoices, Value = \"Concluida\"), LookUp(pChoices, Value = \"Concluída\")).Value",
+  "expected": "Concluído",
+  "vars": {
+   "pChoices": "Table({Value: \"Aberto\"}, {Value: \"Concluído\"})"
+  }
+ },
+ {
+  "name": "Bloqueio Concluir: sem opção exata (apenas \"Em resolução\") -> Blank, Patch não executa",
+  "expr": "IsBlank(Coalesce(LookUp(pChoices, Value = \"Resolvido\"), LookUp(pChoices, Value = \"Resolvida\"), LookUp(pChoices, Value = \"Concluido\"), LookUp(pChoices, Value = \"Concluído\"), LookUp(pChoices, Value = \"Concluida\"), LookUp(pChoices, Value = \"Concluída\")).Value)",
+  "expected": "true",
+  "vars": {
+   "pChoices": "Table({Value: \"Aberto\"}, {Value: \"Em resolução\"})"
+  }
+ },
+ {
+  "name": "Bloqueio Cancelar: opção Cancelado",
+  "expr": "Coalesce(LookUp(pChoices, Value = \"Cancelado\"), LookUp(pChoices, Value = \"Cancelada\")).Value",
+  "expected": "Cancelado",
+  "vars": {
+   "pChoices": "Table({Value: \"Aberto\"}, {Value: \"Cancelado\"})"
+  }
+ },
+ {
+  "name": "Bloqueio Cancelar: ausente -> Blank",
+  "expr": "IsBlank(Coalesce(LookUp(pChoices, Value = \"Cancelado\"), LookUp(pChoices, Value = \"Cancelada\")).Value)",
+  "expected": "true",
+  "vars": {
+   "pChoices": "Table({Value: \"Aberto\"}, {Value: \"Resolvido\"})"
+  }
+ },
+ {
+  "name": "Bloqueio encerrado? status=Aberto",
+  "expr": "With({Status: {Value: \"Aberto\"}}, (Coalesce(Status.Value, \"\") in [\"Resolvido\", \"Resolvida\", \"Concluido\", \"Concluído\", \"Concluida\", \"Concluída\", \"Cancelado\", \"Cancelada\", \"Decidido\", \"Decidida\", \"Encerrado\", \"Encerrada\", \"Fechado\", \"Fechada\"]))",
+  "expected": "false",
+  "vars": {}
+ },
+ {
+  "name": "Bloqueio encerrado? status=Resolvido",
+  "expr": "With({Status: {Value: \"Resolvido\"}}, (Coalesce(Status.Value, \"\") in [\"Resolvido\", \"Resolvida\", \"Concluido\", \"Concluído\", \"Concluida\", \"Concluída\", \"Cancelado\", \"Cancelada\", \"Decidido\", \"Decidida\", \"Encerrado\", \"Encerrada\", \"Fechado\", \"Fechada\"]))",
+  "expected": "true",
+  "vars": {}
+ },
+ {
+  "name": "Bloqueio encerrado? status=Cancelado",
+  "expr": "With({Status: {Value: \"Cancelado\"}}, (Coalesce(Status.Value, \"\") in [\"Resolvido\", \"Resolvida\", \"Concluido\", \"Concluído\", \"Concluida\", \"Concluída\", \"Cancelado\", \"Cancelada\", \"Decidido\", \"Decidida\", \"Encerrado\", \"Encerrada\", \"Fechado\", \"Fechada\"]))",
+  "expected": "true",
+  "vars": {}
+ },
+ {
+  "name": "Bloqueio encerrado? status=Em resolução",
+  "expr": "With({Status: {Value: \"Em resolução\"}}, (Coalesce(Status.Value, \"\") in [\"Resolvido\", \"Resolvida\", \"Concluido\", \"Concluído\", \"Concluida\", \"Concluída\", \"Cancelado\", \"Cancelada\", \"Decidido\", \"Decidida\", \"Encerrado\", \"Encerrada\", \"Fechado\", \"Fechada\"]))",
+  "expected": "false",
+  "vars": {}
+ },
+ {
+  "name": "Bloqueio encerrado? status=Concluído",
+  "expr": "With({Status: {Value: \"Concluído\"}}, (Coalesce(Status.Value, \"\") in [\"Resolvido\", \"Resolvida\", \"Concluido\", \"Concluído\", \"Concluida\", \"Concluída\", \"Cancelado\", \"Cancelada\", \"Decidido\", \"Decidida\", \"Encerrado\", \"Encerrada\", \"Fechado\", \"Fechada\"]))",
+  "expected": "true",
+  "vars": {}
+ },
+ {
+  "name": "Bloqueio edição: Integrante responsável",
+  "expr": "varEhLideranca ||\n            varEhAdmin ||\n            pItem.ResponsavelEmail = varUsuarioAtual ||\n            pItem.CriadorEmail = varUsuarioAtual",
+  "expected": "true",
+  "vars": {
+   "varEhLideranca": "false",
+   "varEhAdmin": "false",
+   "varUsuarioAtual": "\"eu@x.com\"",
+   "pItem": "{ResponsavelEmail: \"eu@x.com\", CriadorEmail: \"a@x.com\"}"
+  }
+ },
+ {
+  "name": "Bloqueio edição: Integrante criador",
+  "expr": "varEhLideranca ||\n            varEhAdmin ||\n            pItem.ResponsavelEmail = varUsuarioAtual ||\n            pItem.CriadorEmail = varUsuarioAtual",
+  "expected": "true",
+  "vars": {
+   "varEhLideranca": "false",
+   "varEhAdmin": "false",
+   "varUsuarioAtual": "\"eu@x.com\"",
+   "pItem": "{ResponsavelEmail: \"b@x.com\", CriadorEmail: \"eu@x.com\"}"
+  }
+ },
+ {
+  "name": "Bloqueio edição: Integrante sem vínculo",
+  "expr": "varEhLideranca ||\n            varEhAdmin ||\n            pItem.ResponsavelEmail = varUsuarioAtual ||\n            pItem.CriadorEmail = varUsuarioAtual",
+  "expected": "false",
+  "vars": {
+   "varEhLideranca": "false",
+   "varEhAdmin": "false",
+   "varUsuarioAtual": "\"eu@x.com\"",
+   "pItem": "{ResponsavelEmail: \"b@x.com\", CriadorEmail: \"a@x.com\"}"
+  }
+ },
+ {
+  "name": "Bloqueio edição: Liderança sem vínculo",
+  "expr": "varEhLideranca ||\n            varEhAdmin ||\n            pItem.ResponsavelEmail = varUsuarioAtual ||\n            pItem.CriadorEmail = varUsuarioAtual",
+  "expected": "true",
+  "vars": {
+   "varEhLideranca": "true",
+   "varEhAdmin": "false",
+   "varUsuarioAtual": "\"eu@x.com\"",
+   "pItem": "{ResponsavelEmail: \"b@x.com\", CriadorEmail: \"a@x.com\"}"
+  }
+ },
+ {
+  "name": "Encaminhamento atualização: Integrante responsável",
+  "expr": "(varEhLideranca || varEhAdmin) || pItem.ResponsavelEmail = varUsuarioAtual",
+  "expected": "true",
+  "vars": {
+   "varEhLideranca": "false",
+   "varEhAdmin": "false",
+   "varUsuarioAtual": "\"eu@x.com\"",
+   "pItem": "{ResponsavelEmail: \"eu@x.com\"}"
+  }
+ },
+ {
+  "name": "Encaminhamento atualização: Integrante não responsável",
+  "expr": "(varEhLideranca || varEhAdmin) || pItem.ResponsavelEmail = varUsuarioAtual",
+  "expected": "false",
+  "vars": {
+   "varEhLideranca": "false",
+   "varEhAdmin": "false",
+   "varUsuarioAtual": "\"eu@x.com\"",
+   "pItem": "{ResponsavelEmail: \"b@x.com\"}"
+  }
+ },
+ {
+  "name": "Encaminhamento atualização: Liderança",
+  "expr": "(varEhLideranca || varEhAdmin) || pItem.ResponsavelEmail = varUsuarioAtual",
+  "expected": "true",
+  "vars": {
+   "varEhLideranca": "true",
+   "varEhAdmin": "false",
+   "varUsuarioAtual": "\"eu@x.com\"",
+   "pItem": "{ResponsavelEmail: \"b@x.com\"}"
+  }
+ },
+ {
+  "name": "Encaminhamento atrasado: aberto vencido",
+  "expr": "With({Status: {Value: \"Aberto\"}, Prazo: Date(2026,10,1)}, !((Coalesce(Status.Value, \"\") in [\"Resolvido\", \"Resolvida\", \"Concluido\", \"Concluído\", \"Concluida\", \"Concluída\", \"Cancelado\", \"Cancelada\", \"Decidido\", \"Decidida\", \"Encerrado\", \"Encerrada\", \"Fechado\", \"Fechada\"])) && !IsBlank(Prazo) && Prazo < Date(2026,10,6))",
+  "expected": "true",
+  "vars": {}
+ },
+ {
+  "name": "Encaminhamento atrasado: aberto no prazo",
+  "expr": "With({Status: {Value: \"Aberto\"}, Prazo: Date(2026,10,9)}, !((Coalesce(Status.Value, \"\") in [\"Resolvido\", \"Resolvida\", \"Concluido\", \"Concluído\", \"Concluida\", \"Concluída\", \"Cancelado\", \"Cancelada\", \"Decidido\", \"Decidida\", \"Encerrado\", \"Encerrada\", \"Fechado\", \"Fechada\"])) && !IsBlank(Prazo) && Prazo < Date(2026,10,6))",
+  "expected": "false",
+  "vars": {}
+ },
+ {
+  "name": "Encaminhamento atrasado: concluído vencido",
+  "expr": "With({Status: {Value: \"Concluído\"}, Prazo: Date(2026,10,1)}, !((Coalesce(Status.Value, \"\") in [\"Resolvido\", \"Resolvida\", \"Concluido\", \"Concluído\", \"Concluida\", \"Concluída\", \"Cancelado\", \"Cancelada\", \"Decidido\", \"Decidida\", \"Encerrado\", \"Encerrada\", \"Fechado\", \"Fechada\"])) && !IsBlank(Prazo) && Prazo < Date(2026,10,6))",
+  "expected": "false",
+  "vars": {}
+ },
+ {
+  "name": "Encaminhamento atrasado: sem prazo",
+  "expr": "With({Status: {Value: \"Aberto\"}, Prazo: Blank()}, !((Coalesce(Status.Value, \"\") in [\"Resolvido\", \"Resolvida\", \"Concluido\", \"Concluído\", \"Concluida\", \"Concluída\", \"Cancelado\", \"Cancelada\", \"Decidido\", \"Decidida\", \"Encerrado\", \"Encerrada\", \"Fechado\", \"Fechada\"])) && !IsBlank(Prazo) && Prazo < Date(2026,10,6))",
+  "expected": "false",
+  "vars": {}
+ },
+ {
+  "name": "Semana ISO Date(2026,10,6)",
+  "expr": "With(\n    {wHoje: pHoje},\n    With(\n        {wSegunda: DateAdd(wHoje, 1 - Weekday(wHoje, StartOfWeek.Monday), TimeUnit.Days)},\n        With(\n            {wAno: Year(DateAdd(wSegunda, 3, TimeUnit.Days))},\n            With(\n                {wInicio: DateAdd(Date(wAno, 1, 4), 1 - Weekday(Date(wAno, 1, 4), StartOfWeek.Monday), TimeUnit.Days)},\n                Text(wAno) & \"-S\" & Text(1 + RoundDown(DateDiff(wInicio, wSegunda, TimeUnit.Days) / 7, 0), \"00\")\n            )\n        )\n    )\n)",
+  "expected": "2026-S41",
+  "vars": {
+   "pHoje": "Date(2026,10,6)"
+  }
+ },
+ {
+  "name": "Semana ISO Date(2021,1,1)",
+  "expr": "With(\n    {wHoje: pHoje},\n    With(\n        {wSegunda: DateAdd(wHoje, 1 - Weekday(wHoje, StartOfWeek.Monday), TimeUnit.Days)},\n        With(\n            {wAno: Year(DateAdd(wSegunda, 3, TimeUnit.Days))},\n            With(\n                {wInicio: DateAdd(Date(wAno, 1, 4), 1 - Weekday(Date(wAno, 1, 4), StartOfWeek.Monday), TimeUnit.Days)},\n                Text(wAno) & \"-S\" & Text(1 + RoundDown(DateDiff(wInicio, wSegunda, TimeUnit.Days) / 7, 0), \"00\")\n            )\n        )\n    )\n)",
+  "expected": "2020-S53",
+  "vars": {
+   "pHoje": "Date(2021,1,1)"
+  }
+ },
+ {
+  "name": "Semana ISO Date(2024,12,30)",
+  "expr": "With(\n    {wHoje: pHoje},\n    With(\n        {wSegunda: DateAdd(wHoje, 1 - Weekday(wHoje, StartOfWeek.Monday), TimeUnit.Days)},\n        With(\n            {wAno: Year(DateAdd(wSegunda, 3, TimeUnit.Days))},\n            With(\n                {wInicio: DateAdd(Date(wAno, 1, 4), 1 - Weekday(Date(wAno, 1, 4), StartOfWeek.Monday), TimeUnit.Days)},\n                Text(wAno) & \"-S\" & Text(1 + RoundDown(DateDiff(wInicio, wSegunda, TimeUnit.Days) / 7, 0), \"00\")\n            )\n        )\n    )\n)",
+  "expected": "2025-S01",
+  "vars": {
+   "pHoje": "Date(2024,12,30)"
+  }
+ },
+ {
+  "name": "Semana ISO Date(2026,1,1)",
+  "expr": "With(\n    {wHoje: pHoje},\n    With(\n        {wSegunda: DateAdd(wHoje, 1 - Weekday(wHoje, StartOfWeek.Monday), TimeUnit.Days)},\n        With(\n            {wAno: Year(DateAdd(wSegunda, 3, TimeUnit.Days))},\n            With(\n                {wInicio: DateAdd(Date(wAno, 1, 4), 1 - Weekday(Date(wAno, 1, 4), StartOfWeek.Monday), TimeUnit.Days)},\n                Text(wAno) & \"-S\" & Text(1 + RoundDown(DateDiff(wInicio, wSegunda, TimeUnit.Days) / 7, 0), \"00\")\n            )\n        )\n    )\n)",
+  "expected": "2026-S01",
+  "vars": {
+   "pHoje": "Date(2026,1,1)"
+  }
+ }
+]

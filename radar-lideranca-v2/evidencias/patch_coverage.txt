@@ -1,0 +1,13 @@
+== Radar_Demandas (Patch único: frmDemanda.Updates + registro calculado)
+Campos graváveis no schema   : ['CargaReal', 'CriadoPor', 'Criticidade', 'DataConclusao', 'DataInicio', 'DataLimite', 'Descricao', 'Esforco', 'Impacto', 'QtdReplanejamentos', 'Replanejado', 'Responsavel', 'Risco', 'Status', 'Title', 'Urgencia']
+Via frmDemanda.Updates (cards): ['Criticidade', 'DataLimite', 'Descricao', 'Responsavel', 'Status', 'Title']
+Via registro explícito        : ['CargaReal', 'CriadoPor', 'DataConclusao', 'DataInicio', 'Esforco', 'Impacto', 'QtdReplanejamentos', 'Replanejado', 'Risco', 'Status', 'Urgencia']
+NÃO cobertos                  : []
+Chaves fora do schema         : []
+Chamadas Patch(Radar_Demandas): 1 | SubmitForm: 0
+Referências PercentualProgresso/Aprendizado: 0
+== Radar_Bloqueios (btnSalvarBloqueio) não cobertos: [] | fora do schema: []
+== Radar_Decisoes (btnSalvarDecisao) não cobertos: [] | fora do schema: []
+== Radar_Encaminhamentos (btnSalvarEncaminhamento) não cobertos: [] | fora do schema: []
+== Radar_GestaoAuditoria_LCQ (btnSalvarAuditoria) não cobertos: [] | fora do schema: ['Value']
+== Radar_EquipamentosOperacionais (btnSalvarEquipamento) não cobertos: ['ImpactoOperacional'] | fora do schema: ['Value']

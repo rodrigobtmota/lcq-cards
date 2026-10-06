@@ -1,0 +1,75 @@
+PASS | Menu visível perfil SemAcesso | esperado=Cockpit,Guia | obtido=Cockpit,Guia
+PASS | Menu visível perfil Integrante | esperado=Cockpit,Demandas,Equipamentos,Rotina,Decisoes,Guia | obtido=Cockpit,Demandas,Equipamentos,Rotina,Decisoes,Guia
+PASS | Menu visível perfil Lideranca | esperado=Cockpit,Demandas,Capacidade,Equipamentos,Rotina,Auditoria,Decisoes,Guia,Administracao | obtido=Cockpit,Demandas,Capacidade,Equipamentos,Rotina,Auditoria,Decisoes,Guia,Administracao
+PASS | Menu visível perfil Administrador | esperado=Cockpit,Demandas,Capacidade,Equipamentos,Rotina,Auditoria,Decisoes,Guia,Administracao | obtido=Cockpit,Demandas,Capacidade,Equipamentos,Rotina,Auditoria,Decisoes,Guia,Administracao
+PASS | Soma pesos 0.4+0.3+0.2+0.1 válida | esperado=true | obtido=true
+PASS | Soma pesos 0.4+0.3+0.2+0.05 válida | esperado=false | obtido=false
+PASS | Soma pesos 0.25+0.25+0.25+0.25 válida | esperado=true | obtido=true
+PASS | IPD E1 I1 U1 R1 | esperado=1.00 | obtido=1.00
+PASS | IPD E4 I4 U4 R4 | esperado=4.00 | obtido=4.00
+PASS | IPD E4 I3 U3 R2 | esperado=3.30 | obtido=3.30
+PASS | IPD E2 I4 U1 R3 | esperado=2.50 | obtido=2.50
+PASS | IPD E3 I2 U4 R1 | esperado=2.70 | obtido=2.70
+PASS | IPD: resposta Impacto nível 4 | esperado=4 | obtido=4
+PASS | IPD: pergunta sem resposta -> Blank (bloqueia gravação) | esperado=true | obtido=true
+PASS | IPD: resposta fora da escala -> Blank | esperado=true | obtido=true
+PASS | Demanda: bloqueio de permissão modo=Nova cadastrado=true podeEditar=false | esperado=false | obtido=false
+PASS | Demanda: bloqueio de permissão modo=Nova cadastrado=false podeEditar=false | esperado=true | obtido=true
+PASS | Demanda: bloqueio de permissão modo=Editar cadastrado=true podeEditar=true | esperado=false | obtido=false
+PASS | Demanda: bloqueio de permissão modo=Editar cadastrado=true podeEditar=false | esperado=true | obtido=true
+PASS | Demanda: bloqueio de permissão modo=Visualizar cadastrado=true podeEditar=true | esperado=true | obtido=true
+PASS | Admin: Liderança tenta se autoelevar | esperado=true | obtido=true
+PASS | Admin: Liderança promove terceiro a Administrador | esperado=true | obtido=true
+PASS | Admin: Liderança cria integrante Administrador | esperado=true | obtido=true
+PASS | Admin: Liderança rebaixa/edita Administrador | esperado=true | obtido=true
+PASS | Admin: Liderança promove Integrante a Liderança (permitido) | esperado=false | obtido=false
+PASS | Admin: Liderança cadastra Integrante (permitido) | esperado=false | obtido=false
+PASS | Admin: Administrador promove a Administrador (permitido) | esperado=false | obtido=false
+PASS | Integrante: e-mail duplicado (maiúsculas diferentes) | esperado=true | obtido=true
+PASS | Integrante: edição do próprio registro não acusa duplicidade | esperado=false | obtido=false
+PASS | Auditoria duplicidade: Novo com dimensão já avaliada no mês | esperado=true | obtido=true
+PASS | Auditoria duplicidade: Novo quando o único existente está Cancelado | esperado=false | obtido=false
+PASS | Auditoria duplicidade: Editar o próprio registro | esperado=false | obtido=false
+PASS | Auditoria duplicidade: Editar outro registro para dimensão ocupada | esperado=true | obtido=true
+PASS | Auditoria duplicidade: Cancelar registro não sofre bloqueio | esperado=false | obtido=false
+PASS | Auditoria duplicidade: Novo em dimensão livre | esperado=false | obtido=false
+PASS | Auditoria: botão Novo visível lid=false adm=false | esperado=false | obtido=false
+PASS | Auditoria: botão Novo visível lid=true adm=false | esperado=true | obtido=true
+PASS | Auditoria: botão Novo visível lid=true adm=true | esperado=true | obtido=true
+PASS | Rotina limite 6: 3 novos de cada, nada gravado | esperado=false | obtido=false
+PASS | Rotina limite 6: 6 novos de cada, nada gravado | esperado=false | obtido=false
+PASS | Rotina limite 6: 4 Highlights gravados + 3 novos = 7 | esperado=true | obtido=true
+PASS | Rotina limite 6: 3 gravados + 3 novos = 6 (limite exato) | esperado=false | obtido=false
+PASS | Rotina limite 6: 6 de outro autor não contam (sem máximo global) | esperado=false | obtido=false
+PASS | Rotina limite 6: 6 do mesmo autor em outra semana não contam | esperado=false | obtido=false
+PASS | Rotina limite 6: 5 Concentrações gravadas + 3 novas = 8 | esperado=true | obtido=true
+PASS | Rotina mínimo 3: H3 L3 C3 bloqueado | esperado=false | obtido=false
+PASS | Rotina mínimo 3: H2 L3 C3 bloqueado | esperado=true | obtido=true
+PASS | Rotina mínimo 3: H3 L3 C2 bloqueado | esperado=true | obtido=true
+PASS | Rotina mínimo 3: H6 L3 C3 bloqueado | esperado=false | obtido=false
+PASS | Bloqueio Concluir: opção Resolvido existe | esperado=Resolvido | obtido=Resolvido
+PASS | Bloqueio Concluir: só "Concluído" existe | esperado=Concluído | obtido=Concluído
+PASS | Bloqueio Concluir: sem opção exata (apenas "Em resolução") -> Blank, Patch não executa | esperado=true | obtido=true
+PASS | Bloqueio Cancelar: opção Cancelado | esperado=Cancelado | obtido=Cancelado
+PASS | Bloqueio Cancelar: ausente -> Blank | esperado=true | obtido=true
+PASS | Bloqueio encerrado? status=Aberto | esperado=false | obtido=false
+PASS | Bloqueio encerrado? status=Resolvido | esperado=true | obtido=true
+PASS | Bloqueio encerrado? status=Cancelado | esperado=true | obtido=true
+PASS | Bloqueio encerrado? status=Em resolução | esperado=false | obtido=false
+PASS | Bloqueio encerrado? status=Concluído | esperado=true | obtido=true
+PASS | Bloqueio edição: Integrante responsável | esperado=true | obtido=true
+PASS | Bloqueio edição: Integrante criador | esperado=true | obtido=true
+PASS | Bloqueio edição: Integrante sem vínculo | esperado=false | obtido=false
+PASS | Bloqueio edição: Liderança sem vínculo | esperado=true | obtido=true
+PASS | Encaminhamento atualização: Integrante responsável | esperado=true | obtido=true
+PASS | Encaminhamento atualização: Integrante não responsável | esperado=false | obtido=false
+PASS | Encaminhamento atualização: Liderança | esperado=true | obtido=true
+PASS | Encaminhamento atrasado: aberto vencido | esperado=true | obtido=true
+PASS | Encaminhamento atrasado: aberto no prazo | esperado=false | obtido=false
+PASS | Encaminhamento atrasado: concluído vencido | esperado=false | obtido=false
+PASS | Encaminhamento atrasado: sem prazo | esperado=false | obtido=false
+PASS | Semana ISO Date(2026,10,6) | esperado=2026-S41 | obtido=2026-S41
+PASS | Semana ISO Date(2021,1,1) | esperado=2020-S53 | obtido=2020-S53
+PASS | Semana ISO Date(2024,12,30) | esperado=2025-S01 | obtido=2025-S01
+PASS | Semana ISO Date(2026,1,1) | esperado=2026-S01 | obtido=2026-S01
+TOTAL PASS=74 FAIL=0

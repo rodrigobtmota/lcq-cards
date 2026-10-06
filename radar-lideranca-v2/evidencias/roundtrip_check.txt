@@ -1,0 +1,22 @@
+### Round-trip Src (src_final vs 2º unpack)
+IDÊNTICOS
+
+### Validadores sobre o 2º unpack
+FORMULAS=6391 SYNTAX_ERRORS=0
+SCHEMA_ERRORS= 0
+---
+TOTAL_ISSUES= 0
+
+### Conteúdo do pacote final
+packed.json: {'LoadFromYaml': True}
+Header: 1.349
+Telas (ordem): ['TelaCockpit', 'TelaDemandas', 'TelaCapacidade', 'TelaEquipamentos', 'TelaRadarSemanal', 'TelaAuditoria', 'TelaDecisoesEncaminhamentos', 'TelaAdministracao']
+Arquivos de tela: 8
+DataSources: ['ClickabuttoninPowerAppstosendanemail', 'ComboBoxSample', 'CustomGallerySample', 'DropDownSample', 'Radar_Bloqueios', 'Radar_Config', 'Radar_Decisoes', 'Radar_Demandas', 'Radar_Encaminhamentos', 'Radar_EquipamentosOperacionais', 'Radar_GestaoAuditoria_LCQ', 'Radar_Integrantes', 'Radar_RegistrosRotina', 'Radar_SnapshotsKPI']
+DataSources com definição alterada: []
+LocalConnectionReferences idênticas: True
+Arquivos adicionados: ['Src/TelaDecisoesEncaminhamentos.pa.yaml', 'packed.json']
+Arquivos removidos: []
+Arquivos modificados: ['References/DataSources.json', 'Src/App.pa.yaml', 'Src/TelaAdministracao.pa.yaml', 'Src/TelaAuditoria.pa.yaml', 'Src/TelaCapacidade.pa.yaml', 'Src/TelaCockpit.pa.yaml', 'Src/TelaDemandas.pa.yaml', 'Src/TelaEquipamentos.pa.yaml', 'Src/TelaRadarSemanal.pa.yaml', 'Src/_EditorState.pa.yaml']
+Assets/Resources preservados byte a byte: True 27
+Controles em telas (final): 552
