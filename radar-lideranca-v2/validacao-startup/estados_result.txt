@@ -1,0 +1,12 @@
+E1 Nada executado (editor sem OnStart/OnVisible)
+      → conteúdo=oculto | aviso=«Carregando acesso ao Radar...»
+E2 Só OnStart executado (editor sem OnVisible)
+      → conteúdo=oculto | aviso=«Sem acesso. Solicite à liderança a revisão do cadastro ativo e do perfil.»
+E3 OnStart → OnVisible em andamento
+      → conteúdo=oculto | aviso=«Carregando acesso ao Radar...»
+E4 OnStart → OnVisible concluído, usuário cadastrado
+      → conteúdo=VISÍVEL | aviso=oculto
+E5 OnStart → OnVisible concluído, usuário NÃO cadastrado
+      → conteúdo=oculto | aviso=«Sem acesso. Solicite à liderança a revisão do cadastro ativo e do perfil.»
+E6 OnVisible concluído ANTES do OnStart (OnStart reseta acesso), cadastrado
+      → conteúdo=oculto | aviso=«Sem acesso. Solicite à liderança a revisão do cadastro ativo e do perfil.»
