@@ -1,0 +1,212 @@
+[
+ {
+  "verificacao": "Integridade ZIP (testzip) SGC_LCQ_RJ_AVALIACAO_CONTEXTO_FINAL.msapp",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "verificacao": "Integridade ZIP (testzip) SGC_LCQ_RJ_AVALIACAO_CONTEXTO_FINAL_IMPORTAVEL.zip",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "verificacao": "msapp: mesma lista e ordem de entradas do original",
+  "ok": true,
+  "detalhe": "32 entradas"
+ },
+ {
+  "verificacao": "msapp: somente arquivos esperados alterados",
+  "ok": true,
+  "detalhe": "Controls\\563.json, Controls\\678.json, Properties.json, Src\\scrAvaliacao.pa.yaml, Src\\scrHistoricoAvaliacoes.pa.yaml"
+ },
+ {
+  "verificacao": "pacote: mesma estrutura de entradas do ZIP de origem",
+  "ok": true,
+  "detalhe": "Microsoft.PowerApps/apps/5251408842339445888/5251408842339445888.json ; Microsoft.PowerApps/apps/5251408842339445888/N0e6212d2-b8b9-4360-9141-0d8b238ba96c-N995b2f29-3f36-4b25-8f22-8efdd78a5dba-logoSmallFile ; Microsoft.PowerApps/apps/5251408842339445888/Nec152623-2025-4417-ab02-eebced414348-N0f750342-293e-43dc-bef8-ef7babd4483e-document.msapp ; manifest.json"
+ },
+ {
+  "verificacao": "pacote: manifest.json idêntico ao de origem",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "verificacao": "pacote: definição do app (identity) idêntica à de origem",
+  "ok": true,
+  "detalhe": "Microsoft.PowerApps/apps/5251408842339445888/5251408842339445888.json"
+ },
+ {
+  "verificacao": "pacote: logo idêntico",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "verificacao": "pacote: document.msapp = .msapp entregue (SHA-256)",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "verificacao": "pacote: documentUri aponta para a entrada document.msapp existente",
+  "ok": true,
+  "detalhe": "/5251408842339445888/Nec152623-2025-4417-ab02-eebced414348-N0f750342-293e-43dc-bef8-ef7babd4483e-document.msapp"
+ },
+ {
+  "verificacao": "pacote: manifest referencia recurso Microsoft.PowerApps/apps",
+  "ok": true,
+  "detalhe": "a1f4c605-9e52-4ed4-9e34-ea76796fccd2"
+ },
+ {
+  "verificacao": "Todos os JSON do msapp são válidos",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "verificacao": "Header.json inalterado (DocVersion/MSAppStructureVersion)",
+  "ok": true,
+  "detalhe": "1.349 / 2.4.0"
+ },
+ {
+  "verificacao": "Properties.json: só ControlCount alterado",
+  "ok": true,
+  "detalhe": "{'ControlCount': ({'screen': 9, 'htmlViewer': 621, 'rectangle': 162, 'image': 27, 'gallery': 47, 'galleryTemplate': 47, 'button': 182, 'icon': 49, 'groupContainer': 45, 'text': 17}, {'screen': 9, 'htmlViewer': 623, 'rectangle': 163, 'image': 27, 'gallery': 47, 'galleryTemplate': 47, 'button': 183, 'icon': 49, 'groupContainer': 45, 'text': 17})}"
+ },
+ {
+  "verificacao": "DataSources inalterado (References\\DataSources.json)",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "verificacao": "Power Fx: todas as fórmulas do app passam no parser oficial",
+  "ok": true,
+  "detalhe": "TOTAL 40701 OK 40701 FALHA 0"
+ },
+ {
+  "verificacao": "Tela scrInicio sem alteração semântica",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "verificacao": "Tela scrQualificacoes sem alteração semântica",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "verificacao": "Tela scrDetalheQualificacao sem alteração semântica",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "verificacao": "Tela scrNovaAvaliacao sem alteração semântica",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "verificacao": "Tela scrModulos sem alteração semântica",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "verificacao": "Tela scrCobertura sem alteração semântica",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "verificacao": "Tela scrAdministracao sem alteração semântica",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "verificacao": "Tela App sem alteração semântica",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "verificacao": "scrAvaliacao: 33 propriedades funcionais protegidas idênticas",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "verificacao": "scrHistoricoAvaliacoes: 33 propriedades funcionais protegidas idênticas",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "verificacao": "btnSalvarAva.OnSelect: Patch e demais trechos preservados; só a notificação pós-sucesso foi trocada",
+  "ok": true,
+  "detalhe": "trecho inserido: With({_comentPend: CountRows(Filter(colCritAva, !IsBlank(Resposta) && IsBlank(Trim(Coalesc…"
+ },
+ {
+  "verificacao": "scrAvaliacao: nenhum controle removido",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "verificacao": "scrAvaliacao: controles criados",
+  "ok": true,
+  "detalhe": "lblCtxTitAva, recCtxLinhaAva"
+ },
+ {
+  "verificacao": "scrAvaliacao: nenhum controle mudou de pai",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "verificacao": "scrHistoricoAvaliacoes: nenhum controle removido",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "verificacao": "scrHistoricoAvaliacoes: controles criados",
+  "ok": true,
+  "detalhe": "btnEvTecHis, lblEvTecHis"
+ },
+ {
+  "verificacao": "scrHistoricoAvaliacoes: nenhum controle mudou de pai",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "verificacao": "ControlUniqueId únicos no app",
+  "ok": true,
+  "detalhe": "1212 controles"
+ },
+ {
+  "verificacao": "Nomes de controles únicos no app",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "verificacao": "Fórmulas alteradas só referenciam controles existentes",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "verificacao": "Variáveis de contexto introduzidas",
+  "ok": true,
+  "detalhe": "locEvTec"
+ },
+ {
+  "verificacao": "YAML scrAvaliacao: sintaxe válida e todas as propriedades = JSON",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "verificacao": "YAML scrAvaliacao: mesmos controles do JSON",
+  "ok": true,
+  "detalhe": "[]"
+ },
+ {
+  "verificacao": "YAML scrHistoricoAvaliacoes: sintaxe válida e todas as propriedades = JSON",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "verificacao": "YAML scrHistoricoAvaliacoes: mesmos controles do JSON",
+  "ok": true,
+  "detalhe": "[]"
+ },
+ {
+  "verificacao": "Pack/unpack: conteúdo reempacotado idêntico entrada a entrada",
+  "ok": true,
+  "detalhe": ""
+ }
+]

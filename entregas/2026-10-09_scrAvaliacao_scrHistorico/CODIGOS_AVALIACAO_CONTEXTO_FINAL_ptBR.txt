@@ -1,0 +1,1734 @@
+SGC LCQ RJ — FÓRMULAS ALTERADAS (notação pt-BR do Power Apps Studio)
+Telas: scrAvaliacao (Contexto da avaliação + Base documental no topo) e scrHistoricoAvaliacoes
+Status: CANDIDATO VISUAL E FUNCIONAL À HOMOLOGAÇÃO NO TENANT
+
+Como usar: o .msapp entregue já contém todas as fórmulas abaixo. Este arquivo serve para conferência
+e para reaplicação manual, se necessário. Separadores pt-BR: ";" entre argumentos, ";;" entre ações
+e "," como separador decimal. Textos entre aspas não foram alterados.
+Validação: TOTAL 455 OK 455 FALHA 0 (parser oficial Microsoft.PowerFx, cultura pt-BR).
+
+Legenda: [NOVO] controle criado nesta versão · [FUNCIONAL AUTORIZADA] alteração de comportamento autorizada.
+
+====================================================================================================
+TELA: scrAvaliacao
+====================================================================================================
+
+--- conIdAva ------------------------------------------------------------------------
+Height:
+=98 + Max(conDocAva.Height; conMetAva.Height) + 10
+
+
+--- lblCtxTitAva [NOVO] -------------------------------------------------------------
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:center;'>" & "<div style='font-size:12.5pt;line-height:1.2;color:#0E2A4A;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text("Contexto da avaliação"); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+Color:
+=RGBA(14; 42; 74; 1)
+
+Size:
+=12,5
+
+X:
+=18
+
+Y:
+=8
+
+Width:
+=Parent.Width - 36
+
+Height:
+=22
+
+
+--- recCtxLinhaAva [NOVO] -----------------------------------------------------------
+X:
+=18
+
+Y:
+=90
+
+Width:
+=Parent.Width - 36
+
+
+--- lblIdR0Ava ----------------------------------------------------------------------
+X:
+=18
+
+Width:
+=(Parent.Width - 190) * 0,24 - 16
+
+Y:
+=34
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:center;'>" & "<div style='font-size:8.5pt;line-height:1.2;color:#627083;font-weight:700;letter-spacing:.02em;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text("PESSOA"); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- lblIdV0Ava ----------------------------------------------------------------------
+X:
+=18
+
+Width:
+=(Parent.Width - 190) * 0,24 - 16
+
+Y:
+=50
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:center;'>" & "<div style='font-size:10.5pt;line-height:1.25;color:#1D2A3A;font-weight:600;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text(Coalesce(locAv.PessoaNomeSnap; LookUp(colPessoas; Codigo = locAv.Pessoa).Nome)); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- lblIdS0Ava ----------------------------------------------------------------------
+X:
+=18
+
+Width:
+=(Parent.Width - 190) * 0,24 - 16
+
+Y:
+=70
+
+
+--- lblIdR1Ava ----------------------------------------------------------------------
+X:
+=18 + (Parent.Width - 190) * 0,24
+
+Width:
+=(Parent.Width - 190) * 0,06 - 16
+
+Y:
+=34
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:center;'>" & "<div style='font-size:8.5pt;line-height:1.2;color:#627083;font-weight:700;letter-spacing:.02em;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text("ÁREA"); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- lblIdV1Ava ----------------------------------------------------------------------
+X:
+=18 + (Parent.Width - 190) * 0,24
+
+Width:
+=(Parent.Width - 190) * 0,06 - 16
+
+Y:
+=50
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:center;'>" & "<div style='font-size:10.5pt;line-height:1.25;color:#1D2A3A;font-weight:600;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text(locAv.Area); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- lblIdS1Ava ----------------------------------------------------------------------
+X:
+=18 + (Parent.Width - 190) * 0,24
+
+Width:
+=(Parent.Width - 190) * 0,06 - 16
+
+Y:
+=70
+
+
+--- lblIdR2Ava ----------------------------------------------------------------------
+X:
+=18 + (Parent.Width - 190) * 0,30
+
+Width:
+=(Parent.Width - 190) * 0,25 - 16
+
+Y:
+=34
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:center;'>" & "<div style='font-size:8.5pt;line-height:1.2;color:#627083;font-weight:700;letter-spacing:.02em;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text("MÓDULO"); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- lblIdV2Ava ----------------------------------------------------------------------
+X:
+=18 + (Parent.Width - 190) * 0,30
+
+Width:
+=(Parent.Width - 190) * 0,25 - 16
+
+Y:
+=50
+
+Height:
+=36
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:flex-start;'>" & "<div style='font-size:10.5pt;line-height:1.25;color:#1D2A3A;font-weight:600;text-align:left;white-space:normal;overflow:hidden;max-height:2.5em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;'>" & Substitute(Substitute(Substitute(Coalesce(Text(If(" — " in Coalesce(locAv.ModuloNome; ""); First(Split(locAv.ModuloNome; " — ")).Value; Coalesce(locAv.ModuloNome; "—"))); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- lblIdS2Ava ----------------------------------------------------------------------
+X:
+=18 + (Parent.Width - 190) * 0,30
+
+Width:
+=(Parent.Width - 190) * 0,25 - 16
+
+Y:
+=70
+
+Visible:
+=false
+
+Tooltip:
+=""
+
+
+--- lblIdR3Ava ----------------------------------------------------------------------
+X:
+=18 + (Parent.Width - 190) * 0,55
+
+Width:
+=(Parent.Width - 190) * 0,15 - 16
+
+Y:
+=34
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:center;'>" & "<div style='font-size:8.5pt;line-height:1.2;color:#627083;font-weight:700;letter-spacing:.02em;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text("TIPO"); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- lblIdV3Ava ----------------------------------------------------------------------
+X:
+=18 + (Parent.Width - 190) * 0,55
+
+Width:
+=(Parent.Width - 190) * 0,15 - 16
+
+Y:
+=50
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:center;'>" & "<div style='font-size:10.5pt;line-height:1.25;color:#1D2A3A;font-weight:600;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text(Switch(locAv.Tipo; "QUALIFICACAO"; "Qualificação"; "REQUALIFICACAO"; "Requalificação"; "EXTRAORDINARIA"; "Extraordinária"; locAv.Tipo)); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- lblIdS3Ava ----------------------------------------------------------------------
+X:
+=18 + (Parent.Width - 190) * 0,55
+
+Width:
+=(Parent.Width - 190) * 0,15 - 16
+
+Y:
+=70
+
+
+--- lblIdR4Ava ----------------------------------------------------------------------
+X:
+=18 + (Parent.Width - 190) * 0,70
+
+Width:
+=(Parent.Width - 190) * 0,30 - 16
+
+Y:
+=34
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:center;'>" & "<div style='font-size:8.5pt;line-height:1.2;color:#627083;font-weight:700;letter-spacing:.02em;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text("AVALIADOR"); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- lblIdV4Ava ----------------------------------------------------------------------
+X:
+=18 + (Parent.Width - 190) * 0,70
+
+Width:
+=(Parent.Width - 190) * 0,30 - 16
+
+Y:
+=50
+
+Height:
+=If(Len(Coalesce(locAv.AvaliadorNome; "")) * 7,6 <= Self.Width; 20; 36)
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:flex-start;'>" & "<div style='font-size:10.5pt;line-height:1.25;color:#1D2A3A;font-weight:600;text-align:left;white-space:normal;overflow:hidden;max-height:2.5em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;'>" & Substitute(Substitute(Substitute(Coalesce(Text(locAv.AvaliadorNome); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- lblIdS4Ava ----------------------------------------------------------------------
+X:
+=18 + (Parent.Width - 190) * 0,70
+
+Width:
+=(Parent.Width - 190) * 0,30 - 16
+
+Y:
+=70
+
+Visible:
+=Len(Coalesce(locAv.AvaliadorNome; "")) * 7,6 <= lblIdV4Ava.Width
+
+
+--- lblIdR6Ava ----------------------------------------------------------------------
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:center;'>" & "<div style='font-size:8.5pt;line-height:1.2;color:#627083;font-weight:700;letter-spacing:.02em;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text("ESTADO"); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+Y:
+=34
+
+Width:
+=132
+
+
+--- bdgIdEstAva ---------------------------------------------------------------------
+Y:
+=52
+
+Width:
+=132
+
+Tooltip:
+=If(IsBlank(locAv.Tentativa); ""; "Tentativa " & locAv.Tentativa)
+
+
+--- lblIdR5Ava ----------------------------------------------------------------------
+Visible:
+=false
+
+
+--- lblIdV5Ava ----------------------------------------------------------------------
+Visible:
+=false
+
+
+--- lblIdS5Ava ----------------------------------------------------------------------
+Visible:
+=false
+
+
+--- conDocAva -----------------------------------------------------------------------
+X:
+=conIdAva.X
+
+Y:
+=conIdAva.Y + 98
+
+Width:
+=conIdAva.Width * 0,66
+
+Height:
+=48 + If(CountRows(colDocsAva) = 0; 34; If(Max(colDocsAva; Len(Coalesce(Titulo; Codigo))) > ((Self.Width - 36) / 2 - 36) / 6,2; 82; 66) * Min(RoundUp(CountRows(colDocsAva) / 2; 0); 2))
+
+BorderThickness:
+=0
+
+Fill:
+=RGBA(0; 0; 0; 0)
+
+
+--- lblDocTitAva --------------------------------------------------------------------
+Y:
+=0
+
+Width:
+=Parent.Width * 0,64 - 18
+
+Height:
+=40
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;flex-direction:column;justify-content:center;'>" & "<div style='font-size:12pt;line-height:1.25;color:#0E2A4A;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text("Base documental"); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "<div style='margin-top:2px;font-size:9pt;line-height:1.25;color:#627083;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text("Documentos utilizados como referência para esta avaliação."); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- lblDocAuxAva --------------------------------------------------------------------
+X:
+=Parent.Width * 0,64
+
+Y:
+=4
+
+Width:
+=Parent.Width * 0,36 - 20
+
+Height:
+=22
+
+Visible:
+=CountRows(colDocsAva) > 0
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:center;justify-content:flex-end;'>" & "<div style='font-size:9pt;line-height:1.25;color:#1C5582;font-weight:600;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text(If(CountRows(colDocsAva) = 1; "1 documento aplicável"; CountRows(colDocsAva) & " documentos aplicáveis")); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- recDocLinhaAva ------------------------------------------------------------------
+X:
+=Parent.Width - 1
+
+Y:
+=4
+
+Width:
+=1
+
+Height:
+=Parent.Height - 8
+
+
+--- galDocAva -----------------------------------------------------------------------
+X:
+=18
+
+Width:
+=Parent.Width - 36
+
+Height:
+=Parent.Height - 46
+
+WrapCount:
+=2
+
+TemplateSize:
+=If(Max(colDocsAva; Len(Coalesce(Titulo; Codigo))) > ((Parent.Width - 36) / 2 - 36) / 6,2; 82; 66)
+
+
+--- htmlDocCardAva ------------------------------------------------------------------
+X:
+=0
+
+Y:
+=0
+
+Width:
+=Parent.TemplateWidth - 12
+
+Height:
+=Parent.TemplateHeight - 8
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;background:#F7F9FC;border:1px solid #E6ECF3;border-radius:8px;'></div>"
+
+
+--- lblDocAva -----------------------------------------------------------------------
+X:
+=12
+
+Y:
+=5
+
+Width:
+=Parent.TemplateWidth - 36
+
+Height:
+=Parent.TemplateHeight - 33
+
+Tooltip:
+=ThisItem.Codigo & If(IsBlank(ThisItem.Titulo); ""; " — " & ThisItem.Titulo)
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;'>" & "<div style='font-size:9pt;line-height:1.25;color:#0E2A4A;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text(Coalesce(ThisItem.Codigo; ThisItem.Titulo)); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & If(IsBlank(ThisItem.Titulo) || IsBlank(ThisItem.Codigo); ""; "<div style='font-size:10pt;line-height:1.25;color:#344054;font-weight:400;white-space:normal;overflow:hidden;max-height:2.5em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;'>" & Substitute(Substitute(Substitute(Coalesce(Text(ThisItem.Titulo); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>") & "</div>"
+
+
+--- lblDocSubAva --------------------------------------------------------------------
+X:
+=12
+
+Y:
+=Parent.TemplateHeight - 28
+
+Width:
+=Parent.TemplateWidth - 36
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:center;'>" & "<div style='font-size:8.5pt;line-height:1.25;color:#6B7A8D;font-weight:400;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text(With({_v: Trim(Coalesce(ThisItem.Versao; "")); _e: Trim(Coalesce(ThisItem.Expiracao; ""))}; With({_d: If(IsMatch(_e; "\d{4}-\d{2}-\d{2}.*"); Mid(_e; 9; 2) & "/" & Mid(_e; 6; 2) & "/" & Left(_e; 4); _e)}; If(!IsBlank(_v) && !IsBlank(_e); "Versão " & _v & " · validade " & _d; !IsBlank(_v); "Versão " & _v; !IsBlank(_e); "Validade " & _d; "")))); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- lblDocVazioAva ------------------------------------------------------------------
+X:
+=18
+
+Y:
+=46
+
+Width:
+=Parent.Width - 36
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:center;'>" & "<div style='font-size:10pt;line-height:1.25;color:#627083;font-weight:400;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text("Nenhum documento de referência disponível."); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- conMetAva -----------------------------------------------------------------------
+X:
+=conIdAva.X + conDocAva.Width
+
+Y:
+=conDocAva.Y
+
+Width:
+=conIdAva.Width - conDocAva.Width
+
+Height:
+=34 + 19 * Min(Max(RoundUp(Len(Coalesce(locAv.MetodoSnap; "—")) / Max(20; (Self.Width - 40) / 6,6); 0); 1); 6) + 8
+
+BorderThickness:
+=0
+
+Fill:
+=RGBA(0; 0; 0; 0)
+
+
+--- lblMetTitAva --------------------------------------------------------------------
+X:
+=20
+
+Y:
+=0
+
+Width:
+=Parent.Width - 40
+
+Height:
+=24
+
+
+--- lblMetAva -----------------------------------------------------------------------
+X:
+=20
+
+Y:
+=28
+
+Width:
+=Parent.Width - 40
+
+Height:
+=Parent.Height - 30
+
+
+--- lblBannerAva --------------------------------------------------------------------
+Y:
+=conIdAva.Y + conIdAva.Height + 12
+
+
+--- conCritAva ----------------------------------------------------------------------
+Y:
+=conIdAva.Y + conIdAva.Height + 16 + If(lblBannerAva.Visible; lblBannerAva.Height + 12; 0)
+
+Height:
+=Parent.Height - Self.Y - 20
+
+Width:
+=(Parent.Width - 284) * 0,66
+
+
+--- lblCritTitAva -------------------------------------------------------------------
+Y:
+=6
+
+Height:
+=56
+
+
+--- lblCritAuxAva -------------------------------------------------------------------
+Y:
+=6
+
+Height:
+=56
+
+
+--- recCritLinhaAva -----------------------------------------------------------------
+Y:
+=66
+
+
+--- galCritAva ----------------------------------------------------------------------
+Y:
+=67
+
+Height:
+=Parent.Height - 68
+
+TemplateSize:
+=188 + 19 * Min(Max(RoundUp(Max(colCritAva; Len(Descricao)) / Max(30; (Self.Width - 96) / 7,2); 0); 1); 20)
+
+
+--- htmlCardCritAva -----------------------------------------------------------------
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;background:#FFFFFF;border-radius:10px;border:1px solid #E1E8F0;box-shadow:inset 3px 0 0 " & Switch(ThisItem.Resposta; "Atendeu"; "#2E7D32"; "Não atendeu"; "#B91C1C"; "N/A"; "#98A2B3"; "transparent") & ";'></div>"
+
+
+--- lblCritIdAva --------------------------------------------------------------------
+Y:
+=14
+
+Height:
+=36
+
+Width:
+=Parent.TemplateWidth - 18 - If(CountRows(Filter(colCritAva; PermiteNA)) > 0; 3; 2) * (Min(124; (Parent.TemplateWidth - 96) / 5) + 8) - 70
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:center;'>" & "<div style='font-size:11pt;line-height:1.25;color:#0E2A4A;font-weight:700;text-align:left;white-space:normal;overflow:hidden;max-height:2.5em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;'>" & Substitute(Substitute(Substitute(Coalesce(Text(Switch(ThisItem.Dimensao; "preparacao_execucao"; "Preparação e execução"; "equipamentos_materiais_controles"; "Equipamentos, materiais e controles"; "pontos_criticos_validade_anomalias"; "Pontos críticos, validade e anomalias"; "resultado_interpretacao"; "Resultado e interpretação"; "registros_rastreabilidade"; "Registros e rastreabilidade"; "seguranca"; "Segurança na execução"; "preparacao"; "Preparação"; "execucao"; "Execução"; "pontos_criticos_anomalias"; "Pontos críticos e anomalias"; Substitute(ThisItem.Dimensao; "_"; " "))); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- htmlNumCritAva ------------------------------------------------------------------
+Y:
+=18
+
+
+--- lblCritDescAva ------------------------------------------------------------------
+Y:
+=54
+
+Height:
+=Parent.TemplateHeight - 180
+
+
+--- btnAtAva ------------------------------------------------------------------------
+X:
+=Parent.TemplateWidth - 18 - (If(CountRows(Filter(colCritAva; PermiteNA)) > 0; 3; 2) - 0) * (Min(124; (Parent.TemplateWidth - 96) / 5) + 8)
+
+Y:
+=16
+
+Width:
+=Min(124; (Parent.TemplateWidth - 96) / 5)
+
+Height:
+=32
+
+
+--- btnNaoAva -----------------------------------------------------------------------
+X:
+=Parent.TemplateWidth - 18 - (If(CountRows(Filter(colCritAva; PermiteNA)) > 0; 3; 2) - 1) * (Min(124; (Parent.TemplateWidth - 96) / 5) + 8)
+
+Y:
+=16
+
+Width:
+=Min(124; (Parent.TemplateWidth - 96) / 5)
+
+Height:
+=32
+
+
+--- btnNaAva ------------------------------------------------------------------------
+X:
+=Parent.TemplateWidth - 18 - (If(CountRows(Filter(colCritAva; PermiteNA)) > 0; 3; 2) - 2) * (Min(124; (Parent.TemplateWidth - 96) / 5) + 8)
+
+Y:
+=16
+
+Width:
+=Min(124; (Parent.TemplateWidth - 96) / 5)
+
+Height:
+=32
+
+
+--- lblComRotAva --------------------------------------------------------------------
+Y:
+=Parent.TemplateHeight - 120
+
+
+--- txtComAva -----------------------------------------------------------------------
+Y:
+=Parent.TemplateHeight - 100
+
+Height:
+=38
+
+
+--- lblCritNAAva --------------------------------------------------------------------
+Y:
+=Parent.TemplateHeight - 60
+
+
+--- lblCritFonteAva -----------------------------------------------------------------
+Y:
+=Parent.TemplateHeight - 44
+
+
+--- conParAva -----------------------------------------------------------------------
+X:
+=260 + (Parent.Width - 284) * 0,66 + 16
+
+Width:
+=(Parent.Width - 284) * 0,34 - 16
+
+Y:
+=conCritAva.Y
+
+Height:
+=Parent.Height - 20 - If(conBarraAva.Visible; conBarraAva.Height + 12; 0) - Self.Y
+
+
+--- txtParecerAva -------------------------------------------------------------------
+HintText:
+="Registre aqui o parecer técnico sobre o resultado da avaliação."
+
+Y:
+=50
+
+Height:
+=((Parent.Height - 104) * 0,56)
+
+
+--- lblParTitAva --------------------------------------------------------------------
+Y:
+=4
+
+Height:
+=28
+
+
+--- lblParRotAva --------------------------------------------------------------------
+Y:
+=32
+
+
+--- lblParAjAva ---------------------------------------------------------------------
+Y:
+=52 + ((Parent.Height - 104) * 0,56)
+
+
+--- lblObsRotAva --------------------------------------------------------------------
+Y:
+=72 + ((Parent.Height - 104) * 0,56)
+
+
+--- txtObsAva -----------------------------------------------------------------------
+Y:
+=92 + ((Parent.Height - 104) * 0,56)
+
+Height:
+=Parent.Height - (92 + ((Parent.Height - 104) * 0,56)) - 12
+
+
+--- conBarraAva ---------------------------------------------------------------------
+X:
+=260 + (Parent.Width - 284) * 0,66 + 16
+
+Width:
+=(Parent.Width - 284) * 0,34 - 16
+
+Height:
+=If(Self.Width >= 470; 106; 144)
+
+
+--- lblResumoAva --------------------------------------------------------------------
+Height:
+=50
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;'>" & "<div style='display:flex;align-items:center;justify-content:space-between;height:30px;gap:12px;'>" & "<div style='display:flex;flex-direction:column;justify-content:center;min-width:0;'>" & "<div style='font-size:9pt;line-height:1.25;color:#344054;font-weight:600;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text(CountRows(Filter(colCritAva; !IsBlank(Resposta))) & " de " & CountRows(colCritAva) & " critérios respondidos"); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "<div style='margin-top:5px;width:140px;height:6px;border-radius:3px;background:#E6ECF3;overflow:hidden;'><div style='height:6px;background:#1C5582;width:" & Text(If(CountRows(colCritAva) = 0; 0; 100 * CountRows(Filter(colCritAva; !IsBlank(Resposta))) / CountRows(colCritAva)); "0"; "en-US") & "%;'></div></div></div>" & "<div style='display:flex;flex-direction:column;align-items:flex-end;justify-content:center;flex:none;'>" & "<div style='font-size:8pt;line-height:1.25;color:#6B7A8D;font-weight:400;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text("Resultado atual"); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "<div style='font-size:10pt;line-height:1.25;color:#0E2A4A;font-weight:700;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text(Switch(If(CountRows(Filter(colCritAva; Resposta = "Não atendeu")) > 0; "NAO_ATENDEU"; CountRows(Filter(colCritAva; IsBlank(Resposta))) = 0 && CountRows(Filter(colCritAva; Resposta = "Atendeu")) > 0; "ATENDEU"; ""); "ATENDEU"; "Atendeu"; "NAO_ATENDEU"; "Não atendeu"; "Em andamento")); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div></div>" & With({_n: CountRows(colCritAva); _sem: CountRows(Filter(colCritAva; IsBlank(Resposta))); _na: CountRows(Filter(colCritAva; Resposta = "Não atendeu" && IsBlank(Trim(Coalesce(Comentario; ""))))); _naj: CountRows(Filter(colCritAva; Resposta = "N/A" && IsBlank(Trim(Coalesce(Comentario; ""))))); _soNA: CountRows(Filter(colCritAva; Resposta = "Atendeu")) = 0 && CountRows(Filter(colCritAva; Resposta = "Não atendeu")) = 0; _par: Len(Trim(txtParecerAva.Text)); _com: CountRows(Filter(colCritAva; !IsBlank(Resposta) && IsBlank(Trim(Coalesce(Comentario; "")))))}; With({_k: If(_n = 0; 0; _sem > 0; 1; _na > 0; 2; _naj > 0; 3; _soNA; 4; _par < 30; 5; _com > 0; 6; 7)}; "<div style='margin-top:3px;font-size:9pt;line-height:1.25;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:" & Switch(_k; 6; "#627083"; 7; "#2E7D32"; "#B54708") & ";'>" & Substitute(Substitute(Substitute(Coalesce(Text(Switch(_k; 0; "Nenhum critério disponível para esta avaliação"; 1; If(_sem = 1; "Falta 1 critério para responder"; "Faltam " & _sem & " critérios para responder"); 2; If(_na = 1; "Há 1 critério Não atendeu aguardando comentário"; "Há " & _na & " critérios Não atendeu aguardando comentário"); 3; If(_naj = 1; "Há 1 critério N/A sem justificativa"; "Há " & _naj & " critérios N/A sem justificativa"); 4; "Não é possível concluir com todos os critérios como N/A"; 5; "Parecer técnico pendente · " & _par & " de 30 caracteres"; 6; If(_com = 1; "1 comentário pendente"; _com & " comentários pendentes"); "Pronto para concluir")); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>")) & "</div>"
+
+
+--- btnSalvarAva --------------------------------------------------------------------
+Y:
+=62
+
+Width:
+=If(Parent.Width >= 470; (Parent.Width - 48) / 3; (Parent.Width - 40) / 2)
+
+OnSelect [FUNCIONAL AUTORIZADA]:
+=If(
+    IsBlank(locAv.Uid); Notify("Avaliação não encontrada."; NotificationType.Error);
+    locAv.Estado <> "PREENCHIMENTO" || locAv.Avaliador <> varUsuario.Codigo; Notify("Somente o avaliador responsável pode salvar uma avaliação em preenchimento."; NotificationType.Error);
+    UpdateContext({locProcAva: true});;
+    With({_json: JSON({pessoaNome: Coalesce(locAv.PessoaNomeSnap; LookUp(colPessoas; Codigo = locAv.Pessoa).Nome); cargo: Coalesce(locAv.CargoSnap; LookUp(colPessoas; Codigo = locAv.Pessoa).Cargo); grupo: Coalesce(locAv.GrupoSnap; LookUp(colPessoas; Codigo = locAv.Pessoa).Grupo); perfil: Coalesce(locAv.PerfilSnap; LookUp(colPessoas; Codigo = locAv.Pessoa).Perfil); metodo: locAv.MetodoSnap; versao: locAv.VersaoSnap; criterios: ForAll(colCritAva; {criterioId: Id; dimensao: Dimensao; descricao: Descricao; evidenciaEsperada: Evidencia; permiteNA: PermiteNA; condicaoNA: CondicaoNA; areas: Areas; fontes: Fontes; modo: Modo; resposta: Resposta; comentario: Comentario})}; JSONFormat.Compact)};
+        IfError(
+            Patch(SGC_Avaliacoes; LookUp(SGC_Avaliacoes; AvaliacaoUid = locAv.Uid); {CriteriosResultadoJson: _json; ParecerTecnico: Trim(txtParecerAva.Text); Observacoes: Trim(txtObsAva.Text)});;
+            Patch(colAvaliacoes; LookUp(colAvaliacoes; Uid = locAv.Uid); {CriteriosJson: _json; Parecer: Trim(txtParecerAva.Text); Observacoes: Trim(txtObsAva.Text)});;
+            UpdateContext({locAv: LookUp(colAvaliacoes; Uid = locAv.Uid); locProcAva: false});;
+            With({_comentPend: CountRows(Filter(colCritAva; !IsBlank(Resposta) && IsBlank(Trim(Coalesce(Comentario; "")))))}; If(_comentPend = 0; Notify("Rascunho salvo com sucesso."; NotificationType.Success); Notify("Rascunho salvo. Aguardando comentário em " & _comentPend & If(_comentPend = 1; " critério."; " critérios."); NotificationType.Warning)));
+            UpdateContext({locProcAva: false});; Notify("Não foi possível salvar o rascunho: " & FirstError.Message; NotificationType.Error)
+        )
+    )
+)
+
+
+--- btnCancAva ----------------------------------------------------------------------
+Y:
+=62
+
+X:
+=If(Parent.Width >= 470; 24 + (Parent.Width - 48) / 3; 24 + (Parent.Width - 40) / 2)
+
+Width:
+=If(Parent.Width >= 470; (Parent.Width - 48) / 3; (Parent.Width - 40) / 2)
+
+
+--- btnConcluirAva ------------------------------------------------------------------
+Y:
+=If(Parent.Width >= 470; 62; 100)
+
+X:
+=If(Parent.Width >= 470; 32 + 2 * (Parent.Width - 48) / 3; 16)
+
+Width:
+=If(Parent.Width >= 470; (Parent.Width - 48) / 3; Parent.Width - 32)
+
+
+====================================================================================================
+TELA: scrHistoricoAvaliacoes
+====================================================================================================
+
+--- lblSubtituloHis -----------------------------------------------------------------
+HtmlText:
+="<div style=""position:relative;box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;display:flex;align-items:center;min-width:0;min-height:0;line-height:1.15;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;font-size:14px;color:rgba(98,112,131,1);font-weight:400;""><span style=""display:block;box-sizing:border-box;min-width:0;width:100%;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"">" & Substitute(Substitute(Substitute(Substitute(Coalesce(Text("Consulte e acompanhe as avaliações técnicas do laboratório."); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br/>") & "</span></div>"
+
+
+--- htmlFiltrosHis ------------------------------------------------------------------
+Y:
+=152
+
+Height:
+=136
+
+
+--- htmlPessoaRotHis ----------------------------------------------------------------
+HtmlText:
+="<div style=""position:relative;box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;display:flex;align-items:center;min-width:0;min-height:0;line-height:1.15;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;font-size:9pt;color:#0a1f49;font-weight:600;""><span style=""display:block;box-sizing:border-box;min-width:0;width:100%;text-align:left;white-space:normal;overflow:hidden;text-overflow:ellipsis;"">" & Substitute(Substitute(Substitute(Substitute(Coalesce(Text("Pessoa"); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br/>") & "</span></div>"
+
+Height:
+=18
+
+Y:
+=164
+
+
+--- htmlModuloRotHis ----------------------------------------------------------------
+HtmlText:
+="<div style=""position:relative;box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;display:flex;align-items:center;min-width:0;min-height:0;line-height:1.15;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;font-size:9pt;color:#0a1f49;font-weight:600;""><span style=""display:block;box-sizing:border-box;min-width:0;width:100%;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"">" & Substitute(Substitute(Substitute(Substitute(Coalesce(Text("Módulo (código ou nome)"); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br/>") & "</span></div>"
+
+Height:
+=18
+
+Y:
+=164
+
+
+--- htmlPeriodoRotHis ---------------------------------------------------------------
+HtmlText:
+="<div style=""position:relative;box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;display:flex;align-items:center;min-width:0;min-height:0;line-height:1.15;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;font-size:9pt;color:#0a1f49;font-weight:600;""><span style=""display:block;box-sizing:border-box;min-width:0;width:100%;text-align:left;white-space:normal;overflow:hidden;text-overflow:ellipsis;"">" & Substitute(Substitute(Substitute(Substitute(Coalesce(Text("Período"); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br/>") & "</span></div>"
+
+Height:
+=18
+
+Y:
+=164
+
+
+--- htmlAreaRotHis ------------------------------------------------------------------
+HtmlText:
+="<div style=""position:relative;box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;display:flex;align-items:center;min-width:0;min-height:0;line-height:1.15;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;font-size:9pt;color:#0a1f49;font-weight:600;""><span style=""display:block;box-sizing:border-box;min-width:0;width:100%;text-align:left;white-space:normal;overflow:hidden;text-overflow:ellipsis;"">" & Substitute(Substitute(Substitute(Substitute(Coalesce(Text("Área"); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br/>") & "</span></div>"
+
+Height:
+=18
+
+Y:
+=164
+
+
+--- lblFTipoHis ---------------------------------------------------------------------
+HtmlText:
+="<div style=""position:relative;box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;display:flex;align-items:center;min-width:0;min-height:0;line-height:1.15;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;font-size:9pt;color:#0a1f49;font-weight:600;""><span style=""display:block;box-sizing:border-box;min-width:0;width:100%;text-align:left;white-space:normal;overflow:hidden;text-overflow:ellipsis;"">" & Substitute(Substitute(Substitute(Substitute(Coalesce(Text("Tipo"); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br/>") & "</span></div>"
+
+Height:
+=18
+
+Y:
+=226
+
+
+--- lblFEstadoHis -------------------------------------------------------------------
+HtmlText:
+="<div style=""position:relative;box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;display:flex;align-items:center;min-width:0;min-height:0;line-height:1.15;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;font-size:9pt;color:#0a1f49;font-weight:600;""><span style=""display:block;box-sizing:border-box;min-width:0;width:100%;text-align:left;white-space:normal;overflow:hidden;text-overflow:ellipsis;"">" & Substitute(Substitute(Substitute(Substitute(Coalesce(Text("Estado"); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br/>") & "</span></div>"
+
+Height:
+=18
+
+Y:
+=226
+
+
+--- lblFResultadoHis ----------------------------------------------------------------
+HtmlText:
+="<div style=""position:relative;box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;display:flex;align-items:center;min-width:0;min-height:0;line-height:1.15;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;font-size:9pt;color:#0a1f49;font-weight:600;""><span style=""display:block;box-sizing:border-box;min-width:0;width:100%;text-align:left;white-space:normal;overflow:hidden;text-overflow:ellipsis;"">" & Substitute(Substitute(Substitute(Substitute(Coalesce(Text("Resultado"); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br/>") & "</span></div>"
+
+Height:
+=18
+
+Y:
+=226
+
+
+--- txtBuscaHis ---------------------------------------------------------------------
+Y:
+=184
+
+Height:
+=34
+
+
+--- txtModHis -----------------------------------------------------------------------
+Y:
+=184
+
+Height:
+=34
+
+
+--- txtDeHis ------------------------------------------------------------------------
+Y:
+=184
+
+Height:
+=34
+
+
+--- txtAteHis -----------------------------------------------------------------------
+Y:
+=184
+
+Height:
+=34
+
+
+--- htmlAteRotHis -------------------------------------------------------------------
+Y:
+=184
+
+Height:
+=34
+
+
+--- btnFAPE9His ---------------------------------------------------------------------
+Y:
+=184
+
+Height:
+=34
+
+
+--- btnFAPP5His ---------------------------------------------------------------------
+Y:
+=184
+
+Height:
+=34
+
+
+--- btnFAQ4His ----------------------------------------------------------------------
+Y:
+=184
+
+Height:
+=34
+
+
+--- R3icoFiltrotxtBuscaHis ----------------------------------------------------------
+Y:
+=192
+
+
+--- R3icoFiltrotxtModHis ------------------------------------------------------------
+Y:
+=192
+
+
+--- R3icoFiltrotxtDeHis -------------------------------------------------------------
+Y:
+=192
+
+
+--- R3icoFiltrotxtAteHis ------------------------------------------------------------
+Y:
+=192
+
+
+--- btnTodosTiposHis ----------------------------------------------------------------
+Y:
+=246
+
+Height:
+=30
+
+
+--- btnFTipoQualificacaoHis ---------------------------------------------------------
+Y:
+=246
+
+Height:
+=30
+
+
+--- btnFTipoRequalificacaoHis -------------------------------------------------------
+Y:
+=246
+
+Height:
+=30
+
+
+--- btnFTipoExtraordinariaHis -------------------------------------------------------
+Y:
+=246
+
+Height:
+=30
+
+
+--- btnTodosEstadosHis --------------------------------------------------------------
+Y:
+=246
+
+Height:
+=30
+
+
+--- btnFEstadoPreenchimentoHis ------------------------------------------------------
+Y:
+=246
+
+Height:
+=30
+
+
+--- btnFEstadoConcluidaHis ----------------------------------------------------------
+Y:
+=246
+
+Height:
+=30
+
+
+--- btnFEstadoCanceladaHis ----------------------------------------------------------
+Y:
+=246
+
+Height:
+=30
+
+
+--- btnTodosResultadosHis -----------------------------------------------------------
+Y:
+=246
+
+Height:
+=30
+
+
+--- btnFResultadoAtendeuHis ---------------------------------------------------------
+Y:
+=246
+
+Height:
+=30
+
+
+--- btnFResultadoNaoAtendeuHis ------------------------------------------------------
+Y:
+=246
+
+Height:
+=30
+
+
+--- btnFResultadoSemHis -------------------------------------------------------------
+Y:
+=246
+
+Height:
+=30
+
+
+--- conTabHis -----------------------------------------------------------------------
+Y:
+=300
+
+Height:
+=Parent.Height - 318
+
+
+--- htmlTabelaTituloHis -------------------------------------------------------------
+HtmlText:
+="<div style=""position:relative;box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;display:flex;align-items:center;min-width:0;min-height:0;line-height:1.15;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;font-size:15pt;color:#0a1f49;font-weight:700;""><span style=""display:block;box-sizing:border-box;min-width:0;width:100%;text-align:left;white-space:normal;overflow:hidden;text-overflow:ellipsis;"">" & Substitute(Substitute(Substitute(Substitute(Coalesce(Text("Registros de avaliação"); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br/>") & "</span></div>"
+
+
+--- lblH1His ------------------------------------------------------------------------
+Width:
+=Parent.Width * 0,16
+
+
+--- lblH2His ------------------------------------------------------------------------
+X:
+=Parent.Width * 0,18
+
+Width:
+=Parent.Width * 0,17
+
+
+--- lblH3His ------------------------------------------------------------------------
+X:
+=Parent.Width * 0,355
+
+Width:
+=Parent.Width * 0,04
+
+
+--- lblH4His ------------------------------------------------------------------------
+X:
+=Parent.Width * 0,40
+
+
+--- lblH5His ------------------------------------------------------------------------
+X:
+=Parent.Width * 0,50
+
+Width:
+=Parent.Width * 0,10
+
+
+--- lblH6His ------------------------------------------------------------------------
+X:
+=Parent.Width * 0,605
+
+Width:
+=Parent.Width * 0,075
+
+
+--- lblH7His ------------------------------------------------------------------------
+X:
+=Parent.Width * 0,685
+
+Width:
+=Parent.Width * 0,12
+
+
+--- lblH8His ------------------------------------------------------------------------
+X:
+=Parent.Width * 0,81
+
+Width:
+=Parent.Width * 0,08
+
+
+--- R3htmlColAcaoHis ----------------------------------------------------------------
+X:
+=Parent.Width - 102
+
+Width:
+=92
+
+HtmlText:
+="<div style=""position:relative;box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;display:flex;align-items:center;overflow:hidden;line-height:1.12;font-family:Segoe UI,Arial,sans-serif;font-size:9pt;font-weight:600;color:#405986;""><span style=""display:block;width:100%;min-width:0;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"">" & Substitute(Substitute(Substitute(Coalesce(Text("AÇÃO");"");"&";"&amp;");"<";"&lt;");">";"&gt;") & "</span></div>"
+
+
+--- galHis --------------------------------------------------------------------------
+TemplateSize:
+=44
+
+
+--- lblNomeHis ----------------------------------------------------------------------
+Width:
+=Parent.TemplateWidth * 0,16
+
+Y:
+=5
+
+Height:
+=18
+
+Tooltip:
+=ThisItem.Nome
+
+
+--- lblUidHis -----------------------------------------------------------------------
+Width:
+=Parent.TemplateWidth * 0,16
+
+Y:
+=23
+
+Height:
+=16
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:center;'>" & "<div style='font-size:8.5pt;line-height:1.2;color:#6B7A8D;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text(With({_v: LookUp(colAvaliacoes; Uid = ThisItem.Uid); _p: LookUp(colPessoas; Codigo = ThisItem.Pessoa)}; With({_c: Trim(Coalesce(_v.CargoSnap; _p.Cargo)); _g: Trim(Coalesce(_v.GrupoSnap; _p.Grupo))}; _c & If(IsBlank(_g); ""; If(IsBlank(_c); ""; " · ") & "Grupo " & _g)))); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- lblModHis -----------------------------------------------------------------------
+X:
+=Parent.TemplateWidth * 0,18
+
+Width:
+=Parent.TemplateWidth * 0,17
+
+Y:
+=0
+
+Height:
+=Parent.TemplateHeight
+
+Tooltip:
+=ThisItem.ModuloNome & If(IsBlank(ThisItem.Modulo); ""; " · " & If(StartsWith(Upper(ThisItem.Modulo); "M"); "Módulo " & Mid(ThisItem.Modulo; 2); ThisItem.Modulo))
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:center;'>" & "<div style='font-size:10pt;line-height:1.25;color:#0a1f49;font-weight:600;white-space:normal;overflow:hidden;max-height:2.5em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;'>" & Substitute(Substitute(Substitute(Coalesce(Text(With({_m: Trim(Coalesce(ThisItem.ModuloNome; ""))}; If(!IsBlank(_m) && _m = Upper(_m) && _m <> Lower(_m) && !IsMatch(_m; ".*\d.*") && CountRows(Filter(Split(_m; " "); Len(Value) > 0 && Len(Value) <= 3 && !(Lower(Value) in ["e"; "de"; "da"; "do"; "das"; "dos"; "em"; "a"; "o"; "com"; "por"; "na"; "no"; "para"]))) = 0; With({_r: Concat(Split(Lower(_m); " ") As _w; If(_w.Value in ["e"; "de"; "da"; "do"; "das"; "dos"; "em"; "a"; "o"; "com"; "por"; "na"; "no"; "para"]; _w.Value; Proper(_w.Value)); " ")}; Upper(Left(_r; 1)) & Mid(_r; 2)); _m))); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- lblModCodHis --------------------------------------------------------------------
+Visible:
+=false
+
+
+--- lblAreaHis ----------------------------------------------------------------------
+X:
+=Parent.TemplateWidth * 0,355
+
+Width:
+=Parent.TemplateWidth * 0,04
+
+Height:
+=Parent.TemplateHeight
+
+HtmlText:
+="<div style=""position:relative;box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;display:flex;align-items:center;min-width:0;min-height:0;line-height:1.15;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;font-size:10pt;color:rgba(32,42,53,1);font-weight:600;""><span style=""display:block;box-sizing:border-box;min-width:0;width:100%;text-align:left;white-space:normal;overflow:hidden;text-overflow:ellipsis;"">" & Substitute(Substitute(Substitute(Substitute(Coalesce(Text(ThisItem.Area); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br/>") & "</span></div>"
+
+
+--- lblTipoHis ----------------------------------------------------------------------
+X:
+=Parent.TemplateWidth * 0,40
+
+Height:
+=Parent.TemplateHeight
+
+
+--- bdgEstHis -----------------------------------------------------------------------
+X:
+=Parent.TemplateWidth * 0,50
+
+Width:
+=Parent.TemplateWidth * 0,10
+
+Y:
+=(Parent.TemplateHeight - 22) / 2
+
+
+--- bdgResHis -----------------------------------------------------------------------
+X:
+=Parent.TemplateWidth * 0,605
+
+Width:
+=Parent.TemplateWidth * 0,075
+
+Y:
+=(Parent.TemplateHeight - 22) / 2
+
+
+--- lblAvHis ------------------------------------------------------------------------
+X:
+=Parent.TemplateWidth * 0,685
+
+Width:
+=Parent.TemplateWidth * 0,12
+
+Height:
+=Parent.TemplateHeight
+
+Tooltip:
+=ThisItem.AvaliadorNome
+
+
+--- lblDataHis ----------------------------------------------------------------------
+X:
+=Parent.TemplateWidth * 0,81
+
+Width:
+=Parent.TemplateWidth * 0,08
+
+Height:
+=Parent.TemplateHeight
+
+Tooltip:
+=Switch(ThisItem.Estado; "PREENCHIMENTO"; "Início da avaliação: " & Text(ThisItem.Inicio; "dd/mm/yyyy"); "CONCLUIDA"; If(IsBlank(ThisItem.Conclusao); "Início da avaliação: " & Text(ThisItem.Inicio; "dd/mm/yyyy"); "Concluída em " & Text(ThisItem.Conclusao; "dd/mm/yyyy")); "CANCELADA"; If(IsBlank(ThisItem.Conclusao); "Início da avaliação: " & Text(ThisItem.Inicio; "dd/mm/yyyy"); "Cancelada em " & Text(ThisItem.Conclusao; "dd/mm/yyyy")); If(IsBlank(ThisItem.Conclusao); "Início da avaliação: " & Text(ThisItem.Inicio; "dd/mm/yyyy"); "Concluída em " & Text(ThisItem.Conclusao; "dd/mm/yyyy")))
+
+HtmlText:
+="<div style=""position:relative;box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;display:flex;align-items:center;min-width:0;min-height:0;line-height:1.15;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;font-size:10.0pt;color:inherit;font-weight:400;""><span style=""display:block;box-sizing:border-box;min-width:0;width:100%;text-align:left;white-space:normal;overflow:hidden;text-overflow:ellipsis;"">" & Substitute(Substitute(Substitute(Substitute(Coalesce(Text(If(ThisItem.Estado = "PREENCHIMENTO" || IsBlank(ThisItem.Conclusao); "Desde " & Text(ThisItem.Inicio; "dd/mm/yyyy"); Text(ThisItem.Conclusao; "dd/mm/yyyy"))); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br/>") & "</span></div>"
+
+
+--- btnRowHis -----------------------------------------------------------------------
+Tooltip:
+="Ver detalhes da avaliação de " & ThisItem.Nome
+
+
+--- R3btnAbrirEventoHis -------------------------------------------------------------
+Text:
+="Ver detalhes"
+
+Width:
+=92
+
+X:
+=Parent.TemplateWidth - 102
+
+Y:
+=(Parent.TemplateHeight - 28) / 2
+
+Tooltip:
+="Ver detalhes da avaliação"
+
+
+--- htmlExibindoHis -----------------------------------------------------------------
+HtmlText:
+="<div style=""position:relative;box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;display:flex;align-items:center;overflow:hidden;line-height:1.12;font-family:Segoe UI,Arial,sans-serif;font-size:10pt;font-weight:400;color:#57719b;""><span style=""display:block;width:100%;min-width:0;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"">" & Substitute(Substitute(Substitute(Coalesce(Text(With({_q: CountRows((With(
+    {
+        _b: Lower(Trim(txtBuscaHis.Text));
+        _m: Lower(Trim(txtModHis.Text));
+        _de: IfError(DateValue(txtDeHis.Text; "pt-BR"); Blank());
+        _ate: IfError(DateValue(txtAteHis.Text; "pt-BR"); Blank())
+    };
+    Sort(
+        Filter(
+            ForAll(
+                Filter(colAvaliacoes As v; (varPodeGestao || v.Pessoa = varUsuario.Codigo || v.Avaliador = varUsuario.Codigo)) As v2;
+                {
+                    Uid: v2.Uid; Ciclo: v2.Ciclo; Pessoa: v2.Pessoa; Nome: Coalesce(v2.PessoaNomeSnap; LookUp(colPessoas; Codigo = v2.Pessoa).Nome);
+                    Modulo: v2.Modulo; ModuloNome: v2.ModuloNome; Area: v2.Area; Tipo: v2.Tipo; Estado: v2.Estado; Resultado: v2.Resultado;
+                    AvaliadorNome: v2.AvaliadorNome; Inicio: v2.Inicio; Conclusao: v2.Conclusao; Data: Coalesce(v2.Conclusao; v2.Inicio)
+                }
+            );
+            (IsBlank(_b) || _b in Lower(Nome) || _b in Lower(Pessoa)) &&
+            (IsBlank(_m) || _m in Lower(Modulo) || _m in Lower(ModuloNome)) &&
+            (IsBlank(locFArea) || Area = locFArea) &&
+            (IsBlank(locFTipo) || Tipo = locFTipo) &&
+            (IsBlank(locFEst) || Estado = locFEst) &&
+            (IsBlank(locFRes) || If(locFRes = "SEM"; IsBlank(Resultado); Resultado = locFRes)) &&
+            (IsBlank(_de) || Data >= _de) &&
+            (IsBlank(_ate) || Data < DateAdd(_ate; 1; TimeUnit.Days))
+        );
+        Data;
+        SortOrder.Descending
+    )
+)))}; If(_q = 1; "1 registro encontrado"; _q & " registros encontrados")));"");"&";"&amp;");"<";"&lt;");">";"&gt;") & "</span></div>"
+
+
+--- lblRodTabHis --------------------------------------------------------------------
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:center;'>" & "<div style='font-size:10pt;line-height:1.25;color:#627083;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text(If(varPodeGestao; "Exibindo todas as avaliações do laboratório"; "Exibindo as avaliações em que você é avaliado ou avaliador")); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- lblEvTitHis ---------------------------------------------------------------------
+Y:
+=14
+
+HtmlText:
+="<div style=""position:relative;box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;display:flex;align-items:center;min-width:0;min-height:0;line-height:1.15;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;font-size:15.0pt;color:rgba(14,42,74,1);font-weight:700;""><span style=""display:block;box-sizing:border-box;min-width:0;width:100%;text-align:left;white-space:normal;overflow:hidden;text-overflow:ellipsis;"">" & Substitute(Substitute(Substitute(Substitute(Coalesce(Text("Detalhes da avaliação"); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br/>") & "</span></div>"
+
+
+--- lblEvSubHis ---------------------------------------------------------------------
+Y:
+=46
+
+Height:
+=54
+
+Width:
+=Parent.Width - 40
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;flex-direction:column;justify-content:center;'>" & "<div style='font-size:8.5pt;line-height:1.2;color:#627083;font-weight:700;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text("PESSOA"); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "<div style='margin-top:2px;font-size:13pt;line-height:1.25;color:#0E2A4A;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text(With({_v: LookUp(colAvaliacoes; Uid = locEvento)}; Coalesce(_v.PessoaNomeSnap; LookUp(colPessoas; Codigo = _v.Pessoa).Nome))); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "<div style='font-size:9.5pt;line-height:1.25;color:#627083;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text(With({_v: LookUp(colAvaliacoes; Uid = locEvento); _p: LookUp(colPessoas; Codigo = LookUp(colAvaliacoes; Uid = locEvento).Pessoa)}; With({_c: Trim(Coalesce(_v.CargoSnap; _p.Cargo)); _g: Trim(Coalesce(_v.GrupoSnap; _p.Grupo))}; _c & If(IsBlank(_g); ""; If(IsBlank(_c); ""; " · ") & "Grupo " & _g)))); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- lblEvR0His ----------------------------------------------------------------------
+X:
+=20
+
+Y:
+=104
+
+Width:
+=Parent.Width - 40
+
+Height:
+=24
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:center;'>" & "<div style='font-size:12pt;line-height:1.25;color:#0E2A4A;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text(With({_v: LookUp(colAvaliacoes; Uid = locEvento)}; With({_m: Trim(Coalesce(_v.ModuloNome; ""))}; If(!IsBlank(_m) && _m = Upper(_m) && _m <> Lower(_m) && !IsMatch(_m; ".*\d.*") && CountRows(Filter(Split(_m; " "); Len(Value) > 0 && Len(Value) <= 3 && !(Lower(Value) in ["e"; "de"; "da"; "do"; "das"; "dos"; "em"; "a"; "o"; "com"; "por"; "na"; "no"; "para"]))) = 0; With({_r: Concat(Split(Lower(_m); " ") As _w; If(_w.Value in ["e"; "de"; "da"; "do"; "das"; "dos"; "em"; "a"; "o"; "com"; "por"; "na"; "no"; "para"]; _w.Value; Proper(_w.Value)); " ")}; Upper(Left(_r; 1)) & Mid(_r; 2)); _m)) & If(IsBlank(_v.Area); ""; " · " & _v.Area))); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- lblEvV0His ----------------------------------------------------------------------
+X:
+=20
+
+Y:
+=130
+
+Width:
+=Parent.Width - 40
+
+Height:
+=26
+
+HtmlText:
+=With({_v: LookUp(colAvaliacoes; Uid = locEvento)}; "<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:center;'>" & "<span style='display:inline-block;margin-right:6px;padding:3px 10px;border-radius:5px;font-size:9pt;font-weight:600;background:#EEF2F6;color:#344054;'>" & Substitute(Substitute(Substitute(Coalesce(Text(Switch(_v.Tipo; "QUALIFICACAO"; "Qualificação"; "REQUALIFICACAO"; "Requalificação"; "EXTRAORDINARIA"; "Extraordinária"; _v.Tipo)); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</span><span style='display:inline-block;margin-right:6px;padding:3px 10px;border-radius:5px;font-size:9pt;font-weight:600;background:" & Switch(_v.Estado; "CONCLUIDA"; "#E8F3EA;color:#2E7D32"; "PREENCHIMENTO"; "#E8F0F8;color:#1C5582"; "#EEF2F6;color:#627083") & ";'>" & Substitute(Substitute(Substitute(Coalesce(Text(Switch(_v.Estado; "PREENCHIMENTO"; "Em preenchimento"; "CONCLUIDA"; "Concluída"; "CANCELADA"; "Cancelada"; _v.Estado)); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</span>" & "</div>")
+
+
+--- lblEvBanHis ---------------------------------------------------------------------
+Y:
+=162
+
+Height:
+=40
+
+Fill:
+=Switch(LookUp(colAvaliacoes; Uid = locEvento).Estado; "PREENCHIMENTO"; RGBA(232; 240; 248; 1); "CONCLUIDA"; RGBA(232; 243; 234; 1); RGBA(238; 242; 246; 1))
+
+Color:
+=Switch(LookUp(colAvaliacoes; Uid = locEvento).Estado; "PREENCHIMENTO"; RGBA(28; 85; 130; 1); "CONCLUIDA"; RGBA(46; 125; 50; 1); RGBA(52; 64; 84; 1))
+
+HtmlText:
+=With({_v: LookUp(colAvaliacoes; Uid = locEvento)}; "<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:center;'>" & "<div style='font-size:9.5pt;line-height:1.3;color:inherit;white-space:normal;overflow:hidden;'>" & "<b>" & Switch(_v.Estado; "PREENCHIMENTO"; "Avaliação em andamento"; "CONCLUIDA"; "Avaliação concluída"; "CANCELADA"; "Avaliação cancelada"; "Avaliação") & "</b> · " & Switch(_v.Estado; "PREENCHIMENTO"; "As respostas exibidas são as salvas no rascunho."; "Somente leitura. Informações registradas no momento da avaliação.") & If(IsBlank(_v.PessoaNomeSnap) || IsBlank(_v.CargoSnap) || IsBlank(_v.GrupoSnap); "<br/>Algumas informações deste registro não estavam disponíveis no histórico original."; "") & "</div>" & "</div>")
+
+
+--- lblEvR1His ----------------------------------------------------------------------
+X:
+=20 + (Parent.Width - 40) * 0
+
+Width:
+=(Parent.Width - 40) * 0,30 - 10
+
+Y:
+=212
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:center;'>" & "<div style='font-size:8.5pt;line-height:1.2;color:#627083;font-weight:700;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text("AVALIADOR"); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- lblEvV1His ----------------------------------------------------------------------
+X:
+=20 + (Parent.Width - 40) * 0
+
+Width:
+=(Parent.Width - 40) * 0,30 - 10
+
+Y:
+=228
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:flex-start;'>" & "<div style='font-size:10.5pt;line-height:1.25;color:#1D2A3A;font-weight:600;white-space:normal;overflow:hidden;max-height:2.5em;'>" & Substitute(Substitute(Substitute(Coalesce(Text(Coalesce(LookUp(colAvaliacoes; Uid = locEvento).AvaliadorNome; "—")); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+Tooltip:
+=LookUp(colAvaliacoes; Uid = locEvento).AvaliadorNome
+
+
+--- lblEvR2His ----------------------------------------------------------------------
+X:
+=20 + (Parent.Width - 40) * 0,30
+
+Width:
+=(Parent.Width - 40) * 0,15 - 10
+
+Y:
+=212
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:center;'>" & "<div style='font-size:8.5pt;line-height:1.2;color:#627083;font-weight:700;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text("INÍCIO"); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- lblEvV2His ----------------------------------------------------------------------
+X:
+=20 + (Parent.Width - 40) * 0,30
+
+Width:
+=(Parent.Width - 40) * 0,15 - 10
+
+Y:
+=228
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:flex-start;'>" & "<div style='font-size:10.5pt;line-height:1.25;color:#1D2A3A;font-weight:600;white-space:normal;overflow:hidden;max-height:2.5em;'>" & Substitute(Substitute(Substitute(Coalesce(Text(If(IsBlank(LookUp(colAvaliacoes; Uid = locEvento).Inicio); "—"; Text(LookUp(colAvaliacoes; Uid = locEvento).Inicio; "dd/mm/yyyy"))); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- lblEvR3His ----------------------------------------------------------------------
+X:
+=20 + (Parent.Width - 40) * 0,45
+
+Width:
+=(Parent.Width - 40) * 0,19 - 10
+
+Y:
+=212
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:center;'>" & "<div style='font-size:8.5pt;line-height:1.2;color:#627083;font-weight:700;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text(If(LookUp(colAvaliacoes; Uid = locEvento).Estado = "CANCELADA"; "CANCELAMENTO"; "CONCLUSÃO")); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- lblEvV3His ----------------------------------------------------------------------
+X:
+=20 + (Parent.Width - 40) * 0,45
+
+Width:
+=(Parent.Width - 40) * 0,19 - 10
+
+Y:
+=228
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:flex-start;'>" & "<div style='font-size:10.5pt;line-height:1.25;color:#1D2A3A;font-weight:600;white-space:normal;overflow:hidden;max-height:2.5em;'>" & Substitute(Substitute(Substitute(Coalesce(Text(If(IsBlank(LookUp(colAvaliacoes; Uid = locEvento).Conclusao); If(LookUp(colAvaliacoes; Uid = locEvento).Estado = "PREENCHIMENTO"; "Em aberto"; "—"); Text(LookUp(colAvaliacoes; Uid = locEvento).Conclusao; "dd/mm/yyyy"))); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- lblEvR4His ----------------------------------------------------------------------
+X:
+=20 + (Parent.Width - 40) * 0,64
+
+Width:
+=(Parent.Width - 40) * 0,21 - 10
+
+Y:
+=212
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:center;'>" & "<div style='font-size:8.5pt;line-height:1.2;color:#627083;font-weight:700;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text("RESULTADO"); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- lblEvV4His ----------------------------------------------------------------------
+X:
+=20 + (Parent.Width - 40) * 0,64
+
+Width:
+=(Parent.Width - 40) * 0,21 - 10
+
+Y:
+=228
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:flex-start;'>" & "<div style='font-size:10.5pt;line-height:1.25;font-weight:600;white-space:normal;overflow:hidden;max-height:2.5em;color:" & With({_v: LookUp(colAvaliacoes; Uid = locEvento)}; If(_v.Estado = "CANCELADA"; "#627083"; _v.Resultado = "ATENDEU"; "#2E7D32"; _v.Resultado = "NAO_ATENDEU"; "#B91C1C"; "#1C5582")) & ";'>" & Substitute(Substitute(Substitute(Coalesce(Text(With({_v: LookUp(colAvaliacoes; Uid = locEvento)}; If(_v.Estado = "CANCELADA"; "Cancelada"; _v.Resultado = "ATENDEU"; "Atendeu"; _v.Resultado = "NAO_ATENDEU"; "Não atendeu"; _v.Estado = "PREENCHIMENTO"; "Em andamento"; "—"))); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- lblEvR5His ----------------------------------------------------------------------
+X:
+=20 + (Parent.Width - 40) * 0,85
+
+Width:
+=(Parent.Width - 40) * 0,15 - 10
+
+Y:
+=212
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:center;'>" & "<div style='font-size:8.5pt;line-height:1.2;color:#627083;font-weight:700;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text("TENTATIVA"); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- lblEvV5His ----------------------------------------------------------------------
+X:
+=20 + (Parent.Width - 40) * 0,85
+
+Width:
+=(Parent.Width - 40) * 0,15 - 10
+
+Y:
+=228
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:flex-start;'>" & "<div style='font-size:10.5pt;line-height:1.25;color:#1D2A3A;font-weight:600;white-space:normal;overflow:hidden;max-height:2.5em;'>" & Substitute(Substitute(Substitute(Coalesce(Text(If(IsBlank(LookUp(colAvaliacoes; Uid = locEvento).Tentativa); "—"; Text(LookUp(colAvaliacoes; Uid = locEvento).Tentativa))); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- lblEvR6His ----------------------------------------------------------------------
+Visible:
+=false
+
+
+--- lblEvV6His ----------------------------------------------------------------------
+Visible:
+=false
+
+
+--- lblEvR7His ----------------------------------------------------------------------
+Visible:
+=false
+
+
+--- lblEvDocHis ---------------------------------------------------------------------
+Y:
+=276
+
+Height:
+=28 + 48 * Min(Max(CountRows(IfError(Table(ParseJSON(LookUp(colAvaliacoes; Uid = locEvento).DocumentosJson).documentos); Table(ParseJSON("[]")))); 1); 3)
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;overflow-y:auto;'>" & "<div style='font-size:11pt;line-height:1.25;color:#0E2A4A;font-weight:700;'>" & Substitute(Substitute(Substitute(Coalesce(Text("Documentos de referência"); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & If(CountRows(IfError(Table(ParseJSON(LookUp(colAvaliacoes; Uid = locEvento).DocumentosJson).documentos); Table(ParseJSON("[]")))) = 0; "<div style='margin-top:6px;font-size:9.5pt;color:#627083;'>" & Substitute(Substitute(Substitute(Coalesce(Text("Nenhum documento de referência registrado nesta avaliação."); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>"; Concat(IfError(Table(ParseJSON(LookUp(colAvaliacoes; Uid = locEvento).DocumentosJson).documentos); Table(ParseJSON("[]"))) As d; With({_c: Coalesce(IfError(Text(d.Value.codigo); ""); IfError(Text(d.Value.Codigo); "")); _t: Coalesce(IfError(Text(d.Value.titulo); ""); IfError(Text(d.Value.Titulo); "")); _ver: Trim(Coalesce(IfError(Text(d.Value.versao); ""); IfError(Text(d.Value.Versao); ""))); _e: Trim(Coalesce(IfError(Text(d.Value.expiracao); ""); IfError(Text(d.Value.Expiracao); "")))}; With({_d: If(IsMatch(_e; "\d{4}-\d{2}-\d{2}.*"); Mid(_e; 9; 2) & "/" & Mid(_e; 6; 2) & "/" & Left(_e; 4); _e)}; "<div style='margin-top:6px;padding:4px 10px;background:#F7F9FC;border:1px solid #E6ECF3;border-radius:6px;'>" & "<div style='font-size:9.5pt;line-height:1.3;color:#1D2A3A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'><b>" & Substitute(Substitute(Substitute(Coalesce(Text(Coalesce(_c; _t)); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</b>" & If(IsBlank(_t) || IsBlank(_c); ""; " — " & Substitute(Substitute(Substitute(Coalesce(Text(_t); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;")) & "</div>" & "<div style='font-size:8.5pt;line-height:1.3;color:#6B7A8D;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text(If(!IsBlank(_ver) && !IsBlank(_e); "Versão " & _ver & " · validade " & _d; !IsBlank(_ver); "Versão " & _ver; !IsBlank(_e); "Validade " & _d; "Versão não informada")); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div></div>")); "")) & "</div>"
+
+
+--- lblEvCritTitHis -----------------------------------------------------------------
+Y:
+=lblEvDocHis.Y + lblEvDocHis.Height + 10
+
+
+--- galEvCritHis --------------------------------------------------------------------
+Y:
+=lblEvCritTitHis.Y + 26
+
+Height:
+=Max(Parent.Height - 214 - Self.Y; 60)
+
+TemplateSize:
+=96
+
+Items [FUNCIONAL AUTORIZADA]:
+=ForAll(IfError(Table(ParseJSON((LookUp(colAvaliacoes; Uid = locEvento)).CriteriosJson).criterios); Table(ParseJSON("[]"))) As c; {Id: IfError(Text(c.Value.criterioId); ""); Dimensao: IfError(Text(c.Value.dimensao); ""); Descricao: IfError(Text(c.Value.descricao); ""); Resposta: Coalesce(IfError(Text(c.Value.resposta); ""); IfError(Text(c.Value.resultado); "")); Comentario: IfError(Text(c.Value.comentario); ""); Fontes: Coalesce(IfError(Text(c.Value.fontes); ""); "")})
+
+
+--- lblEvCIdHis ---------------------------------------------------------------------
+Y:
+=6
+
+Width:
+=Parent.TemplateWidth - 116
+
+Tooltip:
+="Critério " & ThisItem.Id
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:center;'>" & "<div style='font-size:10pt;line-height:1.25;color:#0E2A4A;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & Substitute(Substitute(Substitute(Coalesce(Text(Switch(ThisItem.Dimensao; "preparacao_execucao"; "Preparação e execução"; "equipamentos_materiais_controles"; "Equipamentos, materiais e controles"; "pontos_criticos_validade_anomalias"; "Pontos críticos, validade e anomalias"; "resultado_interpretacao"; "Resultado e interpretação"; "registros_rastreabilidade"; "Registros e rastreabilidade"; "seguranca"; "Segurança na execução"; "preparacao"; "Preparação"; "execucao"; "Execução"; "pontos_criticos_anomalias"; "Pontos críticos e anomalias"; ""; "Critério"; Substitute(ThisItem.Dimensao; "_"; " "))); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+
+--- bdgEvCRespHis -------------------------------------------------------------------
+Y:
+=6
+
+X:
+=Parent.TemplateWidth - 104
+
+Width:
+=104
+
+HtmlText:
+="<div style=""position:relative;border-radius:5px;background:" & (Switch(ThisItem.Resposta; "Atendeu"; "rgba(232,243,234,1)"; "Não atendeu"; "rgba(251,234,234,1)"; "rgba(238,242,246,1)")) & ";box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;display:flex;align-items:center;min-width:0;min-height:0;line-height:1.15;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;font-size:10.0pt;color:inherit;font-weight:600;""><span style=""display:block;box-sizing:border-box;min-width:0;width:100%;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"">" & Substitute(Substitute(Substitute(Substitute(Coalesce(Text(Coalesce(ThisItem.Resposta; "Sem resposta")); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br/>") & "</span></div>"
+
+
+--- lblEvCDescHis -------------------------------------------------------------------
+X:
+=0
+
+Y:
+=28
+
+Width:
+=Parent.TemplateWidth - 4
+
+Height:
+=32
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;align-items:flex-start;'>" & "<div style='font-size:9.5pt;line-height:1.3;color:#344054;white-space:normal;overflow:hidden;max-height:2.6em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;'>" & Substitute(Substitute(Substitute(Coalesce(Text(ThisItem.Descricao); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>"
+
+Tooltip:
+=ThisItem.Descricao
+
+
+--- lblEvCComHis --------------------------------------------------------------------
+X:
+=0
+
+Y:
+=60
+
+Width:
+=Parent.TemplateWidth - 4
+
+Height:
+=32
+
+Visible:
+=true
+
+Tooltip:
+=ThisItem.Comentario
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;display:flex;flex-direction:column;justify-content:flex-start;'>" & "<div style='font-size:9pt;line-height:1.3;color:#344054;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & If(IsBlank(Trim(ThisItem.Comentario)); "<span style='color:#98A2B3;'>Sem comentário registrado.</span>"; "<b>Comentário:</b> " & Substitute(Substitute(Substitute(Coalesce(Text(ThisItem.Comentario); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;")) & "</div>" & If(IsBlank(ThisItem.Fontes); ""; "<div style='font-size:8.5pt;line-height:1.3;color:#6B7A8D;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" & "Referência técnica: " & Substitute(Substitute(Substitute(Coalesce(Text(ThisItem.Fontes); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>") & "</div>"
+
+
+--- lblEvParRotHis ------------------------------------------------------------------
+Y:
+=Parent.Height - 206
+
+
+--- lblEvParHis ---------------------------------------------------------------------
+Y:
+=Parent.Height - 188
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;overflow-y:auto;'>" & "<div style='font-size:10pt;line-height:1.35;color:#1D2A3A;white-space:normal;'>" & If(IsBlank(Trim(LookUp(colAvaliacoes; Uid = locEvento).Parecer)); "<span style='color:#98A2B3;'>Não informado.</span>"; Substitute(Substitute(Substitute(Substitute(Coalesce(Text(LookUp(colAvaliacoes; Uid = locEvento).Parecer); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br/>")) & "</div>" & "</div>"
+
+
+--- lblEvObsRotHis ------------------------------------------------------------------
+Y:
+=Parent.Height - 132
+
+HtmlText:
+="<div style=""position:relative;box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;display:flex;align-items:center;min-width:0;min-height:0;line-height:1.15;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;font-size:10.0pt;color:rgba(98,112,131,1);font-weight:700;""><span style=""display:block;box-sizing:border-box;min-width:0;width:100%;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"">" & Substitute(Substitute(Substitute(Substitute(Coalesce(Text(If(LookUp(colAvaliacoes; Uid = locEvento).Estado = "CANCELADA"; "Justificativa do cancelamento"; "Observações complementares")); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br/>") & "</span></div>"
+
+
+--- lblEvObsHis ---------------------------------------------------------------------
+Y:
+=Parent.Height - 114
+
+Height:
+=52
+
+HtmlText:
+="<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;overflow-y:auto;'>" & "<div style='font-size:10pt;line-height:1.35;color:#1D2A3A;white-space:normal;'>" & If(IsBlank(Trim(LookUp(colAvaliacoes; Uid = locEvento).Observacoes)); "<span style='color:#98A2B3;'>Não informado.</span>"; Substitute(Substitute(Substitute(Substitute(Coalesce(Text(LookUp(colAvaliacoes; Uid = locEvento).Observacoes); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;"); Char(10); "<br/>")) & "</div>" & "</div>"
+
+
+--- lblEvV7His ----------------------------------------------------------------------
+Visible:
+=false
+
+
+--- btnEvTecHis [NOVO] --------------------------------------------------------------
+Text:
+=If(locEvTec; "Ocultar informações técnicas"; "Informações técnicas")
+
+OnSelect [FUNCIONAL AUTORIZADA]:
+=UpdateContext({locEvTec: !locEvTec})
+
+Tooltip:
+="Identificadores internos para auditoria"
+
+X:
+=20
+
+Y:
+=Parent.Height - 50
+
+Width:
+=210
+
+Height:
+=34
+
+Size:
+=10
+
+Color:
+=RGBA(98; 112; 131; 1)
+
+BorderColor:
+=RGBA(216; 225; 234; 1)
+
+
+--- lblEvTecHis [NOVO] --------------------------------------------------------------
+X:
+=20
+
+Y:
+=Parent.Height - 146
+
+Width:
+=Parent.Width - 40
+
+Height:
+=88
+
+Visible:
+=locEvTec
+
+HtmlText:
+=With({_v: LookUp(colAvaliacoes; Uid = locEvento)}; "<div style='box-sizing:border-box;width:100%;height:" & Text(Max(Self.Height - 2; 0); "0"; "en-US") & "px;overflow:hidden;font-family:Segoe UI,Arial,sans-serif;'>" & "<div style='box-sizing:border-box;height:100%;padding:8px 12px;background:#FFFFFF;border:1px solid #D8E1EA;border-radius:8px;box-shadow:0 4px 14px rgba(14,42,74,.16);font-size:8.5pt;line-height:1.45;color:#627083;word-break:break-all;'>" & "<b>Avaliação:</b> " & Substitute(Substitute(Substitute(Coalesce(Text(_v.Uid); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "<br/><b>Ciclo:</b> " & Substitute(Substitute(Substitute(Coalesce(Text(_v.Ciclo); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "<br/><b>Tentativa:</b> " & Substitute(Substitute(Substitute(Coalesce(Text(_v.Tentativa); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "<br/><b>Versão do catálogo:</b> " & Substitute(Substitute(Substitute(Coalesce(Text(Coalesce(_v.VersaoSnap; "não registrada")); ""); "&"; "&amp;"); "<"; "&lt;"); ">"; "&gt;") & "</div>" & "</div>")

@@ -1,0 +1,22 @@
+[
+ {
+  "etapa": "pac canvas unpack do .msapp entregue (Version: 2.13.1+g251dee1 (.NET 10.0.12))",
+  "ok": true,
+  "detalhe": "sem erros nem avisos de checksum"
+ },
+ {
+  "etapa": "pac canvas pack das fontes desempacotadas",
+  "ok": true,
+  "detalhe": "repacked.msapp gerado"
+ },
+ {
+  "etapa": "Roundtrip pac (unpack → pack → unpack): fontes idênticas",
+  "ok": true,
+  "detalhe": "nenhuma diferença"
+ },
+ {
+  "etapa": "Original × novo (fontes pac): diferenças só nas 2 telas e nos metadados de controle",
+  "ok": true,
+  "detalhe": "Entropy/Entropy.json, Entropy/checksum.json, Other/Src/scrAvaliacao.pa.yaml, Other/Src/scrHistoricoAvaliacoes.pa.yaml, Src/EditorState/scrAvaliacao.editorstate.json, Src/EditorState/scrHistoricoAvaliacoes.editorstate.json, Src/scrAvaliacao.fx.yaml, Src/scrHistoricoAvaliacoes.fx.yaml"
+ }
+]

@@ -1,0 +1,680 @@
+[
+ {
+  "tc": "TC-A08",
+  "descricao": "Concluir desabilitado",
+  "ok": true,
+  "detalhe": "DisplayMode.Disabled"
+ },
+ {
+  "tc": "TC-A08",
+  "descricao": "Mensagem \"Parecer técnico pendente · 2 de 30 caracteres\"",
+  "ok": true,
+  "detalhe": "6 de 6 critérios respondidosResultado atualAtendeuParecer técnico pendente · 2 de 30 caracteres"
+ },
+ {
+  "tc": "TC-A08",
+  "descricao": "1366×768: nenhum controle visível ultrapassa a largura da tela",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "TC-A08",
+  "descricao": "1366×768: card Contexto termina antes dos Critérios",
+  "ok": true,
+  "detalhe": "Contexto 142–364, Critérios Y=380"
+ },
+ {
+  "tc": "TC-A08",
+  "descricao": "1366×768: Critérios e Parecer lado a lado sem sobreposição",
+  "ok": true,
+  "detalhe": "Critérios 66% da largura útil"
+ },
+ {
+  "tc": "TC-A08",
+  "descricao": "1366×768: barra inferior dentro da tela e abaixo do Parecer",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "TC-A08",
+  "descricao": "1366×768: Parecer com altura útil ≥ 170 px",
+  "ok": true,
+  "detalhe": "212 px"
+ },
+ {
+  "tc": "TC-A08",
+  "descricao": "1366×768: ao menos 1 critério inteiro visível na lista",
+  "ok": true,
+  "detalhe": "1.33 critérios visíveis"
+ },
+ {
+  "tc": "TC-A08",
+  "descricao": "1920×1080: nenhum controle visível ultrapassa a largura da tela",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "TC-A08",
+  "descricao": "1920×1080: card Contexto termina antes dos Critérios",
+  "ok": true,
+  "detalhe": "Contexto 142–364, Critérios Y=380"
+ },
+ {
+  "tc": "TC-A08",
+  "descricao": "1920×1080: Critérios e Parecer lado a lado sem sobreposição",
+  "ok": true,
+  "detalhe": "Critérios 66% da largura útil"
+ },
+ {
+  "tc": "TC-A08",
+  "descricao": "1920×1080: barra inferior dentro da tela e abaixo do Parecer",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "TC-A08",
+  "descricao": "1920×1080: Parecer com altura útil ≥ 170 px",
+  "ok": true,
+  "detalhe": "562 px"
+ },
+ {
+  "tc": "TC-A08",
+  "descricao": "1920×1080: ao menos 1 critério inteiro visível na lista",
+  "ok": true,
+  "detalhe": "2.71 critérios visíveis"
+ },
+ {
+  "tc": "Layout",
+  "descricao": "Contexto não exibe CICLO / Tentativa / GUID / Módulo 14.1",
+  "ok": true,
+  "detalhe": "PESSOA ÁREA MÓDULO TIPO AVALIADOR ESTADO Kathleen Caroline PE9 Classificação e liberação de lotes Qualificação Rodrigo Barbosa Tavares da Mota Em preenchimento "
+ },
+ {
+  "tc": "Layout",
+  "descricao": "Contexto mostra Pessoa, Área, Módulo, Tipo, Avaliador e Estado",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "Layout",
+  "descricao": "Tentativa disponível só como tooltip do selo de estado",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "Layout",
+  "descricao": "Base documental no topo com subtítulo e contagem",
+  "ok": true,
+  "detalhe": "Base documentalDocumentos utilizados como referência para esta avaliação. | 2 documentos aplicáveis"
+ },
+ {
+  "tc": "Layout",
+  "descricao": "Método no topo sem versão interna do catálogo",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "TC-A03",
+  "descricao": "2 documentos: versão e validade convertidas sem fuso (texto)",
+  "ok": true,
+  "detalhe": "['Versão 21.0 · validade 10/04/2031', 'Versão 4.5 · validade 28/11/2030']"
+ },
+ {
+  "tc": "TC-A03",
+  "descricao": "2 documentos cabem sem rolagem",
+  "ok": true,
+  "detalhe": "linha 66 / área 68"
+ },
+ {
+  "tc": "Layout",
+  "descricao": "Card de critério com borda neutra #E1E8F0 (só barra lateral semântica)",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "Layout",
+  "descricao": "lblCritEvAva continua invisível",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "TC-A01",
+  "descricao": "Nome longo: 1 linha com reticências + tooltip com nome completo",
+  "ok": true,
+  "detalhe": "Maria Aparecida dos Santos Albuquerque Figueiredo"
+ },
+ {
+  "tc": "TC-A02",
+  "descricao": "Módulo longo: até 2 linhas + tooltip completo; sem \"Módulo 14.1\"",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "TC-A04",
+  "descricao": "4 documentos: 2 colunas × 2 linhas, sem rolagem",
+  "ok": true,
+  "detalhe": "4 docs; área 134"
+ },
+ {
+  "tc": "TC-A04",
+  "descricao": "5+ documentos: altura limitada a 2 linhas e rolagem vertical discreta na galeria",
+  "ok": true,
+  "detalhe": "card Contexto 288 px"
+ },
+ {
+  "tc": "TC-A05",
+  "descricao": "Título longo: linha do documento cresce para 2 linhas de título",
+  "ok": true,
+  "detalhe": "TemplateHeight 82"
+ },
+ {
+  "tc": "TC-A06",
+  "descricao": "Sem Expiracao → só \"Versão 21.0\"; sem versão → só \"Validade …\"; sem título → só código",
+  "ok": true,
+  "detalhe": "['Versão 21.0', 'Validade 28/11/2030'] ['BRK-INS-01-011939-PTEspecificação e classificação de produto final', 'BRK-INS-01-011947-PT']"
+ },
+ {
+  "tc": "TC-A07",
+  "descricao": "Método longo: altura limitada a 6 linhas (texto rola dentro do bloco)",
+  "ok": true,
+  "detalhe": "156 px"
+ },
+ {
+  "tc": "TC-A09",
+  "descricao": "Concluir habilitado",
+  "ok": true,
+  "detalhe": "DisplayMode.Edit"
+ },
+ {
+  "tc": "TC-A09",
+  "descricao": "Mensagem apenas informativa (comentários de Atendeu são opcionais)",
+  "ok": true,
+  "detalhe": "6 de 6 critérios respondidosResultado atualAtendeu6 comentários pendentes"
+ },
+ {
+  "tc": "TC-A09",
+  "descricao": "Tudo preenchido → \"Pronto para concluir\"",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "TC-A10",
+  "descricao": "Concluir bloqueado + \"Há 1 critério Não atendeu aguardando comentário\"",
+  "ok": true,
+  "detalhe": "6 de 6 critérios respondidosResultado atualNão atendeuHá 1 critério Não atendeu aguardando comentário"
+ },
+ {
+  "tc": "TC-A11",
+  "descricao": "Concluir bloqueado + \"Há 1 critério N/A sem justificativa\"",
+  "ok": true,
+  "detalhe": "6 de 6 critérios respondidosResultado atualAtendeuHá 1 critério N/A sem justificativa"
+ },
+ {
+  "tc": "Prioridade",
+  "descricao": "Critério sem resposta tem prioridade: \"Faltam 4 critérios para responder\"",
+  "ok": true,
+  "detalhe": "2 de 6 critérios respondidosResultado atualEm andamentoFaltam 4 critérios para responder"
+ },
+ {
+  "tc": "TC-A12",
+  "descricao": "Somente leitura: banner visível, barra de ações oculta, respostas desabilitadas",
+  "ok": true,
+  "detalhe": "Avaliação concluída em 08/10/2026 — somente leitura. Os critérios e documentos desta avaliação foram preservados conforme estavam no início da avaliação."
+ },
+ {
+  "tc": "TC-A12",
+  "descricao": "Banner sem a palavra \"snapshot\" e com texto amigável",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "TC-A12",
+  "descricao": "1366×768: nenhum controle visível ultrapassa a largura da tela",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "TC-A12",
+  "descricao": "1366×768: card Contexto termina antes dos Critérios",
+  "ok": true,
+  "detalhe": "Contexto 142–364, Critérios Y=432"
+ },
+ {
+  "tc": "TC-A12",
+  "descricao": "1366×768: Critérios e Parecer lado a lado sem sobreposição",
+  "ok": true,
+  "detalhe": "Critérios 66% da largura útil"
+ },
+ {
+  "tc": "TC-A12",
+  "descricao": "1366×768: Parecer com altura útil ≥ 170 px",
+  "ok": true,
+  "detalhe": "316 px"
+ },
+ {
+  "tc": "TC-A12",
+  "descricao": "1366×768: ao menos 1 critério inteiro visível na lista",
+  "ok": true,
+  "detalhe": "1.10 critérios visíveis"
+ },
+ {
+  "tc": "TC-A13",
+  "descricao": "Somente leitura: banner visível, barra de ações oculta, respostas desabilitadas",
+  "ok": true,
+  "detalhe": "Avaliação cancelada em 08/10/2026 — somente leitura. Os critérios e documentos desta avaliação foram preservados conforme estavam no início da avaliação."
+ },
+ {
+  "tc": "TC-A13",
+  "descricao": "Banner sem a palavra \"snapshot\" e com texto amigável",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "TC-A13",
+  "descricao": "1366×768: nenhum controle visível ultrapassa a largura da tela",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "TC-A13",
+  "descricao": "1366×768: card Contexto termina antes dos Critérios",
+  "ok": true,
+  "detalhe": "Contexto 142–364, Critérios Y=432"
+ },
+ {
+  "tc": "TC-A13",
+  "descricao": "1366×768: Critérios e Parecer lado a lado sem sobreposição",
+  "ok": true,
+  "detalhe": "Critérios 66% da largura útil"
+ },
+ {
+  "tc": "TC-A13",
+  "descricao": "1366×768: Parecer com altura útil ≥ 170 px",
+  "ok": true,
+  "detalhe": "316 px"
+ },
+ {
+  "tc": "TC-A13",
+  "descricao": "1366×768: ao menos 1 critério inteiro visível na lista",
+  "ok": true,
+  "detalhe": "1.10 critérios visíveis"
+ },
+ {
+  "tc": "TC-A14",
+  "descricao": "Salvar habilitado e notificação: Rascunho salvo. Aguardando comentário em 1 critério.",
+  "ok": true,
+  "detalhe": "Rascunho salvo. Aguardando comentário em 1 critério. [NotificationType.Warning]"
+ },
+ {
+  "tc": "TC-A15",
+  "descricao": "Salvar habilitado e notificação: Rascunho salvo. Aguardando comentário em 3 critérios.",
+  "ok": true,
+  "detalhe": "Rascunho salvo. Aguardando comentário em 3 critérios. [NotificationType.Warning]"
+ },
+ {
+  "tc": "TC-A16",
+  "descricao": "Salvar habilitado e notificação: Rascunho salvo com sucesso.",
+  "ok": true,
+  "detalhe": "Rascunho salvo com sucesso. [NotificationType.Success]"
+ },
+ {
+  "tc": "TC-A16",
+  "descricao": "Concluir: habilitado",
+  "ok": true,
+  "detalhe": "6 de 6 critérios respondidosResultado atualAtendeuPronto para concluir"
+ },
+ {
+  "tc": "TC-A17",
+  "descricao": "Salvar habilitado e notificação: Rascunho salvo. Aguardando comentário em 1 critério.",
+  "ok": true,
+  "detalhe": "Rascunho salvo. Aguardando comentário em 1 critério. [NotificationType.Warning]"
+ },
+ {
+  "tc": "TC-A17",
+  "descricao": "Concluir: habilitado",
+  "ok": true,
+  "detalhe": "6 de 6 critérios respondidosResultado atualAtendeu1 comentário pendente"
+ },
+ {
+  "tc": "TC-A18",
+  "descricao": "Salvar habilitado e notificação: Rascunho salvo. Aguardando comentário em 1 critério.",
+  "ok": true,
+  "detalhe": "Rascunho salvo. Aguardando comentário em 1 critério. [NotificationType.Warning]"
+ },
+ {
+  "tc": "TC-A18",
+  "descricao": "Concluir: bloqueado pela regra existente",
+  "ok": true,
+  "detalhe": "6 de 6 critérios respondidosResultado atualNão atendeuHá 1 critério Não atendeu aguardando comentário"
+ },
+ {
+  "tc": "TC-A19",
+  "descricao": "Salvar habilitado e notificação: Rascunho salvo. Aguardando comentário em 1 critério.",
+  "ok": true,
+  "detalhe": "Rascunho salvo. Aguardando comentário em 1 critério. [NotificationType.Warning]"
+ },
+ {
+  "tc": "TC-A19",
+  "descricao": "Concluir: bloqueado pela regra existente",
+  "ok": true,
+  "detalhe": "6 de 6 critérios respondidosResultado atualAtendeuHá 1 critério N/A sem justificativa"
+ },
+ {
+  "tc": "Lista",
+  "descricao": "Histórico aparece sem filtro (16 registros, 7 na página 1)",
+  "ok": true,
+  "detalhe": "16 registros encontrados"
+ },
+ {
+  "tc": "Lista",
+  "descricao": "Subtítulo novo, sem \"snapshot\"",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "Lista",
+  "descricao": "Título da tabela \"Registros de avaliação\"",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "Lista",
+  "descricao": "UID removido da lista; 2ª linha = cargo · grupo",
+  "ok": true,
+  "detalhe": "['Analista Júnior · Grupo D', 'Técnica de Laboratório Sênior · Grupo B', 'Técnico de Laboratório · Grupo C']"
+ },
+ {
+  "tc": "Lista",
+  "descricao": "Código do módulo (M14.1) fora da lista",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "Lista",
+  "descricao": "Ação \"Ver detalhes\"",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "TC-H01",
+  "descricao": "Nome longo: tooltip com nome completo",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "TC-H02",
+  "descricao": "Módulo longo em caixa alta normalizado com segurança",
+  "ok": true,
+  "detalhe": "Cromatografia Gasosa para Determinação de Voláteis Residuais em Polietileno"
+ },
+ {
+  "tc": "TC-H03",
+  "descricao": "Avaliador longo em até 2 linhas + tooltip",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "TC-H04",
+  "descricao": "Em preenchimento: selo azul + data \"Desde 07/10/2026\" + tooltip de início",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "TC-H05",
+  "descricao": "Concluída / Atendeu + tooltip \"Concluída em 06/10/2026\"",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "TC-H06",
+  "descricao": "Concluída / Não atendeu",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "TC-H07",
+  "descricao": "Cancelada: selo + data de cancelamento",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "TC-H08",
+  "descricao": "Sem resultado exibido como \"—\" (cinza, não erro)",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "TC-H09",
+  "descricao": "Página 3 de 16 registros mostra 2 linhas",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "TC-H10",
+  "descricao": "Nenhum registro: estado vazio visível e contador \"0 registros encontrados\"",
+  "ok": true,
+  "detalhe": "0 registros encontrados"
+ },
+ {
+  "tc": "TC-H11",
+  "descricao": "Painel: cabeçalho sem UID/ciclo e com pessoa, módulo·área, chips e \"Avaliação em andamento\"",
+  "ok": true,
+  "detalhe": "Detalhes da avaliação PESSOAKathleen CarolineAnalista Júnior · Grupo D Classificação e liberação de lotes · PE9 QualificaçãoEm preenchimento Avaliação em andamento · As respostas exibidas são as salva"
+ },
+ {
+  "tc": "TC-H11",
+  "descricao": "Resumo: avaliador, início, conclusão, resultado, tentativa",
+  "ok": true,
+  "detalhe": "Rodrigo Barbosa Tavares da Mota 07/10/2026 Em aberto Em andamento 1"
+ },
+ {
+  "tc": "TC-H11",
+  "descricao": "Documentos preservados na avaliação com versão e validade",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "TC-H11",
+  "descricao": "Informações técnicas recolhidas por padrão",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "TC-H11",
+  "descricao": "Painel lateral dentro da tela",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "TC-H12",
+  "descricao": "Painel: cabeçalho sem UID/ciclo e com pessoa, módulo·área, chips e \"Avaliação em andamento\"",
+  "ok": true,
+  "detalhe": "Detalhes da avaliação PESSOAKathleen CarolineAnalista Júnior · Grupo D Classificação e liberação de lotes · PE9 QualificaçãoEm preenchimento Avaliação em andamento · As respostas exibidas são as salva"
+ },
+ {
+  "tc": "TC-H12",
+  "descricao": "Resumo: avaliador, início, conclusão, resultado, tentativa",
+  "ok": true,
+  "detalhe": "Rodrigo Barbosa Tavares da Mota 07/10/2026 Em aberto Em andamento 1"
+ },
+ {
+  "tc": "TC-H12",
+  "descricao": "Documentos preservados na avaliação com versão e validade",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "TC-H12",
+  "descricao": "Informações técnicas recolhidas por padrão",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "TC-H12",
+  "descricao": "Painel lateral dentro da tela",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "Painel",
+  "descricao": "Informações técnicas (expandido): UID, ciclo, tentativa, versão",
+  "ok": true,
+  "detalhe": "Avaliação: AV-0016 Ciclo: CIC-7f3a2c19-5d0e-4b8a-9c41-2e6f1a0b9d77 Tentativa: 1 Versão do catálogo: R4-LIBERADO-OPERACIONAL-2026.10"
+ },
+ {
+  "tc": "Painel",
+  "descricao": "Cancelada: \"Avaliação cancelada\" + \"Justificativa do cancelamento\" com o texto registrado",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "Painel",
+  "descricao": "Parecer vazio → \"Não informado.\"",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "Painel",
+  "descricao": "Sem dados preservados da pessoa → aviso discreto de histórico incompleto",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "Painel",
+  "descricao": "Critérios com título amigável (sem código em destaque) e referência técnica",
+  "ok": true,
+  "detalhe": "['Preparação e execução', 'Equipamentos, materiais e controles']"
+ },
+ {
+  "tc": "Painel",
+  "descricao": "Concluída: \"Avaliação concluída\" e resultado \"Não atendeu\"",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "Funcional",
+  "descricao": "Filtro Pessoa (\"kathleen\"): 4 registros",
+  "ok": true,
+  "detalhe": "4 registros encontrados"
+ },
+ {
+  "tc": "Funcional",
+  "descricao": "Filtro Módulo (\"m14\"): 2 registros",
+  "ok": true,
+  "detalhe": "2 registros encontrados"
+ },
+ {
+  "tc": "Funcional",
+  "descricao": "Filtro Área PP5: 6 registros",
+  "ok": true,
+  "detalhe": "6 registros encontrados"
+ },
+ {
+  "tc": "Funcional",
+  "descricao": "Filtro Tipo Requalificação: 4 registros",
+  "ok": true,
+  "detalhe": "4 registros encontrados"
+ },
+ {
+  "tc": "Funcional",
+  "descricao": "Filtro Estado Cancelada: 1 registros",
+  "ok": true,
+  "detalhe": "1 registro encontrado"
+ },
+ {
+  "tc": "Funcional",
+  "descricao": "Filtro Resultado Não atendeu: 1 registros",
+  "ok": true,
+  "detalhe": "1 registro encontrado"
+ },
+ {
+  "tc": "Funcional",
+  "descricao": "Filtro Sem resultado: 2 registros",
+  "ok": true,
+  "detalhe": "2 registros encontrados"
+ },
+ {
+  "tc": "Funcional",
+  "descricao": "Filtro Período a partir de 01/10/2026: 3 registros",
+  "ok": true,
+  "detalhe": "3 registros encontrados"
+ },
+ {
+  "tc": "Funcional",
+  "descricao": "Permissão sem gestão: só avaliado/avaliador (12)",
+  "ok": true,
+  "detalhe": "12 registros encontrados"
+ },
+ {
+  "tc": "Funcional",
+  "descricao": "Copiar para Excel: todos os filtrados (inclusive outras páginas) + UID mantido",
+  "ok": true,
+  "detalhe": "6 linhas"
+ },
+ {
+  "tc": "Responsivo",
+  "descricao": "A08_1366: sem rolagem horizontal",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "Responsivo",
+  "descricao": "A08_1920: sem rolagem horizontal",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "Responsivo",
+  "descricao": "H_lista_1366: sem rolagem horizontal",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "Responsivo",
+  "descricao": "H_lista_1920: sem rolagem horizontal",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "Responsivo",
+  "descricao": "TC-H11: sem rolagem horizontal",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "Responsivo",
+  "descricao": "TC-H12: sem rolagem horizontal",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "Responsivo",
+  "descricao": "A08_1366: textos principais sem corte (lblCritDescAva, lblIdV0Ava, lblIdV1Ava, lblIdV2Ava…)",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "Responsivo",
+  "descricao": "A08_1920: textos principais sem corte (lblCritDescAva, lblIdV0Ava, lblIdV2Ava, lblIdV4Ava…)",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "Responsivo",
+  "descricao": "A07: textos principais sem corte (lblCritDescAva…)",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "Responsivo",
+  "descricao": "TC-H11: textos principais sem corte (lblEvR3His, lblEvV1His, lblEvDocHis, lblEvBanHis…)",
+  "ok": true,
+  "detalhe": ""
+ },
+ {
+  "tc": "Simulador",
+  "descricao": "Nenhum erro de avaliação Power Fx nas telas (todas as fórmulas executadas)",
+  "ok": true,
+  "detalhe": "{}"
+ }
+]
